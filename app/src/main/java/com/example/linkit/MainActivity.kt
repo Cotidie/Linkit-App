@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit.compose.NavGraph
+import com.example.linkit.compose.SplashScreen
 import com.example.linkit.ui.theme.LinkItTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,10 +31,9 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
+    val navController = rememberNavController()
+
     LinkItTheme {
-        Surface(color = MaterialTheme.colors.background) {
-            val navController = rememberNavController()
-            NavGraph(navController)
-        }
+        SplashScreen(navController)
     }
 }
