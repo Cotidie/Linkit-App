@@ -1,0 +1,11 @@
+package com.example.linkit.data.network.response
+
+import com.google.gson.annotations.SerializedName
+
+/** 구글 로그인 요청 시 서버로부터 반환받을 자료형 */
+data class GoogleLoginResponse(
+    @SerializedName("access_token")
+    val accessToken: String,
+    val email: String,
+    val name: String
+)
