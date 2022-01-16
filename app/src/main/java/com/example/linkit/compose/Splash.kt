@@ -11,14 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.linkit.compose.navigation.Screen
 import com.example.linkit.ui.theme.CustomTypo
-import com.example.linkit.ui.theme.roboto
 import kotlinx.coroutines.delay
 
 @Composable
@@ -26,16 +22,15 @@ fun SplashScreen(navController: NavHostController) {
     var startAnimation by remember { mutableStateOf(false) }
     val alphaAnim = animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = 3000
-        )
+        animationSpec = tween(3000)
     )
 
+    // 화면에 Fade 효과를 주고 3.5초 대기 후 홈 화면으로 전환
     LaunchedEffect(key1 = true) {
         startAnimation = true
         delay(3500)
         navController.popBackStack()
-        navController.navigate(Screen.Home.route)
+        navController.navigate(Screen.Login.route)
     }
     Splash(alpha = alphaAnim.value)
 }
@@ -49,13 +44,14 @@ fun Splash(alpha: Float) {
             .fillMaxSize()
             .alpha(alpha = alpha)
     ) {
+//        LinkItTitle(title = "LinkIt", subTitle = "link repository", color = Color.White, modifier = Modifier.padding())
         Text(
             text = "LinkIt",
             color = Color.White,
             style = CustomTypo.logo,
             modifier = Modifier
                 .padding(top = 140.dp)
-                .height(85.dp)
+                .height(95.dp)
         )
         Text(
             text = "link repository",

@@ -89,7 +89,7 @@ object CustomTypo {
     val logo = TextStyle(
         fontFamily = roboto,
         fontWeight = FontWeight.Bold,
-        fontSize = 70.sp,
-        lineHeight = 0.sp
+        fontSize = 80.sp,
+        lineHeight = 5.sp
     )
 }
