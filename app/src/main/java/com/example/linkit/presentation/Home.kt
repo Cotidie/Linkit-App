@@ -1,4 +1,4 @@
-package com.example.linkit.compose
+package com.example.linkit.presentation
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

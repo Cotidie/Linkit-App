@@ -1,6 +1,5 @@
-package com.example.linkit.compose
+package com.example.linkit.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.ExperimentalMaterialApi
@@ -10,13 +9,11 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.linkit.compose.component.GoogleLogin
+import com.example.linkit.presentation.component.GoogleLogin
 import com.example.linkit.ui.theme.CustomTypo
 
 @ExperimentalMaterialApi

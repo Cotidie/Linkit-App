@@ -1,4 +1,4 @@
-package com.example.linkit.compose
+package com.example.linkit.presentation
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.linkit.compose.navigation.Screen
+import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.CustomTypo
 import kotlinx.coroutines.delay
 
