@@ -1,5 +1,6 @@
 package com.example.linkit.network
 
+import com.example.linkit.network.api.IDeveloperApi
 import com.example.linkit.network.api.IUserApi
 import dagger.Module
 import dagger.Provides
@@ -69,5 +70,12 @@ class NetworkModule {
     /** 이 IUserApi 구현체는 작성한 Api에 대한 요청, 응답을 수행한다. */
     fun providesUserApi(retrofit: Retrofit) : IUserApi {
         return retrofit.create(IUserApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    /** IDeveloperAPI를 구현한다. */
+    fun providesDeveloperApi(retrofit: Retrofit) : IDeveloperApi {
+        return retrofit.create(IDeveloperApi::class.java)
     }
 }
