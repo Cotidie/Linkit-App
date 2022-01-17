@@ -1,4 +1,20 @@
 package com.example.linkit.domain.model
 
-class User {
+/** 로그인한 유저를 표현하는 클래스 */
+class User(
+    val token: String,
+    val id: Long,
+    val email: String,
+    val name: String,
+) {
+    companion object {
+        val GUEST = User("", Long.MIN_VALUE, "Guest", "Guest")
+    }
+
+    fun isGuest() : Boolean = (id == Long.MIN_VALUE)
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is User) return false
+        return id == other.id
+    }
 }
