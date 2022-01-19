@@ -12,8 +12,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.linkit.presentation.LoginScreen
 import com.example.linkit.presentation.NavGraph
 import com.example.linkit.ui.theme.LinkItTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

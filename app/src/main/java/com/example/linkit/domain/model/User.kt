@@ -17,4 +17,8 @@ class User(
         if (other !is User) return false
         return id == other.id
     }
+
+    override fun toString(): String {
+        return "User(token: $token, id: $id, email: $email, name: $name"
+    }
 }

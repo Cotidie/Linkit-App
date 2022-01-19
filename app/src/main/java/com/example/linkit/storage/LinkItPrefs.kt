@@ -1,23 +1,35 @@
 package com.example.linkit.storage
 
+import android.content.Context
+import android.preference.PreferenceDataStore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.example.linkit.domain.model.User
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class LinkItPrefs(private val linkItStore: DataStore<Preferences>) {
+val Context.dataStore by preferencesDataStore("settings")
+
+/** Primitive 자료형에 대해 Key-Value Pair로 저장하는 간단한 저장소 */
+class LinkItPrefs @Inject constructor(@ApplicationContext context: Context) {
+    private val linkItStore = context.dataStore
+
     // 키값 정의
     companion object {
         private val LOGGED_IN_USER_ID = longPreferencesKey("logged_in_user_id")
         private val LOGGED_IN_USER_EMAIL = stringPreferencesKey("logged_in_user_email")
         private val LOGGED_IN_USER_NAME = stringPreferencesKey("logged_in_user_name")
-        private val LOGGED_IN_USER_TOKEN = stringPreferencesKey("logged_in_user_name")
+        private val LOGGED_IN_USER_TOKEN = stringPreferencesKey("logged_in_user_token")
     }
 
     suspend fun setLoggedInUser(user: User) {
@@ -29,7 +41,7 @@ class LinkItPrefs(private val linkItStore: DataStore<Preferences>) {
         }
     }
 
-    suspend fun getLoggedInUser() : Flow<User> {
+    fun getLoggedInUser() : Flow<User> {
         return linkItStore.data.map { storeMap ->
             val id = storeMap[LOGGED_IN_USER_ID] ?: User.GUEST.id
             val email = storeMap[LOGGED_IN_USER_EMAIL] ?: User.GUEST.email

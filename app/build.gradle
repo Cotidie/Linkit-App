@@ -88,8 +88,13 @@ dependencies {
     // DataStore
     implementation "androidx.datastore:datastore:1.0.0"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
 
     // Hilt
     implementation "com.google.dagger:hilt-android:2.40.5"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-rc01"
     kapt "com.google.dagger:hilt-compiler:2.40.5"
+
+    // Compose ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0"
 }

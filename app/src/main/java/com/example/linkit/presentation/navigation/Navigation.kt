@@ -1,11 +1,13 @@
 package com.example.linkit.presentation
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.linkit.presentation.navigation.Screen
 
+@ExperimentalMaterialApi
 @Composable
 fun NavGraph(navController: NavHostController) {
     NavHost(
