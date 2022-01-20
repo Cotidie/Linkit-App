@@ -1,4 +1,4 @@
-package com.example.linkit.data.room
+package com.example.linkit.data.room.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

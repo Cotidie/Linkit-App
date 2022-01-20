@@ -21,4 +21,12 @@ class User(
     override fun toString(): String {
         return "User(token: $token, id: $id, email: $email, name: $name"
     }
+
+    override fun hashCode(): Int {
+        var result = token.hashCode()
+        result = 31 * result + id.hashCode()
+        result = 31 * result + email.hashCode()
+        result = 31 * result + name.hashCode()
+        return result
+    }
 }
