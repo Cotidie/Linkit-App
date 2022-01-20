@@ -1,4 +1,4 @@
-package com.example.linkit.storage
+package com.example.linkit.data.storage
 
 import dagger.Module
 import dagger.hilt.InstallIn

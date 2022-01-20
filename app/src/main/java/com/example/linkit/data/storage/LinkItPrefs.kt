@@ -1,22 +1,15 @@
-package com.example.linkit.storage
+package com.example.linkit.data.storage
 
 import android.content.Context
-import android.preference.PreferenceDataStore
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import com.example.linkit.domain.model.User
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import javax.inject.Singleton
 
 val Context.dataStore by preferencesDataStore("settings")
 
