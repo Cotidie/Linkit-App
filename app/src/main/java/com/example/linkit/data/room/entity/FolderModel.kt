@@ -11,5 +11,10 @@ data class Folder(
     @ColumnInfo(name="name")
     val name: String,
     @ColumnInfo(name="image")
-    val image: String
+    val image: String,
+    // 아래 두 컬럼은 공유폴더 전용
+    @ColumnInfo(name="snode")
+    val snode: Long? = null,
+    @ColumnInfo(name="gid")
+    val gid: Long? = null
 )

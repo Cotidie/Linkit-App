@@ -2,6 +2,7 @@ package com.example.linkit.data.room
 
 import android.content.Context
 import androidx.room.Room
+import com.example.linkit.data.room.dao.FolderDao
 import com.example.linkit.data.room.dao.LinkDao
 import dagger.Module
 import dagger.Provides
@@ -18,6 +19,11 @@ class AppModule {
     @Provides
     fun providesLinkDao(linkitDatabase: LinkItDatabase) : LinkDao
         = linkitDatabase.linkDao()
+
+    @Singleton
+    @Provides
+    fun providesFolderDao(linkitDatabase: LinkItDatabase) : FolderDao
+        = linkitDatabase.folderDao()
 
     @Singleton
     @Provides
