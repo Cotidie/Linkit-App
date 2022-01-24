@@ -1,26 +1,26 @@
 package com.example.linkit.data.room.dao
 
 import androidx.room.*
-import com.example.linkit.data.room.entity.FolderModel
+import com.example.linkit.data.room.entity.FolderEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FolderDao {
-    @Query("SELECT * FROM folder_table")
-    fun getAllFolders() : Flow<List<FolderModel>>
+    @Query("SELECT * FROM folderTable")
+    fun getAllFolders() : Flow<List<FolderEntity>>
 
-    @Query("SELECT * FROM folder_table WHERE id = :id")
-    suspend fun getFolderById(id: Long) : FolderModel
+    @Query("SELECT * FROM folderTable WHERE id = :id")
+    suspend fun getFolderById(id: Long) : FolderEntity
 
     @Insert
-    suspend fun insert(folderModel: FolderModel)
+    suspend fun insert(folderEntity: FolderEntity)
 
     @Update
-    suspend fun update(folderModel: FolderModel)
+    suspend fun update(folderEntity: FolderEntity)
 
     @Delete
-    suspend fun delete(folderModel: FolderModel)
+    suspend fun delete(folderEntity: FolderEntity)
 
-    @Query("DELETE FROM folder_table")
+    @Query("DELETE FROM folderTable")
     suspend fun deleteAll()
 }

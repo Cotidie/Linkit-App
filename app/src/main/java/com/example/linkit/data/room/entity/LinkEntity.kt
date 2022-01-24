@@ -4,9 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "link_table")
-data class LinkModel(
+@Entity(tableName = "linkTable")
+data class LinkEntity(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "linkId")
     val id: Long = 0,
     @ColumnInfo(name = "title")
     val title: String,
@@ -14,8 +15,6 @@ data class LinkModel(
     val memo: String,
     @ColumnInfo(name="url")
     val url: String,
-    @ColumnInfo(name="tags")
-    val tags: List<String>,
     @ColumnInfo(name="image")
     val image: String
 )

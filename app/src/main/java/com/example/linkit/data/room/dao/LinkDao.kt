@@ -1,7 +1,9 @@
 package com.example.linkit.data.room.dao
 
 import androidx.room.*
-import com.example.linkit.data.room.entity.LinkModel
+import com.example.linkit.data.room.entity.LinkEntity
+import com.example.linkit.data.room.entity.LinkWithTags
+import com.example.linkit.data.room.entity.TagWithLinks
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -12,21 +14,27 @@ import kotlinx.coroutines.flow.Flow
 interface LinkDao {
     // Flow는 객체만 생성되고, SELECT 작업은 .collect에서 이루어진다.
     // 객체 생성은 변수 선언과 같으므로 코루틴으로 작업하지 않아도 된다.
-    @Query("SELECT * from link_table")
-    fun getLinks(): Flow<List<LinkModel>>
 
-    @Query("SELECT * from link_table where id = :id")
-    suspend fun getLinkById(id: Long): LinkModel
+    @Transaction
+    @Query("SELECT * FROM linkTable")
+    fun getLinks() : Flow<List<LinkWithTags>>
+
+    @Transaction
+    @Query("SELECT * FROM tagTable")
+    fun getTags() : Flow<List<TagWithLinks>>
+
+    @Query("SELECT * from linkTable where linkId = :id")
+    suspend fun getLinkById(id: Long): LinkWithTags
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(linkModel: LinkModel)
+    suspend fun insert(linkEntity: LinkEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(linkModel: LinkModel)
+    suspend fun update(linkEntity: LinkEntity)
 
-    @Query("DELETE FROM link_table")
+    @Query("DELETE FROM linkTable")
     suspend fun delete()
 
     @Delete
-    suspend fun deleteLink(linkModel: LinkModel)
+    suspend fun deleteLink(linkEntity: LinkEntity)
 }
