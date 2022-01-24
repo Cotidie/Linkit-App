@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.linkit.data.repository.FolderRepository
-import com.example.linkit.data.room.entity.FolderModel
+import com.example.linkit.data.room.entity.FolderEntity
 import com.example.linkit.data.storage.LinkItPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +21,8 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
     val user = prefs.getLoggedInUser()
     // 내부의 값을 변경할 수 있는 hot flow (StateFlow)
-    private val _folderList = MutableStateFlow<List<FolderModel>>(emptyList())
-    val folderModelList : StateFlow<List<FolderModel>> = _folderList
+    private val _folderList = MutableStateFlow<List<FolderEntity>>(emptyList())
+    val folderEntityList : StateFlow<List<FolderEntity>> = _folderList
 
     // 관찰할 FLow를 등록한다.
     init {
@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun addLink(folderModel: FolderModel) = viewModelScope.launch { repository.insert(folderModel) }
-    fun updateLink(folderModel: FolderModel) = viewModelScope.launch { repository.update(folderModel) }
-    fun removeLink(folderModel: FolderModel) = viewModelScope.launch { repository.delete(folderModel) }
+    fun addLink(folderEntity: FolderEntity) = viewModelScope.launch { repository.insert(folderEntity) }
+    fun updateLink(folderEntity: FolderEntity) = viewModelScope.launch { repository.update(folderEntity) }
+    fun removeLink(folderEntity: FolderEntity) = viewModelScope.launch { repository.delete(folderEntity) }
 }
