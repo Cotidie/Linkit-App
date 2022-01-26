@@ -31,7 +31,7 @@ fun DropDownButton(
         .padding(vertical = 5.dp, horizontal = 10.dp)
     ) {
         IconTextButton(
-            modifier = Modifier.size(150.dp, 50.dp),
+            modifier = Modifier.size(145.dp, 50.dp),
             icon = selected.icon,
             text = selected.text,
             onClick = { expanded = !expanded },

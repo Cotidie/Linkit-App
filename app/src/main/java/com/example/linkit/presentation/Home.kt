@@ -10,14 +10,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,10 +33,7 @@ import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
 import com.example.linkit.domain.model.User
 import com.example.linkit.domain.model.cxt
-import com.example.linkit.presentation.component.DropDownButton
-import com.example.linkit.presentation.component.FolderCard
-import com.example.linkit.presentation.component.LinkItAppBar
-import com.example.linkit.presentation.component.LinkItBottomBar
+import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.ui.theme.LinkItTheme
 import com.example.linkit.viewmodel.HomeViewModel
@@ -61,7 +62,7 @@ fun Home() {
                 iconSize = 32.dp
             )
         }
-    ) {
+    ) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
@@ -74,12 +75,33 @@ fun Home() {
             ) {
                 DropDownButton(items = dropItems)
             }
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(3),
-                contentPadding = PaddingValues(8.dp)
+            FolderGrid(
+                modifier = Modifier
+                    .weight(6.6f)
+                    .padding(start = 25.dp, end = 25.dp),
+                folders = folders,
+                cells = 3
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(2f)
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
             ) {
-                items(folders) { folder ->
-                    FolderCard(folder = folder)
+                Button(
+                    shape = CircleShape,
+                    onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.White
+                    ),
+                    contentPadding = PaddingValues(20.dp, 8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = null
+                    )
+                    Text(text = "폴더 추가")
                 }
             }
         }
@@ -89,6 +111,12 @@ fun Home() {
 @Composable
 fun getFolderSamples() : List<IFolder> {
     return listOf(
+        FolderPrivate(1, "취미", getBitmap(R.drawable.ic_sample_image_001)),
+        FolderPrivate(2, "운동", getBitmap(R.drawable.ic_sample_image_001)),
+        FolderPrivate(3, "공부", getBitmap(R.drawable.ic_sample_image_001)),
+        FolderPrivate(4, "대학", getBitmap(R.drawable.ic_sample_image_001)),
+        FolderPrivate(5, "취업", getBitmap(R.drawable.ic_sample_image_001)),
+        FolderPrivate(6, "놀이", getBitmap(R.drawable.ic_sample_image_001)),
         FolderPrivate(1, "취미", getBitmap(R.drawable.ic_sample_image_001)),
         FolderPrivate(2, "운동", getBitmap(R.drawable.ic_sample_image_001)),
         FolderPrivate(3, "공부", getBitmap(R.drawable.ic_sample_image_001)),
