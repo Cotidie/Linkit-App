@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.linkit.presentation.navigation.Screen
 
-@ExperimentalMaterialApi
 @Composable
 fun NavGraph(navController: NavHostController) {
     NavHost(

@@ -21,7 +21,6 @@ import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.CustomTypo
 import com.example.linkit.ui.theme.LinkItTheme
 
-@ExperimentalMaterialApi
 @Composable
 fun LoginScreen(navController: NavHostController) {
     Column(

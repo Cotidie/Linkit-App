@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.example.linkit.R
 import com.example.linkit.ui.theme.Shapes
 
-@ExperimentalMaterialApi
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GoogleLogin() {
     var isClicked by remember { mutableStateOf(false) }
