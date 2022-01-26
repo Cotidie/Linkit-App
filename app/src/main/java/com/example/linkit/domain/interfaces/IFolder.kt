@@ -7,4 +7,6 @@ interface IFolder {
     val id: Long
     var name: String
     var image: Bitmap?
+
+    fun isShared() : Boolean
 }

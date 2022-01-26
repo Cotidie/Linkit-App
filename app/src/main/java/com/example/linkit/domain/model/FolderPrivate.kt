@@ -8,5 +8,5 @@ class FolderPrivate(
     override var name: String,
     override var image: Bitmap?
 ) : IFolder {
-
+    override fun isShared(): Boolean = false
 }

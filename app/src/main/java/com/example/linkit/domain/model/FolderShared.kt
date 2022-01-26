@@ -10,5 +10,5 @@ class FolderShared(
     val snode: Long,
     val gid: Long
 ) : IFolder {
-
+    override fun isShared(): Boolean = true
 }
