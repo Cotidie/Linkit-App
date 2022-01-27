@@ -34,7 +34,6 @@ import com.example.linkit.ui.theme.LinkItTheme
 fun Home() {
 //    val homeViewModel = hiltViewModel<HomeViewModel>()
 //    val user = homeViewModel.user.collectAsState(initial = User.GUEST).value
-    val dropExpanded by remember { mutableStateOf(false) }
     val dropItems = listOf(
         IconText(Icons.Filled.Person,"개인폴더"),
         IconText(Icons.Filled.Group, "공유폴더"),
@@ -54,7 +53,6 @@ fun Home() {
             )
         }
     ) { innerPadding ->
-        "$innerPadding".log()
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)

@@ -22,10 +22,10 @@ fun CustomChip(
         shape = CircleShape,
     ) {
         Text(
-            modifier = textModifier.padding(6.dp, 5.dp),
+            modifier = textModifier,
             text = text,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.subtitle1
+            style = MaterialTheme.typography.subtitle2
         )
     }
 }

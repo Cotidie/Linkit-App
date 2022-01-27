@@ -36,7 +36,7 @@ fun AppBar(
         },
         actions = {
             Icon(
-                modifier = Modifier.padding(end=14.dp).size(30.dp),
+                modifier = Modifier.padding(end=20.dp).size(30.dp),
                 imageVector = Icons.Filled.AccountCircle,
                 contentDescription = null,
                 tint = Color.Black
