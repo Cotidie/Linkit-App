@@ -40,10 +40,15 @@ fun LinkCard(
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
-        Column(modifier = Modifier.weight(1f)) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(end=8.dp)
+        ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = link.url
+                text = link.url,
+                maxLines = 1
             )
             // 넘치는 경우 처리
             Row(

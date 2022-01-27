@@ -20,7 +20,7 @@ fun NavGraph(navController: NavHostController) {
             LoginScreen(navController)
         }
         composable(route = Screen.Home.route) {
-            Home()
+            Home(navController)
         }
         composable(route = Screen.Explorer.route) {
             Explorer()

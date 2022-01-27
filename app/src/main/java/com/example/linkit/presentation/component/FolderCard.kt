@@ -29,10 +29,13 @@ import com.example.linkit.domain.model.FolderPrivate
 import com.example.linkit.ui.theme.LinkItTheme
 
 @Composable
-fun FolderCard(folder: IFolder) {
+fun FolderCard(
+    folder: IFolder,
+    onClick: () -> Unit
+) {
     Column(
         modifier = Modifier
-            .clickable { }
+            .clickable { onClick() }
             .background(Color.Transparent),
     ) {
         Box(modifier = Modifier.size(110.dp, 110.dp)) {

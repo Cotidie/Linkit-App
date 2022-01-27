@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.component
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -25,7 +26,7 @@ fun AppBar(
     isMainScreen: Boolean = true
 ) {
     TopAppBar(
-        modifier = modifier,
+        modifier = modifier.height(65.dp),
         title = {
             Icon(
                 modifier = Modifier.padding(start=5.dp).size(30.dp),

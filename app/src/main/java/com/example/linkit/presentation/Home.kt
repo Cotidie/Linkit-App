@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.linkit.R
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
@@ -27,11 +29,12 @@ import com.example.linkit.domain.model.cxt
 import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
+import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.LinkItTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Home() {
+fun Home(navController: NavController) {
 //    val homeViewModel = hiltViewModel<HomeViewModel>()
 //    val user = homeViewModel.user.collectAsState(initial = User.GUEST).value
     val dropItems = listOf(
@@ -42,16 +45,8 @@ fun Home() {
     val folders = getFolderSamples()
 
     Scaffold(
-        topBar = {
-            AppBar(
-                modifier = Modifier.height(65.dp)
-            )
-        },
-        bottomBar = {
-            BottomBar(
-                iconSize = 32.dp
-            )
-        }
+        topBar = { AppBar() },
+        bottomBar = { BottomBar() }
     ) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
@@ -72,7 +67,8 @@ fun Home() {
                     .weight(6.6f)
                     .padding(start = 25.dp, end = 25.dp),
                 folders = folders,
-                cells = 3
+                cells = 3,
+                onClick = { navController.navigate(Screen.Explorer.route) }
             )
             // '+ 폴더추가' 버튼 영역
             Box(
@@ -121,7 +117,9 @@ fun getBitmap(id: Int) : Bitmap? {
 @Preview
 @Composable
 fun PreviewHome() {
+    val navController = rememberNavController()
+
     LinkItTheme {
-        Home()
+        Home(navController)
     }
 }

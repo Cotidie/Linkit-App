@@ -21,7 +21,7 @@ import com.example.linkit.ui.theme.LinkItTheme
 @Composable
 fun BottomBar(
     modifier: Modifier = Modifier,
-    iconSize: Dp = 30.dp
+    iconSize: Dp = 32.dp
 ) {
     val selectedIndex by remember { mutableStateOf(1) }
 
