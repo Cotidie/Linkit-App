@@ -31,9 +31,13 @@ fun DropDownButton(
         .padding(vertical = 5.dp, horizontal = 10.dp)
     ) {
         IconTextButton(
-            modifier = Modifier.size(145.dp, 50.dp),
+            modifier = Modifier
+                .size(145.dp, 50.dp)
+                .padding(top=10.dp, start=10.dp, end=10.dp, bottom = 5.dp),
             icon = selected.icon,
+            iconColor = Color.White,
             text = selected.text,
+            textColor = Color.White,
             onClick = { expanded = !expanded },
             colors = buttonColors(backgroundColor = Color.Gray)
         )

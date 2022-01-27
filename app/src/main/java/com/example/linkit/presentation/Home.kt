@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Group
@@ -33,6 +34,7 @@ import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
 import com.example.linkit.domain.model.User
 import com.example.linkit.domain.model.cxt
+import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.ui.theme.LinkItTheme
@@ -63,10 +65,12 @@ fun Home() {
             )
         }
     ) { innerPadding ->
+        "$innerPadding".log()
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
         ) {
+            // '개인폴더' 등 선택옵션 드롭다운 영역
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -75,6 +79,7 @@ fun Home() {
             ) {
                 DropDownButton(items = dropItems)
             }
+            // 폴더 표시 영역
             FolderGrid(
                 modifier = Modifier
                     .weight(6.6f)
@@ -82,6 +87,7 @@ fun Home() {
                 folders = folders,
                 cells = 3
             )
+            // '+ 폴더추가' 버튼 영역
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -89,20 +95,14 @@ fun Home() {
                     .padding(innerPadding),
                 contentAlignment = Alignment.Center
             ) {
-                Button(
+                IconTextButton(
+                    text = "폴더 추가",
+                    icon = Icons.Filled.Add,
                     shape = CircleShape,
                     onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color.White
-                    ),
+                    colors = buttonColors(Color.White),
                     contentPadding = PaddingValues(20.dp, 8.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = null
-                    )
-                    Text(text = "폴더 추가")
-                }
+                )
             }
         }
     }
