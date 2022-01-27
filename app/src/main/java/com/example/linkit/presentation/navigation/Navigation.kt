@@ -22,6 +22,9 @@ fun NavGraph(navController: NavHostController) {
         composable(route = Screen.Home.route) {
             Home()
         }
+        composable(route = Screen.Explorer.route) {
+            Explorer()
+        }
     }
 
 }
