@@ -1,17 +1,11 @@
 package com.example.linkit.presentation
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.icons.Icons
@@ -22,23 +16,18 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.linkit.R
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
-import com.example.linkit.domain.model.User
 import com.example.linkit.domain.model.cxt
 import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.ui.theme.LinkItTheme
-import com.example.linkit.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -55,12 +44,12 @@ fun Home() {
 
     Scaffold(
         topBar = {
-            LinkItAppBar(
+            AppBar(
                 modifier = Modifier.height(65.dp)
             )
         },
         bottomBar = {
-            LinkItBottomBar(
+            BottomBar(
                 iconSize = 32.dp
             )
         }
