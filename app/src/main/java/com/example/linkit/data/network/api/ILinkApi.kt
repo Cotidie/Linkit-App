@@ -1,6 +1,6 @@
-package com.example.linkit.network.api
+package com.example.linkit.data.network.api
 
-import com.example.linkit.data.network.response.UserResponse
+import com.example.linkit.data.network.model.response.UserResponse
 import retrofit2.http.GET
 
 interface ILinkApi {

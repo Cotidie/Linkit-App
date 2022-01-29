@@ -1,12 +1,11 @@
-package com.example.linkit.network.module
+package com.example.linkit.data.network.module
 
 import com.example.linkit.data.repository.UserRepository
-import com.example.linkit.network.api.ILinkApi
+import com.example.linkit.data.network.api.ILinkApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 /**

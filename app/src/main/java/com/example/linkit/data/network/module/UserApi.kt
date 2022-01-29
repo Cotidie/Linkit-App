@@ -1,4 +1,4 @@
-package com.example.linkit.network.module
+package com.example.linkit.data.network.module
 
 import dagger.Module
 import dagger.hilt.InstallIn

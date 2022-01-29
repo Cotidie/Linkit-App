@@ -1,1 +1,1 @@
-package com.example.linkit.data.network.request
+package com.example.linkit.data.network.model.request

@@ -1,4 +1,4 @@
-package com.example.linkit.data.network.response
+package com.example.linkit.data.network.model.response
 
 data class ApiResponse<T>(
     val success: Boolean,

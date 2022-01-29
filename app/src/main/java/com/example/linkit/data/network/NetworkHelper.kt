@@ -1,4 +1,4 @@
-package com.example.linkit.network
+package com.example.linkit.data.network
 
 import android.content.Context
 import android.net.ConnectivityManager

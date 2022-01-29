@@ -1,7 +1,7 @@
-package com.example.linkit.network
+package com.example.linkit.data.network
 
-import com.example.linkit.network.api.IDeveloperApi
-import com.example.linkit.network.api.IUserApi
+import com.example.linkit.data.network.api.IDeveloperApi
+import com.example.linkit.data.network.api.IUserApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

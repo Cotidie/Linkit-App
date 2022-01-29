@@ -1,4 +1,4 @@
-package com.example.linkit.data.network.response
+package com.example.linkit.data.network.model.response
 
 import com.google.gson.annotations.SerializedName
 

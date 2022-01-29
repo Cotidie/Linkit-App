@@ -1,4 +1,4 @@
-package com.example.linkit.viewmodel
+package com.example.linkit.presentation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
