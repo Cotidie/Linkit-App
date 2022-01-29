@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.linkit.constant.UIConstants
 import com.example.linkit.ui.theme.LinkItTheme
 
 /**
@@ -26,10 +27,13 @@ fun AppBar(
     isMainScreen: Boolean = true
 ) {
     TopAppBar(
-        modifier = modifier.height(65.dp),
+        modifier = modifier
+            .height(UIConstants.HEIGHT_APP_BAR),
         title = {
             Icon(
-                modifier = Modifier.padding(start=5.dp).size(30.dp),
+                modifier = Modifier
+                    .padding(start=5.dp)
+                    .size(UIConstants.ICON_SIZE),
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
                 tint = Color.Black
@@ -37,7 +41,9 @@ fun AppBar(
         },
         actions = {
             Icon(
-                modifier = Modifier.padding(end=20.dp).size(30.dp),
+                modifier = Modifier
+                    .padding(end=20.dp)
+                    .size(UIConstants.ICON_SIZE),
                 imageVector = Icons.Filled.AccountCircle,
                 contentDescription = null,
                 tint = Color.Black
