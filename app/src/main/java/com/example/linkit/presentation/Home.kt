@@ -26,7 +26,6 @@ import com.example.linkit.R
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
 import com.example.linkit.domain.model.cxt
-import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
@@ -35,8 +34,6 @@ import com.example.linkit.ui.theme.LinkItTheme
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Home(navController: NavController) {
-//    val homeViewModel = hiltViewModel<HomeViewModel>()
-//    val user = homeViewModel.user.collectAsState(initial = User.GUEST).value
     val dropItems = listOf(
         IconText(Icons.Filled.Person,"개인폴더"),
         IconText(Icons.Filled.Group, "공유폴더"),
@@ -45,7 +42,7 @@ fun Home(navController: NavController) {
     val folders = getFolderSamples()
 
     Scaffold(
-        topBar = { AppBar() },
+        topBar = { AppBarHome() },
         bottomBar = { BottomBar() }
     ) { innerPadding ->
         Column(modifier = Modifier
@@ -64,8 +61,8 @@ fun Home(navController: NavController) {
             // 폴더 표시 영역
             FolderGrid(
                 modifier = Modifier
-                    .weight(6.6f)
-                    .padding(start = 25.dp, end = 25.dp),
+                    .weight(1f)
+                    .padding(horizontal = 25.dp),
                 folders = folders,
                 cells = 3,
                 onClick = { navController.navigate(Screen.Explorer.route) }
@@ -74,8 +71,8 @@ fun Home(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(2f)
-                    .padding(innerPadding),
+                    .padding(innerPadding)
+                    .height(80.dp),
                 contentAlignment = Alignment.Center
             ) {
                 IconTextButton(
