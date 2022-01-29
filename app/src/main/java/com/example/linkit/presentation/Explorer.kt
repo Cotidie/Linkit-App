@@ -1,8 +1,7 @@
 package com.example.linkit.presentation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
@@ -10,24 +9,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.linkit.domain.model.Link
 import com.example.linkit.R
-import com.example.linkit.presentation.component.AppBar
+import com.example.linkit.presentation.component.AppBarExplorer
 import com.example.linkit.presentation.component.BottomBar
 import com.example.linkit.presentation.component.LinkCard
 
 @Composable
-fun Explorer() {
+fun Explorer(
+    navController: NavController,
+    folderName: String
+) {
     val links = getSampleLinks()
 
     Scaffold(
-        topBar = { AppBar() },
+        topBar = { AppBarExplorer(folderName = folderName) },
         bottomBar = { BottomBar() }
-    ) {
-        Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {
-            LazyColumn {
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+                .padding(innerPadding)
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(25.dp, 40.dp)
+            ) {
                 items(links) { link ->
-                    LinkCard(link = link)
+                    LinkCard(
+                        modifier = Modifier.height(80.dp),
+                        link = link
+                    )
+                    Spacer(Modifier.height(20.dp))
                 }
             }
         }
@@ -53,5 +70,7 @@ fun getSampleLinks() : List<Link> {
 @Preview
 @Composable
 fun PreviewExplorer() {
-    Explorer()
+    val navController = rememberNavController()
+
+    Explorer(navController,"취미폴더")
 }

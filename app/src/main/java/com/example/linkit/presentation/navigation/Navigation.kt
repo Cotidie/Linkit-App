@@ -23,7 +23,7 @@ fun NavGraph(navController: NavHostController) {
             Home(navController)
         }
         composable(route = Screen.Explorer.route) {
-            Explorer()
+            Explorer(navController, "취미폴더")
         }
     }
 
