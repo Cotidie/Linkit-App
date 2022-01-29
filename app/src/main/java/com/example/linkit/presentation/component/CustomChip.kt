@@ -1,6 +1,5 @@
 package com.example.linkit.presentation.component
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -9,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomChip(
@@ -25,7 +23,7 @@ fun CustomChip(
             modifier = textModifier,
             text = text,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.subtitle2
+            style = MaterialTheme.typography.subtitle1
         )
     }
 }
