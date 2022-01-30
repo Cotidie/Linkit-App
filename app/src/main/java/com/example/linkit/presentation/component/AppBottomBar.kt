@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.component
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
@@ -16,11 +17,36 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.linkit.constant.UIConstants
+import com.example.linkit._constant.UIConstants
+import com.example.linkit._enums.UIMode
+import com.example.linkit._enums.UIMode.*
 import com.example.linkit.ui.theme.LinkItTheme
 
 @Composable
-fun BottomBar(
+fun AppBottomBar(
+    modifier: Modifier = Modifier,
+    uiMode: UIMode,
+    height: Dp = UIConstants.HEIGHT_BOTTOM_BAR,
+    iconSize: Dp = UIConstants.ICON_SIZE_BOTTOM_BAR,
+    backHandler: () -> Unit = {}
+) {
+    BackHandler { backHandler() }
+
+    when (uiMode) {
+        NORMAL -> {
+            AppBottomBarDefault()
+        }
+        EDIT_LINK -> {
+            AppBottomBarEditLink(text = "샘플")
+        }
+        EDIT_FOLDER -> {
+            AppBottomBarEditFolder(text = "샘플")
+        }
+    }
+}
+
+@Composable
+fun AppBottomBarDefault(
     modifier: Modifier = Modifier,
     height: Dp = UIConstants.HEIGHT_BOTTOM_BAR,
     iconSize: Dp = UIConstants.ICON_SIZE_BOTTOM_BAR
@@ -75,6 +101,6 @@ fun BottomBar(
 @Composable
 fun PreviewBottomBar() {
     LinkItTheme {
-        BottomBar()
+        AppBottomBarDefault()
     }
 }
