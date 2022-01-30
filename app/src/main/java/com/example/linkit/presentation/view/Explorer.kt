@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,8 +14,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit.domain.model.Link
 import com.example.linkit.R
+import com.example.linkit._enums.UIMode
 import com.example.linkit.presentation.component.AppBarExplorer
-import com.example.linkit.presentation.component.BottomBar
+import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.LinkCard
 
 @Composable
@@ -24,6 +25,7 @@ fun Explorer(
     folderName: String
 ) {
     val links = getSampleLinks()
+    var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
 
     Scaffold(
         topBar = {
@@ -32,14 +34,17 @@ fun Explorer(
                 navController = navController
             )
         },
-        bottomBar = { BottomBar() }
+        bottomBar = {
+            AppBottomBar(uiMode = uiMode)
+        }
     ) { innerPadding ->
         ExplorerContent(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.DarkGray)
                 .padding(innerPadding),
-            links = links
+            links = links,
+            onLongPress = { uiMode = UIMode.EDIT_LINK }
         )
     }
 }
@@ -47,7 +52,8 @@ fun Explorer(
 @Composable
 fun ExplorerContent(
     modifier: Modifier = Modifier,
-    links: List<Link>
+    links: List<Link>,
+    onLongPress: () -> Unit
 ) {
     Column(modifier = modifier) {
         LazyColumn(
@@ -57,7 +63,8 @@ fun ExplorerContent(
             items(links) { link ->
                 LinkCard(
                     modifier = Modifier.height(80.dp),
-                    link = link
+                    link = link,
+                    onLongPress = onLongPress
                 )
                 Spacer(Modifier.height(20.dp))
             }

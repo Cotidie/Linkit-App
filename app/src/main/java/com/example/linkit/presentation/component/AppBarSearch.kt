@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.linkit.constant.UIConstants
+import com.example.linkit._constant.UIConstants
 
 @Composable
 /** 검색 아이콘을 클릭했을 때 표시할 앱바 */

@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.linkit.constant.UIConstants
-import com.example.linkit.enums.SearchBarState.*
+import com.example.linkit._constant.UIConstants
+import com.example.linkit._enums.SearchBarState.*
 
 @Composable
 fun AppBarExplorer(

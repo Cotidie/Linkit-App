@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.linkit.R
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
+import com.example.linkit._enums.UIMode
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
@@ -34,10 +35,19 @@ import com.example.linkit.ui.theme.LinkItTheme
 @Composable
 fun Home(navController: NavController) {
     val folders = getFolderSamples()
+    var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
 
     Scaffold(
         topBar = { AppBarHome() },
-        bottomBar = { BottomBar() }
+        bottomBar = {
+            AppBottomBar(
+                uiMode = uiMode,
+                backHandler = {
+                    if (uiMode != UIMode.NORMAL) uiMode = UIMode.NORMAL
+                    else navController.popBackStack()
+                }
+            )
+        }
     ) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
@@ -56,25 +66,17 @@ fun Home(navController: NavController) {
                     navController.navigate(
                         Screen.Explorer.route.plus("/${folder.name}")
                     )
-                }
+                },
+                onLongPress = { uiMode = UIMode.EDIT_FOLDER }
             )
             // '+ 폴더추가' 버튼 영역
-            Box(
+            FolderAddArea(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(innerPadding)
                     .height(80.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                IconTextButton(
-                    text = "폴더 추가",
-                    icon = Icons.Filled.Add,
-                    shape = CircleShape,
-                    onClick = { /*TODO*/ },
-                    colors = buttonColors(Color.White),
-                    contentPadding = PaddingValues(20.dp, 8.dp)
-                )
-            }
+                uiMode = uiMode
+            )
         }
     }
 }
@@ -103,7 +105,7 @@ fun DropDownArea() {
                 IconTextButton(
                     modifier = Modifier
                         .size(145.dp, 50.dp)
-                        .padding(top=10.dp, start=10.dp, end=10.dp, bottom = 5.dp),
+                        .padding(top = 10.dp, start = 10.dp, end = 10.dp, bottom = 5.dp),
                     icon = selected.icon,
                     iconColor = Color.White,
                     text = selected.text,
@@ -128,6 +130,28 @@ fun DropDownArea() {
             },
             onDismissRequest = { expanded = false }
         )
+    }
+}
+
+@Composable
+fun FolderAddArea(
+    modifier: Modifier = Modifier,
+    uiMode: UIMode
+) {
+    if (uiMode == UIMode.NORMAL) {
+        Box(
+            modifier = modifier,
+            contentAlignment = Alignment.Center
+        ) {
+            IconTextButton(
+                text = "폴더 추가",
+                icon = Icons.Filled.Add,
+                shape = CircleShape,
+                onClick = { /*TODO*/ },
+                colors = buttonColors(Color.White),
+                contentPadding = PaddingValues(20.dp, 8.dp)
+            )
+        }
     }
 }
 
