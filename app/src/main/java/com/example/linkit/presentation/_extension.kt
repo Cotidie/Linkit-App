@@ -1,6 +1,12 @@
 package com.example.linkit.presentation
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,4 +21,28 @@ fun cxt() : Context = LocalContext.current
 @Composable
 fun Modifier.longPress(behavior: () -> Unit) = pointerInput(Unit) {
     detectTapGestures( onLongPress = {behavior()} )
+}
+
+
+/** 애니메이션 Wrapper */
+@Composable
+fun AnimatePopup(
+    visible: Boolean,
+    content: @Composable AnimatedVisibilityScope.() -> Unit
+) {
+    val enterSpec = slideInVertically(
+        animationSpec = TweenSpec(
+            durationMillis = 300,
+            easing = FastOutSlowInEasing
+        ),
+        initialOffsetY = { it }
+    )
+    val exitSpec = slideOutVertically { it }
+
+    AnimatedVisibility(
+        visible = visible,
+        enter = enterSpec,
+        exit = exitSpec,
+        content = content
+    )
 }
