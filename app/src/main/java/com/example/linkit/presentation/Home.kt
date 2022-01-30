@@ -25,7 +25,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.linkit.R
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
-import com.example.linkit.domain.model.cxt
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
@@ -34,11 +33,6 @@ import com.example.linkit.ui.theme.LinkItTheme
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Home(navController: NavController) {
-    val dropItems = listOf(
-        IconText(Icons.Filled.Person,"개인폴더"),
-        IconText(Icons.Filled.Group, "공유폴더"),
-        IconText(Icons.Filled.Groups, "모두")
-    )
     val folders = getFolderSamples()
 
     Scaffold(
@@ -50,14 +44,7 @@ fun Home(navController: NavController) {
             .background(Color.Black)
         ) {
             // '개인폴더' 등 선택옵션 드롭다운 영역
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                DropDownButton(items = dropItems)
-            }
+            DropDownArea()
             // 폴더 표시 영역
             FolderGrid(
                 modifier = Modifier
@@ -65,7 +52,11 @@ fun Home(navController: NavController) {
                     .padding(horizontal = 25.dp),
                 folders = folders,
                 cells = 3,
-                onClick = { navController.navigate(Screen.Explorer.route) }
+                onClick = { folder ->
+                    navController.navigate(
+                        Screen.Explorer.route.plus("/${folder.name}")
+                    )
+                }
             )
             // '+ 폴더추가' 버튼 영역
             Box(
@@ -85,6 +76,58 @@ fun Home(navController: NavController) {
                 )
             }
         }
+    }
+}
+
+/** Content 영역 중 상단의 드롭다운 버튼 영역*/
+@Composable
+fun DropDownArea() {
+    val dropItems = listOf(
+        IconText(Icons.Filled.Person,"개인폴더"),
+        IconText(Icons.Filled.Group, "공유폴더"),
+        IconText(Icons.Filled.Groups, "모두")
+    )
+    var selected by remember { mutableStateOf(dropItems[0]) }
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp),
+        contentAlignment = Alignment.CenterEnd
+    ) {
+        DropDownButton(
+            expanded = expanded,
+            items = dropItems,
+            button = {
+                IconTextButton(
+                    modifier = Modifier
+                        .size(145.dp, 50.dp)
+                        .padding(top=10.dp, start=10.dp, end=10.dp, bottom = 5.dp),
+                    icon = selected.icon,
+                    iconColor = Color.White,
+                    text = selected.text,
+                    textColor = Color.White,
+                    onClick = { expanded = !expanded },
+                    colors = buttonColors(backgroundColor = Color.Gray)
+                )
+            },
+            item = { index, item ->
+                if (item.hasIcon()) {
+                    Icon(
+                        modifier = Modifier.padding(end = 8.dp),
+                        imageVector = item.icon!!,
+                        contentDescription = item.text
+                    )
+                }
+                Text(text = item.text)
+            },
+            onItemClick = { item ->
+                selected = item
+                expanded = false
+            },
+            onDismissRequest = { expanded = false }
+        )
     }
 }
 
