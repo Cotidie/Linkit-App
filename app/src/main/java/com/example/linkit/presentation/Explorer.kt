@@ -26,13 +26,18 @@ fun Explorer(
     val links = getSampleLinks()
 
     Scaffold(
-        topBar = { AppBarExplorer(folderName = folderName) },
+        topBar = {
+            AppBarExplorer(
+                folderName = folderName,
+                navController = navController
+            )
+        },
         bottomBar = { BottomBar() }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black)
+                .background(Color.DarkGray)
                 .padding(innerPadding)
         ) {
             LazyColumn(
