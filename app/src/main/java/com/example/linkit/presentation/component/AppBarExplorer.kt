@@ -1,8 +1,7 @@
 package com.example.linkit.presentation.component
 
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -14,15 +13,17 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.linkit.constant.UIConstants
-import com.example.linkit.enums.SearchBarState
 import com.example.linkit.enums.SearchBarState.*
 
 @Composable
 fun AppBarExplorer(
     modifier : Modifier = Modifier,
-    folderName: String
+    folderName: String,
+    navController: NavController
 ) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
     var text by remember { mutableStateOf("") }
@@ -31,7 +32,9 @@ fun AppBarExplorer(
         CLOSED -> {
             AppBarExplorerDefault(
                 modifier = modifier,
-                folderName = folderName
+                folderName = folderName,
+                onSearchClick = { searchBarState = OPENED },
+                onBackClick = { navController.popBackStack() }
             )
         }
         OPENED -> {
@@ -54,7 +57,9 @@ fun AppBarExplorer(
 @Composable
 fun AppBarExplorerDefault(
     modifier: Modifier = Modifier,
-    folderName: String
+    folderName: String,
+    onSearchClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     TopAppBar(
         modifier = modifier
@@ -62,7 +67,8 @@ fun AppBarExplorerDefault(
         title = {
             Icon(
                 modifier = Modifier
-                    .padding(start = 10.dp, end = 2.dp),
+                    .padding(start = 10.dp, end = 2.dp)
+                    .clickable { onBackClick() },
                 imageVector = Icons.Filled.ArrowBackIos,
                 contentDescription = null
             )
@@ -72,19 +78,13 @@ fun AppBarExplorerDefault(
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
-                    .size(UIConstants.ICON_SIZE),
+                    .size(UIConstants.ICON_SIZE)
+                    .clickable { onSearchClick() },
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
                 tint = Color.Black
             )
-            Icon(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .size(UIConstants.ICON_SIZE),
-                imageVector = Icons.Filled.FormatListBulleted,
-                contentDescription = null,
-                tint = Color.Black
-            )
+            SortingButton()
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
@@ -96,5 +96,42 @@ fun AppBarExplorerDefault(
         },
         backgroundColor = Color.Transparent,
         elevation = 2.dp
+    )
+}
+
+@Composable
+fun SortingButton() {
+    val options = listOf(
+        "최근 저장 순", "오래된 순", "내 설정 순"
+    )
+    var selected by remember { mutableStateOf(options[0]) }
+    var expanded by remember { mutableStateOf(false) }
+
+    DropDownButton(
+        expanded = expanded,
+        items = options,
+        button = {
+            Icon(
+                modifier = Modifier
+                    .padding(horizontal = 5.dp)
+                    .size(UIConstants.ICON_SIZE)
+                    .clickable { expanded = !expanded },
+                imageVector = Icons.Filled.FormatListBulleted,
+                contentDescription = null,
+                tint = Color.Black
+            )
+        },
+        item = { index, item ->
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp),
+                text = item,
+                textAlign = TextAlign.Center
+            )
+        },
+        onItemClick = { item ->
+            selected = item
+            expanded = false
+        },
+        onDismissRequest = { expanded = false }
     )
 }
