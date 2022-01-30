@@ -18,7 +18,7 @@ import com.example.linkit.R
 import com.example.linkit._enums.UIMode
 import com.example.linkit.presentation.component.AppBarExplorer
 import com.example.linkit.presentation.component.AppBottomBar
-import com.example.linkit.presentation.component.LinkCard
+import com.example.linkit.presentation.component.CardLink
 
 @Composable
 fun Explorer(
@@ -74,7 +74,7 @@ fun ExplorerContent(
                 .padding(top=25.dp, start=40.dp, end=40.dp)
         ) {
             items(links) { link ->
-                LinkCard(
+                CardLink(
                     modifier = Modifier.height(80.dp),
                     link = link,
                     onLongPress = onLongPress

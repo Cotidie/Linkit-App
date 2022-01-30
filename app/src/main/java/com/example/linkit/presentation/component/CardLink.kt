@@ -24,7 +24,7 @@ import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
 
 @Composable
-fun LinkCard(
+fun CardLink(
     modifier: Modifier = Modifier,
     link: Link,
     onLongPress: () -> Unit

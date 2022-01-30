@@ -29,7 +29,7 @@ import com.example.linkit.ui.theme.LinkItTheme
 
 @ExperimentalFoundationApi
 @Composable
-fun FolderCard(
+fun CardFolder(
     folder: IFolder,
     onClick: () -> Unit,
     onLongPress: () -> Unit = {}

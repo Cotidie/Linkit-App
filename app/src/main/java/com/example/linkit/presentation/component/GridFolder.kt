@@ -1,15 +1,12 @@
 package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.linkit.domain.interfaces.IFolder
 
@@ -29,7 +26,7 @@ fun FolderGrid(
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         items(folders) { folder ->
-            FolderCard(
+            CardFolder(
                 folder = folder,
                 onClick = { onClick(folder) },
                 onLongPress = { onLongPress() }
