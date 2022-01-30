@@ -34,23 +34,32 @@ fun Explorer(
         },
         bottomBar = { BottomBar() }
     ) { innerPadding ->
-        Column(
+        ExplorerContent(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.DarkGray)
-                .padding(innerPadding)
+                .padding(innerPadding),
+            links = links
+        )
+    }
+}
+
+@Composable
+fun ExplorerContent(
+    modifier: Modifier = Modifier,
+    links: List<Link>
+) {
+    Column(modifier = modifier) {
+        LazyColumn(
+            modifier = Modifier
+                .padding(25.dp, 40.dp)
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(25.dp, 40.dp)
-            ) {
-                items(links) { link ->
-                    LinkCard(
-                        modifier = Modifier.height(80.dp),
-                        link = link
-                    )
-                    Spacer(Modifier.height(20.dp))
-                }
+            items(links) { link ->
+                LinkCard(
+                    modifier = Modifier.height(80.dp),
+                    link = link
+                )
+                Spacer(Modifier.height(20.dp))
             }
         }
     }
