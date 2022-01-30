@@ -28,10 +28,7 @@ fun AppBottomBar(
     uiMode: UIMode,
     height: Dp = UIConstants.HEIGHT_BOTTOM_BAR,
     iconSize: Dp = UIConstants.ICON_SIZE_BOTTOM_BAR,
-    backHandler: () -> Unit = {}
 ) {
-    BackHandler { backHandler() }
-
     when (uiMode) {
         NORMAL -> {
             AppBottomBarDefault()

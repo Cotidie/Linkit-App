@@ -1,6 +1,7 @@
 package com.example.linkit.presentation
 
 import android.graphics.Bitmap
+import androidx.activity.compose.BackHandler
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -37,16 +38,19 @@ fun Home(navController: NavController) {
     val folders = getFolderSamples()
     var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
 
+    // 편집 모드에서는 일반 모드로 돌아와야 한다.
+    BackHandler {
+        if (uiMode == UIMode.NORMAL)
+            navController.popBackStack()
+        else {
+            uiMode = UIMode.NORMAL
+        }
+    }
+
     Scaffold(
         topBar = { AppBarHome() },
         bottomBar = {
-            AppBottomBar(
-                uiMode = uiMode,
-                backHandler = {
-                    if (uiMode != UIMode.NORMAL) uiMode = UIMode.NORMAL
-                    else navController.popBackStack()
-                }
-            )
+            AppBottomBar(uiMode = uiMode)
         }
     ) { innerPadding ->
         Column(modifier = Modifier

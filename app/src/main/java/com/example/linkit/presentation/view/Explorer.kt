@@ -1,5 +1,6 @@
 package com.example.linkit.presentation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +28,15 @@ fun Explorer(
     val links = getSampleLinks()
     var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
 
+    // 편집 모드에서는 일반 모드로 돌아와야 한다.
+    BackHandler {
+        if (uiMode == UIMode.NORMAL)
+            navController.popBackStack()
+        else {
+            uiMode = UIMode.NORMAL
+        }
+    }
+
     Scaffold(
         topBar = {
             AppBarExplorer(
@@ -46,6 +56,9 @@ fun Explorer(
             links = links,
             onLongPress = { uiMode = UIMode.EDIT_LINK }
         )
+        if (uiMode == UIMode.NORMAL) {
+            Spacer(Modifier.height(25.dp))
+        }
     }
 }
 
@@ -58,7 +71,7 @@ fun ExplorerContent(
     Column(modifier = modifier) {
         LazyColumn(
             modifier = Modifier
-                .padding(25.dp, 40.dp)
+                .padding(top=25.dp, start=40.dp, end=40.dp)
         ) {
             items(links) { link ->
                 LinkCard(
