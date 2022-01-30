@@ -45,30 +45,12 @@ fun CardLink(
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
-        Column(
+        LinkAndTags(
             modifier = Modifier
                 .weight(1f)
-                .padding(end=8.dp)
-        ) {
-            Text(
-                modifier = Modifier.weight(1f),
-                text = link.url,
-                style = MaterialTheme.typography.subtitle1,
-                maxLines = 1
-            )
-            // 넘치는 경우 처리
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                for (tag in link.tags) {
-                    CustomChip(
-                        modifier = Modifier.padding(end = 8.dp),
-                        textModifier = Modifier.padding(horizontal = 3.dp),
-                        text = "# $tag")
-                }
-            }
-        }
+                .padding(end=8.dp),
+            link = link
+        )
         Icon(
             modifier = Modifier
                 .fillMaxHeight()
@@ -76,6 +58,36 @@ fun CardLink(
             imageVector = Icons.Filled.ArrowForwardIos,
             contentDescription = null
         )
+    }
+}
+
+@Composable
+fun LinkAndTags(
+    modifier: Modifier,
+    link: Link
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = link.url,
+            style = MaterialTheme.typography.subtitle1,
+            maxLines = 1
+        )
+        // 넘치는 경우 처리
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            for (tag in link.tags) {
+                CustomChip(
+                    modifier = Modifier.padding(end = 8.dp),
+                    textModifier = Modifier.padding(horizontal = 3.dp),
+                    text = "# $tag"
+                )
+            }
+        }
     }
 }
 
@@ -91,7 +103,7 @@ fun PreviewLinkCard() {
         listOf("유명", "네이버", "검색")
     )
     
-    LinkCard(
+    CardLink(
         modifier = Modifier.height(80.dp),
         link = link,
         onLongPress = {}
