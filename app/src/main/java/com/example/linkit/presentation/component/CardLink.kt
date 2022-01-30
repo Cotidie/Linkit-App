@@ -4,12 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,8 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.UiMode
 import androidx.compose.ui.unit.dp
 import com.example.linkit.R
+import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.model.Link
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
@@ -27,7 +27,9 @@ import com.example.linkit.presentation.longPress
 fun CardLink(
     modifier: Modifier = Modifier,
     link: Link,
-    onLongPress: () -> Unit
+    onLongPress: () -> Unit = {},
+    onCheck: () -> Unit = {},
+    uiMode: UIMode
 ) {
     Row(
         modifier = modifier
@@ -38,7 +40,7 @@ fun CardLink(
     ) {
         Image(
             modifier = Modifier
-                .padding(end=15.dp)
+                .padding(end = 15.dp)
                 .size(55.dp)
                 .clip(RoundedCornerShape(8.dp)),
             bitmap = link.image.asImageBitmap(),
@@ -48,15 +50,15 @@ fun CardLink(
         LinkAndTags(
             modifier = Modifier
                 .weight(1f)
-                .padding(end=8.dp),
+                .padding(end = 8.dp),
             link = link
         )
-        Icon(
+        IconOrCheckbox(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(end=8.dp),
-            imageVector = Icons.Filled.ArrowForwardIos,
-            contentDescription = null
+                .width(40.dp)
+                .padding(end = 8.dp),
+            uiMode = uiMode
         )
     }
 }
@@ -70,14 +72,14 @@ fun LinkAndTags(
         modifier = modifier
     ) {
         Text(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).fillMaxWidth(),
             text = link.url,
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1
         )
         // 넘치는 경우 처리
         Row(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (tag in link.tags) {
@@ -88,6 +90,33 @@ fun LinkAndTags(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun IconOrCheckbox(
+    modifier: Modifier = Modifier,
+    uiMode: UIMode
+) {
+    var checkState by remember { mutableStateOf(false) }
+
+    if (uiMode.isEditMode()) {
+        Box(
+            modifier = modifier,
+            contentAlignment = Alignment.Center
+        ) {
+            Checkbox(
+                checked = checkState,
+                onCheckedChange = { checkState = !checkState },
+                colors = CheckboxDefaults.colors(Color.Black)
+            )
+        }
+    } else {
+        Icon(
+            modifier = modifier,
+            imageVector = Icons.Filled.ArrowForwardIos,
+            contentDescription = null
+        )
     }
 }
 
@@ -106,6 +135,8 @@ fun PreviewLinkCard() {
     CardLink(
         modifier = Modifier.height(80.dp),
         link = link,
-        onLongPress = {}
+        onLongPress = {},
+        onCheck = {},
+        uiMode = UIMode.EDIT_LINK
     )
 }

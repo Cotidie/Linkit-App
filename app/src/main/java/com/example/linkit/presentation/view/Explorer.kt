@@ -54,7 +54,8 @@ fun Explorer(
                 .background(Color.DarkGray)
                 .padding(innerPadding),
             links = links,
-            onLongPress = { uiMode = UIMode.EDIT_LINK }
+            onLongPress = { uiMode = UIMode.EDIT_LINK },
+            uiMode = uiMode
         )
         if (uiMode == UIMode.NORMAL) {
             Spacer(Modifier.height(25.dp))
@@ -66,18 +67,21 @@ fun Explorer(
 fun ExplorerContent(
     modifier: Modifier = Modifier,
     links: List<Link>,
-    onLongPress: () -> Unit
+    onLongPress: () -> Unit,
+    uiMode: UIMode
 ) {
     Column(modifier = modifier) {
         LazyColumn(
             modifier = Modifier
                 .padding(top=25.dp, start=40.dp, end=40.dp)
+                .padding(bottom = if(uiMode.isEditMode()) 0.dp else 40.dp)
         ) {
             items(links) { link ->
                 CardLink(
                     modifier = Modifier.height(80.dp),
                     link = link,
-                    onLongPress = onLongPress
+                    onLongPress = onLongPress,
+                    uiMode = uiMode
                 )
                 Spacer(Modifier.height(20.dp))
             }
