@@ -13,6 +13,6 @@ fun cxt() : Context = LocalContext.current
 
 /** Modifier 관련 익스텐션 */
 @Composable
-fun Modifier.longClick(behavior: () -> Unit) = pointerInput(Unit) {
+fun Modifier.longPress(behavior: () -> Unit) = pointerInput(Unit) {
     detectTapGestures( onLongPress = {behavior()} )
 }

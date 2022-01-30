@@ -21,17 +21,20 @@ import androidx.compose.ui.unit.dp
 import com.example.linkit.R
 import com.example.linkit.domain.model.Link
 import com.example.linkit.presentation.getBitmap
+import com.example.linkit.presentation.longPress
 
 @Composable
 fun LinkCard(
     modifier: Modifier = Modifier,
-    link: Link
+    link: Link,
+    onLongPress: () -> Unit
 ) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(13.dp))
             .background(Color.White)
             .padding(start = 15.dp, top = 12.dp, bottom = 12.dp)
+            .longPress { onLongPress() }
     ) {
         Image(
             modifier = Modifier
@@ -90,5 +93,7 @@ fun PreviewLinkCard() {
     
     LinkCard(
         modifier = Modifier.height(80.dp),
-        link = link)
+        link = link,
+        onLongPress = {}
+    )
 }

@@ -1,8 +1,6 @@
 package com.example.linkit.presentation.component
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -26,16 +24,22 @@ import androidx.compose.ui.unit.dp
 import com.example.linkit.R
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
+import com.example.linkit.presentation.longPress
 import com.example.linkit.ui.theme.LinkItTheme
 
+@ExperimentalFoundationApi
 @Composable
 fun FolderCard(
     folder: IFolder,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onLongPress: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
-            .clickable { onClick() }
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongPress
+            )
             .background(Color.Transparent),
     ) {
         Box(modifier = Modifier.size(110.dp, 110.dp)) {

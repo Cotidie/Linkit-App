@@ -19,7 +19,8 @@ fun FolderGrid(
     modifier: Modifier = Modifier,
     folders: List<IFolder>,
     cells: Int,
-    onClick: (item: IFolder) -> Unit
+    onClick: (item: IFolder) -> Unit,
+    onLongPress: () -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -30,7 +31,8 @@ fun FolderGrid(
         items(folders) { folder ->
             FolderCard(
                 folder = folder,
-                onClick = { onClick(folder) }
+                onClick = { onClick(folder) },
+                onLongPress = { onLongPress() }
             )
         }
     }
