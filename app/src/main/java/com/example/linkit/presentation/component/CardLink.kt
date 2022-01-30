@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.component
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -72,14 +73,18 @@ fun LinkAndTags(
         modifier = modifier
     ) {
         Text(
-            modifier = Modifier.weight(1f).fillMaxWidth(),
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
             text = link.url,
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1
         )
         // 넘치는 경우 처리
         Row(
-            modifier = Modifier.weight(1f).fillMaxWidth(),
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (tag in link.tags) {

@@ -12,9 +12,11 @@ import com.example.linkit._constant.UIConstants
 
 @Composable
 fun AppBottomBarEditLink(
+    modifier: Modifier = Modifier,
     text: String
 ) {
     AppBottomBarEdit(
+        modifier = modifier,
         text = text
     ) {
         Box(
