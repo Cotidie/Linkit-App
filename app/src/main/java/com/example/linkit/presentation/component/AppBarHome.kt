@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.linkit.constant.UIConstants
-import com.example.linkit.enums.SearchBarState
 import com.example.linkit.enums.SearchBarState.*
 import com.example.linkit.ui.theme.LinkItTheme
 
@@ -64,7 +63,7 @@ fun AppBarHomeDefault(
             Icon(
                 modifier = Modifier
                     .padding(start = 5.dp)
-                    .size(UIConstants.ICON_SIZE)
+                    .size(UIConstants.ICON_SIZE_APP_BAR)
                     .clickable { onSearchClicked() },
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
@@ -75,7 +74,7 @@ fun AppBarHomeDefault(
             Icon(
                 modifier = Modifier
                     .padding(end = 20.dp)
-                    .size(UIConstants.ICON_SIZE),
+                    .size(UIConstants.ICON_SIZE_APP_BAR),
                 imageVector = Icons.Filled.AccountCircle,
                 contentDescription = null,
                 tint = Color.Black

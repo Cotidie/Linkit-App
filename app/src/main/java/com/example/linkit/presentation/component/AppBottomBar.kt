@@ -16,17 +16,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.linkit.constant.UIConstants
 import com.example.linkit.ui.theme.LinkItTheme
 
 @Composable
 fun BottomBar(
     modifier: Modifier = Modifier,
-    iconSize: Dp = 32.dp
+    height: Dp = UIConstants.HEIGHT_BOTTOM_BAR,
+    iconSize: Dp = UIConstants.ICON_SIZE_BOTTOM_BAR
 ) {
     val selectedIndex by remember { mutableStateOf(1) }
 
     BottomNavigation(
-        modifier = Modifier.height(66.dp),
+        modifier = Modifier.height(height),
         backgroundColor = Color.White,
         elevation = 2.dp
     ) {

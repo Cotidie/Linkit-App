@@ -5,7 +5,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
@@ -90,14 +89,14 @@ fun PreviewSearchTextField() {
         text = "",
         leadingIcon = {
             Icon(
-                modifier = Modifier.size(UIConstants.ICON_SIZE),
+                modifier = Modifier.size(UIConstants.ICON_SIZE_APP_BAR),
                 imageVector = Icons.Filled.Search,
                 contentDescription = null
             )
         },
         trailingIcon = {
             Icon(
-                modifier = Modifier.size(UIConstants.ICON_SIZE),
+                modifier = Modifier.size(UIConstants.ICON_SIZE_APP_BAR),
                 imageVector = Icons.Filled.Clear,
                 contentDescription = null
             )

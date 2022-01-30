@@ -1,20 +1,15 @@
 package com.example.linkit.presentation.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,7 +33,7 @@ fun AppBarSearch(
                 leadingIcon = {
                     Icon(
                         modifier = Modifier
-                            .size(UIConstants.ICON_SIZE)
+                            .size(UIConstants.ICON_SIZE_APP_BAR)
                             .alpha(ContentAlpha.medium),
                         imageVector = Icons.Filled.Search,
                         contentDescription = null
@@ -47,7 +42,7 @@ fun AppBarSearch(
                 trailingIcon = {
                     Icon(
                         modifier = Modifier
-                            .size(UIConstants.ICON_SIZE)
+                            .size(UIConstants.ICON_SIZE_APP_BAR)
                             .alpha(ContentAlpha.medium)
                             .clickable { onClearClicked() },
                         imageVector = Icons.Filled.Clear,

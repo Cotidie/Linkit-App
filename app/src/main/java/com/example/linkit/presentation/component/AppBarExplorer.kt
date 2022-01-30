@@ -6,10 +6,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.FormatListBulleted
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -78,7 +75,7 @@ fun AppBarExplorerDefault(
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
-                    .size(UIConstants.ICON_SIZE)
+                    .size(UIConstants.ICON_SIZE_APP_BAR)
                     .clickable { onSearchClick() },
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
@@ -88,7 +85,7 @@ fun AppBarExplorerDefault(
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
-                    .size(UIConstants.ICON_SIZE),
+                    .size(UIConstants.ICON_SIZE_APP_BAR),
                 imageVector = Icons.Filled.MoreVert,
                 contentDescription = null,
                 tint = Color.Black
@@ -114,9 +111,9 @@ fun SortingButton() {
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
-                    .size(UIConstants.ICON_SIZE)
+                    .size(UIConstants.ICON_SIZE_APP_BAR)
                     .clickable { expanded = !expanded },
-                imageVector = Icons.Filled.FormatListBulleted,
+                imageVector = Icons.Filled.Tune,
                 contentDescription = null,
                 tint = Color.Black
             )
