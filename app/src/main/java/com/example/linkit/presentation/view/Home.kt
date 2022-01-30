@@ -49,9 +49,7 @@ fun Home(navController: NavController) {
 
     Scaffold(
         topBar = { AppBarHome() },
-        bottomBar = {
-            AppBottomBar(uiMode = uiMode)
-        }
+        bottomBar = { AppBottomBar() }
     ) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
@@ -83,6 +81,8 @@ fun Home(navController: NavController) {
             )
         }
     }
+
+    HomeEditPopup(uiMode)
 }
 
 /** Content 영역 중 상단의 드롭다운 버튼 영역*/
@@ -155,6 +155,20 @@ fun FolderAddArea(
                 colors = buttonColors(Color.White),
                 contentPadding = PaddingValues(20.dp, 8.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun HomeEditPopup(uiMode: UIMode) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        AnimatePopup(
+            visible = (uiMode == UIMode.EDIT_FOLDER)
+        ) {
+            AppBottomBarEditFolder(text = "샘플")
         }
     }
 }

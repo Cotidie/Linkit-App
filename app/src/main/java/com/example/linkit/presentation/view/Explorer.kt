@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,9 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.linkit.domain.model.Link
 import com.example.linkit.R
 import com.example.linkit._enums.UIMode
-import com.example.linkit.presentation.component.AppBarExplorer
-import com.example.linkit.presentation.component.AppBottomBar
-import com.example.linkit.presentation.component.CardLink
+import com.example.linkit.presentation.component.*
 
 @Composable
 fun Explorer(
@@ -44,9 +43,7 @@ fun Explorer(
                 navController = navController
             )
         },
-        bottomBar = {
-            AppBottomBar(uiMode = uiMode)
-        }
+        bottomBar = { AppBottomBar() }
     ) { innerPadding ->
         ExplorerContent(
             modifier = Modifier
@@ -61,6 +58,7 @@ fun Explorer(
             Spacer(Modifier.height(25.dp))
         }
     }
+    ExplorerEditPopup(uiMode)
 }
 
 @Composable
@@ -74,7 +72,6 @@ fun ExplorerContent(
         LazyColumn(
             modifier = Modifier
                 .padding(top=25.dp, start=40.dp, end=40.dp)
-                .padding(bottom = if(uiMode.isEditMode()) 0.dp else 40.dp)
         ) {
             items(links) { link ->
                 CardLink(
@@ -85,6 +82,21 @@ fun ExplorerContent(
                 )
                 Spacer(Modifier.height(20.dp))
             }
+        }
+    }
+}
+
+@Composable
+fun ExplorerEditPopup(uiMode: UIMode) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        AnimatePopup(visible = (uiMode == UIMode.EDIT_LINK)) {
+            AppBottomBarEditLink(
+                modifier = Modifier,
+                text = "샘플"
+            )
         }
     }
 }
