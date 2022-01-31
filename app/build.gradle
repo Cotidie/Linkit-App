@@ -108,4 +108,5 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
 
     // Accompanist (Compose Util)
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
 }
