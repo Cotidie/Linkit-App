@@ -71,7 +71,7 @@ fun ExplorerContent(
     Column(modifier = modifier) {
         LazyColumn(
             modifier = Modifier
-                .padding(top=25.dp, start=40.dp, end=40.dp)
+                .padding(top=25.dp, start=25.dp, end=25.dp)
         ) {
             items(links) { link ->
                 CardLink(
