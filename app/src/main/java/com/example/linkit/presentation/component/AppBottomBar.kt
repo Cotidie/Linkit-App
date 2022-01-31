@@ -41,7 +41,8 @@ fun AppBottomBar(
                 )
             },
             label = {Text("링크")},
-            onClick = { /*TODO*/ }
+            onClick = { /*TODO*/ },
+            unselectedContentColor = Color.LightGray
         )
         BottomNavigationItem(
             selected = (selectedIndex == 1),
@@ -53,7 +54,8 @@ fun AppBottomBar(
                 )
             },
             label = {Text("홈")},
-            onClick = { /*TODO*/ }
+            onClick = { /*TODO*/ },
+            unselectedContentColor = Color.LightGray
         )
         BottomNavigationItem(
             selected = (selectedIndex == 2),
@@ -65,7 +67,8 @@ fun AppBottomBar(
                 )
             },
             label = {Text("추가")},
-            onClick = { /*TODO*/ }
+            onClick = { /*TODO*/ },
+            unselectedContentColor = Color.LightGray
         )
     }
 }
