@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 
 /** Composable 함수 내에서 현재 Context 반환. 축약형으로 쓰기 위함 */
 @Composable
@@ -22,7 +23,6 @@ fun cxt() : Context = LocalContext.current
 fun Modifier.longPress(behavior: () -> Unit) = pointerInput(Unit) {
     detectTapGestures( onLongPress = {behavior()} )
 }
-
 
 /** 애니메이션 Wrapper */
 @Composable
@@ -46,3 +46,10 @@ fun AnimatePopup(
         content = content
     )
 }
+
+@Composable
+/** 픽셀을 Dp로 변환한다. */
+fun Int.toDp()
+    = with(LocalDensity.current) {
+        this@toDp.toDp()
+    }
