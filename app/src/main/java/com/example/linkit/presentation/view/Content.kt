@@ -8,10 +8,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,7 +50,8 @@ fun ContentScreen(
             )
         )
     }
-    "디버그 테스트".log()
+    var memoString by remember { mutableStateOf("오늘은 낚시를 갔다. 물고기를 많이 잡았다. 뿌듯했다.")}
+
     Scaffold(
         bottomBar = { AppBottomBar() }
     ) { innerPadding ->
@@ -64,12 +62,14 @@ fun ContentScreen(
                         navController.popBackStack()
                     }
                 )
+                // 이미지 영역
                 ImageArea(
                     image = link.image.asImageBitmap()
                 )
 
                 Spacer(Modifier.height(10.dp))
 
+                // URL 영역
                 TextUrl(
                     modifier = Modifier,
                     url = link.url
@@ -77,6 +77,7 @@ fun ContentScreen(
 
                 Spacer(Modifier.height(10.dp))
 
+                // 태그 영역
                 FlowRow(
                     mainAxisSpacing = 15.dp
                 ) {
@@ -90,8 +91,8 @@ fun ContentScreen(
                 // 메모 영역
                 MemoArea(
                     modifier = Modifier.fillMaxSize(),
-                    memo = link.memo,
-                    onTextChange = {}
+                    memo = memoString,
+                    onTextChange = {memoString = it}
                 )
             }
         }
