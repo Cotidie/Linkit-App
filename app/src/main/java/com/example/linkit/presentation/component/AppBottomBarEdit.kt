@@ -69,7 +69,7 @@ fun PreviewAppBottomBarEdit() {
             ) {
                 IconTextButtonVert(
                     icon = Icons.Filled.Delete,
-                    iconSize = UIConstants.SIZE_ICON_BOTTOM_BAR,
+                    iconSize = UIConstants.SIZE_ICON_LARGE,
                     text = "삭제"
                 )
             }
@@ -79,7 +79,7 @@ fun PreviewAppBottomBarEdit() {
             ) {
                 IconTextButtonVert(
                     icon = Icons.Filled.East,
-                    iconSize = UIConstants.SIZE_ICON_BOTTOM_BAR,
+                    iconSize = UIConstants.SIZE_ICON_LARGE,
                     text = "이동"
                 )
             }

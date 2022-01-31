@@ -27,7 +27,7 @@ fun AppBottomBarEditLink(
         ) {
             IconTextButtonVert(
                 icon = Icons.Filled.Delete,
-                iconSize = UIConstants.SIZE_ICON_BOTTOM_HOVER,
+                iconSize = UIConstants.SIZE_ICON_MEDIUM_LARGE,
                 text = "삭제"
             )
         }
@@ -39,7 +39,7 @@ fun AppBottomBarEditLink(
         ) {
             IconTextButtonVert(
                 icon = Icons.Filled.East,
-                iconSize = UIConstants.SIZE_ICON_BOTTOM_HOVER,
+                iconSize = UIConstants.SIZE_ICON_MEDIUM_LARGE,
                 text = "이동"
             )
         }

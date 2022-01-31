@@ -29,7 +29,7 @@ fun AppBottomBarEditFolder(
         ) {
             IconTextButtonVert(
                 icon = Icons.Filled.Delete,
-                iconSize = UIConstants.SIZE_ICON_BOTTOM_HOVER,
+                iconSize = UIConstants.SIZE_ICON_MEDIUM_LARGE,
                 text = "삭제"
             )
         }
@@ -41,7 +41,7 @@ fun AppBottomBarEditFolder(
         ) {
             IconTextButtonVert(
                 icon = Icons.Filled.ModeEdit,
-                iconSize = UIConstants.SIZE_ICON_BOTTOM_HOVER,
+                iconSize = UIConstants.SIZE_ICON_MEDIUM_LARGE,
                 text = "이름변경"
             )
         }
@@ -53,7 +53,7 @@ fun AppBottomBarEditFolder(
         ) {
             IconTextButtonVert(
                 icon = Icons.Filled.Wallpaper,
-                iconSize = UIConstants.SIZE_ICON_BOTTOM_HOVER,
+                iconSize = UIConstants.SIZE_ICON_MEDIUM_LARGE,
                 text = "사진변경"
             )
         }

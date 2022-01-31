@@ -75,7 +75,7 @@ fun AppBarExplorerDefault(
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
-                    .size(UIConstants.SIZE_ICON_APP_BAR)
+                    .size(UIConstants.SIZE_ICON_MEDIUM)
                     .clickable { onSearchClick() },
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
@@ -85,7 +85,7 @@ fun AppBarExplorerDefault(
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
-                    .size(UIConstants.SIZE_ICON_APP_BAR),
+                    .size(UIConstants.SIZE_ICON_MEDIUM),
                 imageVector = Icons.Filled.MoreVert,
                 contentDescription = null,
                 tint = Color.Black
@@ -111,7 +111,7 @@ fun SortingButton() {
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
-                    .size(UIConstants.SIZE_ICON_APP_BAR)
+                    .size(UIConstants.SIZE_ICON_MEDIUM)
                     .clickable { expanded = !expanded },
                 imageVector = Icons.Filled.Tune,
                 contentDescription = null,

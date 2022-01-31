@@ -24,7 +24,7 @@ import com.example.linkit._constant.UIConstants
 @Composable
 fun IconTextButtonVert(
     icon: ImageVector? = null,
-    iconSize: Dp = UIConstants.SIZE_ICON_APP_BAR,
+    iconSize: Dp = UIConstants.SIZE_ICON_MEDIUM,
     text: String,
     textStyle: TextStyle = MaterialTheme.typography.subtitle2,
     behavior: () -> Unit = {}
