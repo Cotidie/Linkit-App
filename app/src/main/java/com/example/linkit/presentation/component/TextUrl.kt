@@ -8,13 +8,15 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.linkit._constant.ColorConstants
 
 @Composable
 /** URL을 담는 텍스트. 클릭하면 브라우저를 열어 해당 링크로 이동한다. */
 fun TextUrl(
     modifier: Modifier = Modifier,
-    url: String
+    url: String,
+    maxLines: Int = 1
 ) {
     val uriHandler = LocalUriHandler.current
     val annotated = AnnotatedString(
@@ -28,6 +30,8 @@ fun TextUrl(
     ClickableText(
         modifier = modifier,
         text = annotated,
+        maxLines = maxLines,
+        overflow = TextOverflow.Ellipsis,
         onClick = { uriHandler.openUri(url) }
     )
 }
