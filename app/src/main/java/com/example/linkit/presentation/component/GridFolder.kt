@@ -20,6 +20,7 @@ fun FolderGrid(
     cells: Int,
     onClick: (item: IFolder) -> Unit,
     onLongPress: () -> Unit,
+    onDismissRequest: () -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -32,7 +33,8 @@ fun FolderGrid(
                 folder = folder,
                 uiMode = uiMode,
                 onClick = { onClick(folder) },
-                onLongPress = { onLongPress() }
+                onLongPress = onLongPress,
+                onDismissRequest = onDismissRequest
             )
         }
     }

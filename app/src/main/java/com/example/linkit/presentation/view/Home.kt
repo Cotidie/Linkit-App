@@ -70,7 +70,8 @@ fun Home(navController: NavController) {
                         Screen.Explorer.route.plus("/${folder.name}")
                     )
                 },
-                onLongPress = { uiMode = UIMode.EDIT_FOLDER }
+                onLongPress = { uiMode = UIMode.EDIT_FOLDER },
+                onDismissRequest = { uiMode = UIMode.NORMAL }
             )
             // '+ 폴더추가' 버튼 영역
             FolderAddArea(

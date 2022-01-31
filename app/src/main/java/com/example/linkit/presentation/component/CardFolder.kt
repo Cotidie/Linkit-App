@@ -3,21 +3,22 @@ package com.example.linkit.presentation.component
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,7 +28,6 @@ import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
 import com.example.linkit.presentation.getBitmap
-import com.example.linkit.presentation.longPress
 import com.example.linkit.ui.theme.LinkItTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -36,22 +36,45 @@ fun CardFolder(
     folder: IFolder,
     uiMode: UIMode,
     onClick: () -> Unit,
-    onLongPress: () -> Unit = {}
+    onLongPress: () -> Unit = {},
+    onDismissRequest: () -> Unit = {}
 ) {
+    // 최초 컴포즈 1회 실행
+    var selected by remember { mutableStateOf(false) }
+    // uiMode가 바뀔 때마다 다시 실행
+    selected = selected && uiMode.isEditMode()
+
     Column(
         modifier = Modifier
             .combinedClickable(
                 enabled = !uiMode.isEditMode(),
                 onClick = onClick,
-                onLongClick = onLongPress
+                onLongClick = {
+                    onLongPress()
+                    selected = true
+                }
             )
-            .background(Color.Transparent),
+            .background(
+                if (selected) Color.LightGray.copy(alpha = 0.2f)
+                else Color.Transparent
+            )
+            .border(
+                width = if (selected) 1.dp else (-1).dp,
+                color = Color.White,
+                shape = RoundedCornerShape(10.dp)
+            ),
     ) {
         ImageWithCheckbox(
             modifier = Modifier
                 .size(UIConstants.SIZE_IMAGE_FOLDER),
-            uiMode = uiMode,
-            image = folder.image!!.asImageBitmap()
+            image = folder.image!!.asImageBitmap(),
+            selected = selected,
+            onCheckedChange = { checked ->
+                if (!checked) {
+                    selected = false
+                    onDismissRequest()
+                }
+            }
         )
         Row(
             modifier = Modifier
@@ -96,11 +119,10 @@ fun CardFolder(
 @Composable
 fun ImageWithCheckbox(
     modifier: Modifier = Modifier,
-    uiMode: UIMode,
+    selected: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
     image: ImageBitmap
 ) {
-    var checked by remember { mutableStateOf(false) }
-
     Box(modifier = modifier) {
         Image(
             modifier = Modifier
@@ -110,12 +132,12 @@ fun ImageWithCheckbox(
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
-        if (uiMode.isEditMode()) {
+        if (selected) {
             Checkbox(
                 modifier = Modifier
                     .align(Alignment.TopStart),
-                checked = checked,
-                onCheckedChange = { checked = !checked },
+                checked = selected,
+                onCheckedChange = onCheckedChange,
                 colors = CheckboxDefaults.colors(Color.Black)
             )
         }
