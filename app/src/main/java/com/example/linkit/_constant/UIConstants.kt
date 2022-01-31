@@ -10,7 +10,7 @@ object UIConstants {
     val SIZE_ICON_LARGE = 40.dp
     val SIZE_ICON_MEDIUM_LARGE = 35.dp
     val SIZE_ICON_MEDIUM = 30.dp
-    val SIZE_ICON_SMALL = 20.dp
+    val SIZE_ICON_SMALL = 24.dp
     val SIZE_ICON_TINY = 13.dp
     val SIZE_IMAGE_FOLDER = 110.dp
     val WIDTH_BUTTON_LONG = 130.dp
