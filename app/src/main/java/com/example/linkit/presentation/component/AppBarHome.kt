@@ -14,19 +14,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.SearchBarState.*
+import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.LinkItTheme
 
 @Composable
-fun AppBarHome() {
+fun AppBarHome(navController: NavController) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
     var text by remember { mutableStateOf("") }
 
     when (searchBarState) {
         CLOSED -> {
             AppBarHomeDefault(
-                onSearchClicked = { searchBarState = OPENED }
+                onSearchClicked = { searchBarState = OPENED },
+                onProfileClick = { navController.navigate(Screen.Profile.route) }
             )
         }
         OPENED -> {
@@ -54,7 +58,8 @@ fun AppBarHome() {
 @Composable
 fun AppBarHomeDefault(
     modifier: Modifier = Modifier,
-    onSearchClicked: () -> Unit
+    onSearchClicked: () -> Unit,
+    onProfileClick: () -> Unit,
 ) {
     TopAppBar(
         modifier = modifier
@@ -89,9 +94,12 @@ fun AppBarHomeDefault(
 @Preview
 @Composable
 fun PreviewAppBar() {
+    val navController = rememberNavController()
+
     LinkItTheme {
         AppBarHomeDefault(
-            onSearchClicked = { }
+            onSearchClicked = { },
+            onProfileClick = { }
         )
     }
 }

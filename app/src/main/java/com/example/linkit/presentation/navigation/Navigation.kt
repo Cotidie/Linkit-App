@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.linkit.presentation.navigation.Screen
+import com.example.linkit.presentation.view.ProfileScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -29,6 +30,9 @@ fun NavGraph(navController: NavHostController) {
         ) { backStackEntry ->
             val folderName = backStackEntry.arguments?.getString("folderName")
             Explorer(navController, folderName!!)
+        }
+        composable(route = Screen.Profile.route) {
+            ProfileScreen(navController)
         }
     }
 

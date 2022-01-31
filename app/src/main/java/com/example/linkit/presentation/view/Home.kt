@@ -48,7 +48,7 @@ fun Home(navController: NavController) {
     }
 
     Scaffold(
-        topBar = { AppBarHome() },
+        topBar = { AppBarHome(navController) },
         bottomBar = { AppBottomBar() }
     ) { innerPadding ->
         Column(modifier = Modifier
