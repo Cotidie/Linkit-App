@@ -148,9 +148,11 @@ fun FolderAddArea(
         contentAlignment = Alignment.Center
     ) {
         IconTextButton(
-            text = "폴더 추가",
             enabled = (!uiMode.isEditMode()),
+            text = "폴더 추가",
+            textColor = Color.Black,
             icon = Icons.Filled.Add,
+            iconColor = Color.Black,
             shape = CircleShape,
             onClick = { /*TODO*/ },
             colors = buttonColors(Color.White),

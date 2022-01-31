@@ -32,7 +32,7 @@ fun CardProfile(
         ) {
             Icon(
                 modifier = Modifier
-                    .size(UIConstants.SIZE_ICON_MEDIUM_LARGE),
+                    .size(UIConstants.SIZE_ICON_HUGE),
                 imageVector = Icons.Filled.AccountCircle,
                 contentDescription = null
             )
@@ -40,48 +40,70 @@ fun CardProfile(
 
         Spacer(Modifier.width(9.dp))
 
-        Column(
-            modifier = Modifier.weight(1f)
+        if (user.isGuest())
+            UserInfoGuest(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f)
+            )
+        else
+            UserInfoLoggedIn(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+                user = user
+            )
+    }
+}
+
+@Composable
+fun UserInfoLoggedIn(
+    modifier: Modifier = Modifier,
+    user: User
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            if (user.isGuest())
-                UserInfoGuest()
-            else
-                UserInfoLoggedIn(user = user)
+            Icon(
+                modifier = Modifier
+                    .size(UIConstants.SIZE_ICON_TINY),
+                imageVector = Icons.Filled.BakeryDining,
+                contentDescription = null
+            )
+            Spacer(Modifier.width(4.dp))
+            Text(text = user.name)
         }
+        Text(
+            modifier = Modifier.weight(1f),
+            text = user.email
+        )
     }
 }
 
 @Composable
-fun UserInfoLoggedIn(user: User) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
+fun UserInfoGuest(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
     ) {
-        Icon(
-            modifier = Modifier
-                .size(UIConstants.SIZE_ICON_TINY),
-            imageVector = Icons.Filled.BakeryDining,
-            contentDescription = null
-        )
-        Spacer(Modifier.width(4.dp))
-        Text(text = user.name)
-    }
-    Text(text = user.email)
-}
-
-@Composable
-fun UserInfoGuest() {
-    Row(
-        modifier = Modifier.fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text("로그인 하러가기")
-        Spacer(Modifier.width(4.dp))
-        Icon(
-            modifier = Modifier
-                .size(UIConstants.SIZE_ICON_TINY),
-            imageVector = Icons.Filled.ArrowForwardIos,
-            contentDescription = null
-        )
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("로그인 하러가기")
+            Spacer(Modifier.width(4.dp))
+            Icon(
+                modifier = Modifier
+                    .size(UIConstants.SIZE_ICON_TINY),
+                imageVector = Icons.Filled.ArrowForwardIos,
+                contentDescription = null
+            )
+        }
     }
 }
 
@@ -90,5 +112,5 @@ fun UserInfoGuest() {
 fun PreviewCardProfile() {
     val user = User("", 19, "daily142857@gmail.com", "원석")
     val guest = User.GUEST
-    CardProfile(user = guest)
+    CardProfile(user = user)
 }
