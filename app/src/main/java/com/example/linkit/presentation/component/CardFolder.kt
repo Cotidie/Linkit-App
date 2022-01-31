@@ -41,6 +41,7 @@ fun CardFolder(
     Column(
         modifier = Modifier
             .combinedClickable(
+                enabled = !uiMode.isEditMode(),
                 onClick = onClick,
                 onLongClick = onLongPress
             )
