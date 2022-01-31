@@ -18,6 +18,7 @@ import com.example.linkit.ui.theme.LinkItTheme
 @Composable
 fun IconTextButton(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     icon: ImageVector? = null,
     iconColor: Color = Color.Black,
     text: String,
@@ -29,6 +30,7 @@ fun IconTextButton(
 ) {
     Button(
         modifier = modifier,
+        enabled = enabled,
         onClick = onClick,
         shape = shape,
         colors = colors,

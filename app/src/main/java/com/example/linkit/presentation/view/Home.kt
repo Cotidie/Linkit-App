@@ -62,6 +62,7 @@ fun Home(navController: NavController) {
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 25.dp),
+                uiMode = uiMode,
                 folders = folders,
                 cells = 3,
                 onClick = { folder ->
@@ -142,20 +143,19 @@ fun FolderAddArea(
     modifier: Modifier = Modifier,
     uiMode: UIMode
 ) {
-    if (uiMode == UIMode.NORMAL) {
-        Box(
-            modifier = modifier,
-            contentAlignment = Alignment.Center
-        ) {
-            IconTextButton(
-                text = "폴더 추가",
-                icon = Icons.Filled.Add,
-                shape = CircleShape,
-                onClick = { /*TODO*/ },
-                colors = buttonColors(Color.White),
-                contentPadding = PaddingValues(20.dp, 8.dp)
-            )
-        }
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        IconTextButton(
+            text = "폴더 추가",
+            enabled = (!uiMode.isEditMode()),
+            icon = Icons.Filled.Add,
+            shape = CircleShape,
+            onClick = { /*TODO*/ },
+            colors = buttonColors(Color.White),
+            contentPadding = PaddingValues(20.dp, 8.dp)
+        )
     }
 }
 
