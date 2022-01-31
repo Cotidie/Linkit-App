@@ -2,16 +2,19 @@ package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.linkit.ui.theme.LinkItTheme
 
@@ -20,16 +23,25 @@ fun IconTextButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     icon: ImageVector? = null,
-    iconColor: Color = Color.Black,
+    iconColor: Color = Color.White,
     text: String,
-    textColor: Color = Color.Black,
+    textColor: Color = Color.White,
     onClick: () -> Unit,
     shape: Shape = MaterialTheme.shapes.small,
-    colors: ButtonColors = buttonColors(),
+    cornerRadius: Dp = 0.dp,
+    colors: ButtonColors = buttonColors(Color.Black),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding
 ) {
     Button(
-        modifier = modifier,
+        modifier = modifier
+            .clip(
+                RoundedCornerShape(
+                    topStart = cornerRadius,
+                    topEnd = cornerRadius,
+                    bottomStart = cornerRadius,
+                    bottomEnd = cornerRadius
+                )
+            ),
         enabled = enabled,
         onClick = onClick,
         shape = shape,
