@@ -18,6 +18,7 @@ import com.example.linkit.domain.model.Link
 import com.example.linkit.R
 import com.example.linkit._enums.UIMode
 import com.example.linkit.presentation.component.*
+import com.example.linkit.presentation.navigation.Screen
 
 @Composable
 fun Explorer(
@@ -46,6 +47,7 @@ fun Explorer(
         bottomBar = { AppBottomBar() }
     ) { innerPadding ->
         ExplorerContent(
+            navController = navController,
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.DarkGray)
@@ -63,6 +65,7 @@ fun Explorer(
 
 @Composable
 fun ExplorerContent(
+    navController: NavController,
     modifier: Modifier = Modifier,
     links: List<Link>,
     onLongPress: () -> Unit,
@@ -78,6 +81,11 @@ fun ExplorerContent(
                     modifier = Modifier.height(80.dp),
                     link = link,
                     onLongPress = onLongPress,
+                    onIconClick = {
+                        navController.navigate(
+                            route = Screen.Content.route.plus("/${link.id}")
+                        )
+                    },
                     uiMode = uiMode
                 )
                 Spacer(Modifier.height(20.dp))

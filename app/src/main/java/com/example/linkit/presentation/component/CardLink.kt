@@ -3,6 +3,7 @@ package com.example.linkit.presentation.component
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -30,6 +31,7 @@ fun CardLink(
     link: Link,
     onLongPress: () -> Unit = {},
     onCheck: () -> Unit = {},
+    onIconClick: () -> Unit = {},
     uiMode: UIMode
 ) {
     Row(
@@ -59,7 +61,8 @@ fun CardLink(
                 .fillMaxHeight()
                 .width(40.dp)
                 .padding(end = 8.dp),
-            uiMode = uiMode
+            uiMode = uiMode,
+            onIconClick = onIconClick
         )
     }
 }
@@ -101,7 +104,8 @@ fun LinkAndTags(
 @Composable
 fun IconOrCheckbox(
     modifier: Modifier = Modifier,
-    uiMode: UIMode
+    uiMode: UIMode,
+    onIconClick: () -> Unit = {},
 ) {
     var checkState by remember { mutableStateOf(false) }
 
@@ -118,7 +122,7 @@ fun IconOrCheckbox(
         }
     } else {
         Icon(
-            modifier = modifier,
+            modifier = modifier.clickable { onIconClick() },
             imageVector = Icons.Filled.ArrowForwardIos,
             contentDescription = null
         )
