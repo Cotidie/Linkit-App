@@ -89,14 +89,14 @@ fun PreviewSearchTextField() {
         text = "",
         leadingIcon = {
             Icon(
-                modifier = Modifier.size(UIConstants.ICON_SIZE_APP_BAR),
+                modifier = Modifier.size(UIConstants.SIZE_ICON_APP_BAR),
                 imageVector = Icons.Filled.Search,
                 contentDescription = null
             )
         },
         trailingIcon = {
             Icon(
-                modifier = Modifier.size(UIConstants.ICON_SIZE_APP_BAR),
+                modifier = Modifier.size(UIConstants.SIZE_ICON_APP_BAR),
                 imageVector = Icons.Filled.Clear,
                 contentDescription = null
             )

@@ -63,7 +63,7 @@ fun AppBarHomeDefault(
             Icon(
                 modifier = Modifier
                     .padding(start = 5.dp)
-                    .size(UIConstants.ICON_SIZE_APP_BAR)
+                    .size(UIConstants.SIZE_ICON_APP_BAR)
                     .clickable { onSearchClicked() },
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
@@ -74,7 +74,7 @@ fun AppBarHomeDefault(
             Icon(
                 modifier = Modifier
                     .padding(end = 20.dp)
-                    .size(UIConstants.ICON_SIZE_APP_BAR),
+                    .size(UIConstants.SIZE_ICON_APP_BAR),
                 imageVector = Icons.Filled.AccountCircle,
                 contentDescription = null,
                 tint = Color.Black

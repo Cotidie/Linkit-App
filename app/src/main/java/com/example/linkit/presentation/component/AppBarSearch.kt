@@ -33,7 +33,7 @@ fun AppBarSearch(
                 leadingIcon = {
                     Icon(
                         modifier = Modifier
-                            .size(UIConstants.ICON_SIZE_APP_BAR)
+                            .size(UIConstants.SIZE_ICON_APP_BAR)
                             .alpha(ContentAlpha.medium),
                         imageVector = Icons.Filled.Search,
                         contentDescription = null
@@ -42,7 +42,7 @@ fun AppBarSearch(
                 trailingIcon = {
                     Icon(
                         modifier = Modifier
-                            .size(UIConstants.ICON_SIZE_APP_BAR)
+                            .size(UIConstants.SIZE_ICON_APP_BAR)
                             .alpha(ContentAlpha.medium)
                             .clickable { onClearClicked() },
                         imageVector = Icons.Filled.Clear,

@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -25,7 +24,7 @@ import com.example.linkit._constant.UIConstants
 @Composable
 fun IconTextButtonVert(
     icon: ImageVector? = null,
-    iconSize: Dp = UIConstants.ICON_SIZE_APP_BAR,
+    iconSize: Dp = UIConstants.SIZE_ICON_APP_BAR,
     text: String,
     textStyle: TextStyle = MaterialTheme.typography.subtitle2,
     behavior: () -> Unit = {}

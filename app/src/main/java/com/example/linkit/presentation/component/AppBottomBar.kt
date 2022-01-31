@@ -22,7 +22,7 @@ import com.example.linkit.ui.theme.LinkItTheme
 fun AppBottomBar(
     modifier: Modifier = Modifier,
     height: Dp = UIConstants.HEIGHT_BOTTOM_BAR,
-    iconSize: Dp = UIConstants.ICON_SIZE_BOTTOM_BAR
+    iconSize: Dp = UIConstants.SIZE_ICON_BOTTOM_BAR
 ) {
     val selectedIndex by remember { mutableStateOf(1) }
 
