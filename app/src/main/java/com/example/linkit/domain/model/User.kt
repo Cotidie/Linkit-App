@@ -7,19 +7,15 @@ class User(
     val email: String,
     val name: String,
 ) {
-    companion object {
-        val GUEST = User("", Long.MIN_VALUE, "Guest", "Guest")
-    }
+    fun isGuest() : Boolean = (this == GUEST)
 
-    fun isGuest() : Boolean = (id == Long.MIN_VALUE)
+    override fun toString(): String {
+        return "User(token: $token, id: $id, email: $email, name: $name"
+    }
 
     override fun equals(other: Any?): Boolean {
         if (other !is User) return false
         return id == other.id
-    }
-
-    override fun toString(): String {
-        return "User(token: $token, id: $id, email: $email, name: $name"
     }
 
     override fun hashCode(): Int {
@@ -28,5 +24,9 @@ class User(
         result = 31 * result + email.hashCode()
         result = 31 * result + name.hashCode()
         return result
+    }
+
+    companion object {
+        val GUEST = User("", Long.MIN_VALUE, "", "Guest")
     }
 }
