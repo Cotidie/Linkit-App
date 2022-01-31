@@ -12,4 +12,9 @@ class Link(
     override var image: Bitmap,
     override val tags: List<String> = ArrayList(),
     override val created: Date = Date()
-) : ILink
+) : ILink {
+    companion object {
+        val EMPTY = Link(Long.MIN_VALUE, "", "", "", EMPTY_BITMAP)
+        fun empty() = Link(Long.MIN_VALUE, "", "", "", EMPTY_BITMAP)
+    }
+}
