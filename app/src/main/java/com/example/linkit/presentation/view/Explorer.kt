@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.linkit.domain.model.Link
 import com.example.linkit.R
 import com.example.linkit._enums.UIMode
+import com.example.linkit._enums.UIMode.*
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.navigation.Screen
 
@@ -26,14 +27,14 @@ fun Explorer(
     folderName: String
 ) {
     val links = getSampleLinks()
-    var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
+    var uiMode by remember { mutableStateOf(NORMAL) }
 
     // 편집 모드에서는 일반 모드로 돌아와야 한다.
     BackHandler {
-        if (uiMode == UIMode.NORMAL)
+        if (uiMode == NORMAL)
             navController.popBackStack()
         else {
-            uiMode = UIMode.NORMAL
+            uiMode = NORMAL
         }
     }
 
@@ -53,10 +54,10 @@ fun Explorer(
                 .background(Color.DarkGray)
                 .padding(innerPadding),
             links = links,
-            onLongPress = { uiMode = UIMode.EDIT_LINK },
+            onLongPress = { uiMode = EDIT_LINK },
             uiMode = uiMode
         )
-        if (uiMode == UIMode.NORMAL) {
+        if (uiMode == NORMAL) {
             Spacer(Modifier.height(25.dp))
         }
     }
@@ -76,9 +77,11 @@ fun ExplorerContent(
             modifier = Modifier
                 .padding(top=25.dp, start=25.dp, end=25.dp)
         ) {
-            item {
-                CardLinkAdd()
-                Spacer(Modifier.height(20.dp))
+            if (uiMode == ADD_LINK) {
+                item {
+                    CardLinkAdd()
+                    Spacer(Modifier.height(20.dp))
+                }
             }
 
             items(links) { link ->
