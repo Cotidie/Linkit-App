@@ -22,7 +22,10 @@ import com.example.linkit.ui.theme.LinkItTheme
 fun AppBottomBar(
     modifier: Modifier = Modifier,
     height: Dp = UIConstants.HEIGHT_BOTTOM_BAR,
-    iconSize: Dp = UIConstants.SIZE_ICON_LARGE
+    iconSize: Dp = UIConstants.SIZE_ICON_LARGE,
+    onLinkClick: () -> Unit = {},
+    onHomeClick: () -> Unit = {},
+    onAddClick: () -> Unit = {}
 ) {
     val selectedIndex by remember { mutableStateOf(1) }
 
@@ -41,7 +44,7 @@ fun AppBottomBar(
                 )
             },
             label = {Text("링크")},
-            onClick = { /*TODO*/ },
+            onClick = onLinkClick,
             unselectedContentColor = Color.LightGray
         )
         BottomNavigationItem(
@@ -54,7 +57,7 @@ fun AppBottomBar(
                 )
             },
             label = {Text("홈")},
-            onClick = { /*TODO*/ },
+            onClick = onHomeClick,
             unselectedContentColor = Color.LightGray
         )
         BottomNavigationItem(
@@ -67,7 +70,7 @@ fun AppBottomBar(
                 )
             },
             label = {Text("추가")},
-            onClick = { /*TODO*/ },
+            onClick = onAddClick,
             unselectedContentColor = Color.LightGray
         )
     }
