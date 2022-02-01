@@ -30,7 +30,7 @@ fun ProfileScreen(navController: NavController) {
 
     Scaffold(
         topBar = { Spacer(Modifier.height(UIConstants.HEIGHT_APP_BAR)) },
-        bottomBar = { AppBottomBar() }
+        bottomBar = { AppBottomBar(navController) }
     ) { innerPadding ->
         // 배경영역: 배경색, 하단 패딩 설정
         ProfileBackgroundArea(innerPadding) {

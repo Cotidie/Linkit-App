@@ -56,6 +56,8 @@ fun Explorer(
         },
         bottomBar = {
             AppBottomBar(
+                navController = navController,
+                uiMode = uiMode,
                 onAddClick = {
                     uiMode = ADD_LINK
                     scope.launch {

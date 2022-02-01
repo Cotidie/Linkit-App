@@ -15,27 +15,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.linkit._constant.UIConstants
+import com.example.linkit._enums.UIMode
+import com.example.linkit._enums.UIMode.*
+import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.LinkItTheme
 
 @Composable
 fun AppBottomBar(
+    navController: NavController,
     modifier: Modifier = Modifier,
     height: Dp = UIConstants.HEIGHT_BOTTOM_BAR,
     iconSize: Dp = UIConstants.SIZE_ICON_LARGE,
+    uiMode: UIMode = NORMAL,
     onLinkClick: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onAddClick: () -> Unit = {}
 ) {
-    val selectedIndex by remember { mutableStateOf(1) }
-
     BottomNavigation(
         modifier = Modifier.height(height),
         backgroundColor = Color.White,
         elevation = 2.dp
     ) {
         BottomNavigationItem(
-            selected = (selectedIndex == 0),
+            selected = false,
             icon = {
                 Icon(
                     modifier = Modifier.size(iconSize),
@@ -48,7 +54,7 @@ fun AppBottomBar(
             unselectedContentColor = Color.LightGray
         )
         BottomNavigationItem(
-            selected = (selectedIndex == 1),
+            selected = (uiMode != ADD_LINK),
             icon = {
                 Icon(
                     modifier = Modifier.size(iconSize),
@@ -57,11 +63,14 @@ fun AppBottomBar(
                 )
             },
             label = {Text("홈")},
-            onClick = onHomeClick,
+            onClick = {
+                onHomeClick()
+                navController.navigate(Screen.Home.route)
+            },
             unselectedContentColor = Color.LightGray
         )
         BottomNavigationItem(
-            selected = (selectedIndex == 2),
+            selected = (uiMode == ADD_LINK),
             icon = {
                 Icon(
                     modifier = Modifier.size(iconSize),
@@ -79,7 +88,12 @@ fun AppBottomBar(
 @Preview
 @Composable
 fun PreviewBottomBar() {
+    val navController = rememberNavController()
+
     LinkItTheme {
-        AppBottomBar()
+        AppBottomBar(
+            navController = navController,
+            uiMode = UIMode.NORMAL
+        )
     }
 }

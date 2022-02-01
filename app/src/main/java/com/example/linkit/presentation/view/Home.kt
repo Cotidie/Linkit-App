@@ -49,7 +49,12 @@ fun Home(navController: NavController) {
 
     Scaffold(
         topBar = { AppBarHome(navController) },
-        bottomBar = { AppBottomBar() }
+        bottomBar = {
+            AppBottomBar(
+                navController = navController,
+                uiMode=uiMode
+            )
+        }
     ) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
