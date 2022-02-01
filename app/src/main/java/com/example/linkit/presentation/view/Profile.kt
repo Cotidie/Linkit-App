@@ -3,7 +3,7 @@ package com.example.linkit.presentation.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,15 +13,20 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit._constant.UIConstants
 import com.example.linkit.domain.model.User
-import com.example.linkit.presentation.component.AppBottomBar
-import com.example.linkit.presentation.component.CardProfile
+import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.component.IconTextButton
+import com.example.linkit.presentation.model.Dialog
+
+private enum class Dialogs {
+    NONE, VERSION, PUSH, NOTICE, FRIEND
+}
 
 @Composable
 fun ProfileScreen(navController: NavController) {
     // 뷰모델이나 싱글톤에서 가져오기
     val user = User("", 0, "daily142857@gmail.com", "원석")
     val guest = User.GUEST
+    var type by remember { mutableStateOf(Dialogs.NONE) }
 
     Scaffold(
         topBar = { Spacer(Modifier.height(UIConstants.HEIGHT_APP_BAR)) },
@@ -37,7 +42,9 @@ fun ProfileScreen(navController: NavController) {
                     color = Color.LightGray,
                     thickness = 3.dp
                 )
-                ButtonsArea()
+                ButtonsArea(
+                    onClick = { type = it }
+                )
             }
 
             // 하단바 구분선
@@ -49,10 +56,16 @@ fun ProfileScreen(navController: NavController) {
             )
         }
     }
+
+    // 다이얼로그
+    DialogArea(
+        type = type,
+        onDismissRequest = { type = Dialogs.NONE }
+    )
 }
 
 @Composable
-fun ProfileBackgroundArea(
+private fun ProfileBackgroundArea(
     innerPadding: PaddingValues = PaddingValues(),
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -66,7 +79,7 @@ fun ProfileBackgroundArea(
 }
 
 @Composable
-fun ProfileContentArea(
+private fun ProfileContentArea(
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
@@ -78,7 +91,9 @@ fun ProfileContentArea(
 }
 
 @Composable
-fun ButtonsArea() {
+private fun ButtonsArea(
+    onClick: (type: Dialogs) -> Unit
+) {
     val minWidth = UIConstants.WIDTH_BUTTON_LONG
 
     Column(
@@ -86,33 +101,53 @@ fun ButtonsArea() {
             .fillMaxSize()
     ) {
         Spacer(Modifier.height(25.dp))
-        IconTextButton(
-            modifier = Modifier
-                .defaultMinSize(minWidth = minWidth),
+        ButtonBlack(
             text = "버전정보",
-            onClick = { /*TODO*/ }
+            minWidth = minWidth,
+            onClick = { onClick(Dialogs.VERSION) }
         )
         Spacer(Modifier.height(15.dp))
-        IconTextButton(
-            modifier = Modifier
-                .defaultMinSize(minWidth = minWidth),
+        ButtonBlack(
             text = "PUSH 알림",
-            onClick = { /*TODO*/ }
+            minWidth = minWidth,
+            onClick = { onClick(Dialogs.PUSH) }
         )
         Spacer(Modifier.height(15.dp))
-        IconTextButton(
-            modifier = Modifier
-                .defaultMinSize(minWidth = minWidth),
+        ButtonBlack(
             text = "공지사항",
-            onClick = { /*TODO*/ }
+            minWidth = minWidth,
+            onClick = { onClick(Dialogs.NOTICE) }
         )
         Spacer(Modifier.height(15.dp))
-        IconTextButton(
-            modifier = Modifier
-                .defaultMinSize(minWidth = minWidth),
+        ButtonBlack(
             text = "친구관리",
-            onClick = { /*TODO*/ }
+            minWidth = minWidth,
+            onClick = { onClick(Dialogs.FRIEND) }
         )
+    }
+}
+
+@Composable
+private fun DialogArea(
+    type: Dialogs,
+    onDismissRequest: () -> Unit
+) {
+    when (type) {
+        Dialogs.VERSION -> {
+            DialogOk(
+                text = "ver 1.0.0",
+                onDismissRequest = onDismissRequest
+            )
+        }
+        Dialogs.NOTICE,
+        Dialogs.PUSH,
+        Dialogs.FRIEND -> {
+            DialogOk(
+                text = "준비중입니다.",
+                onDismissRequest = onDismissRequest
+            )
+        }
+        Dialogs.NONE -> {}
     }
 }
 
