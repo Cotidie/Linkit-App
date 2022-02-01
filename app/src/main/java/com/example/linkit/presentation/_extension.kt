@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import com.example.linkit._enums.AnimationSpec
+import com.example.linkit._enums.AnimationSpec.*
 
 /** Composable 함수 내에서 현재 Context 반환. 축약형으로 쓰기 위함 */
 @Composable
@@ -28,21 +30,13 @@ fun Modifier.longPress(behavior: () -> Unit) = pointerInput(Unit) {
 @Composable
 fun AnimatePopup(
     visible: Boolean,
+    type: AnimationSpec = SLIDE_UP,
     content: @Composable AnimatedVisibilityScope.() -> Unit
 ) {
-    val enterSpec = slideInVertically(
-        animationSpec = TweenSpec(
-            durationMillis = 300,
-            easing = FastOutSlowInEasing
-        ),
-        initialOffsetY = { it }
-    )
-    val exitSpec = slideOutVertically { it }
-
     AnimatedVisibility(
         visible = visible,
-        enter = enterSpec,
-        exit = exitSpec,
+        enter = type.enter,
+        exit = type.exit,
         content = content
     )
 }
