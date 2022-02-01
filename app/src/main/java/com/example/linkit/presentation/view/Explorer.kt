@@ -35,6 +35,8 @@ fun Explorer(
 ) {
     val links = getSampleLinks()
     var uiMode by remember { mutableStateOf(NORMAL) }
+    val scope = rememberCoroutineScope()
+    val scrollState = rememberLazyListState()
 
     // 편집 모드에서는 일반 모드로 돌아와야 한다.
     BackHandler {
@@ -54,7 +56,12 @@ fun Explorer(
         },
         bottomBar = {
             AppBottomBar(
-                onAddClick = { uiMode = ADD_LINK }
+                onAddClick = {
+                    uiMode = ADD_LINK
+                    scope.launch {
+                        scrollState.animateScrollToItem(0)
+                    }
+                }
             )
         }
     ) { innerPadding ->
@@ -65,6 +72,7 @@ fun Explorer(
                 .background(Color.DarkGray)
                 .padding(innerPadding),
             links = links,
+            scrollState = scrollState,
             onLongPress = { uiMode = EDIT_LINK },
             uiMode = uiMode
         )
@@ -94,14 +102,9 @@ fun ExplorerContent(
             state = scrollState
         ) {
             item {
-                // 가장 위쪽 화면으로 고정
-                scope.launch {
-                    scrollState.animateScrollToItem(0)
-                }
-
                 AnimatePopup(
                     visible = uiMode == ADD_LINK,
-                    type = AnimationSpec.SLIDE_DOWN
+                    type = AnimationSpec.SLIDE_DOWN,
                 ) {
                     CardLinkAdd()
                 }
