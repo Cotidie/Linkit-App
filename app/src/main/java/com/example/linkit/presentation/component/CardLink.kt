@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.UiMode
 import androidx.compose.ui.unit.dp
 import com.example.linkit.R
+import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.model.Link
 import com.example.linkit.presentation.getBitmap
@@ -34,9 +35,11 @@ fun CardLink(
     onIconClick: () -> Unit = {},
     uiMode: UIMode
 ) {
+    val radius = UIConstants.RADIUS_CARD
+
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(13.dp))
+            .clip(RoundedCornerShape(radius))
             .background(Color.White)
             .padding(start = 15.dp, top = 12.dp, bottom = 12.dp)
             .longPress { onLongPress() }

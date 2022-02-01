@@ -9,13 +9,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.example.linkit._constant.UIConstants
 
 @Composable
@@ -49,7 +47,7 @@ fun DialogOk(
                     ButtonBlack(
                         text = "확인",
                         onClick = onDismissRequest,
-                        contentPadding = UIConstants.PADDING_SLIM
+                        contentPadding = UIConstants.PADDING_BUTTON_SLIM
                     )
                     Spacer(Modifier.height(10.dp))
                 }
@@ -85,7 +83,7 @@ fun PreviewDialogOk() {
             ButtonBlack(
                 text = "확인",
                 onClick = {},
-                contentPadding = UIConstants.PADDING_SLIM
+                contentPadding = UIConstants.PADDING_BUTTON_SLIM
             )
         }
     }
