@@ -1,6 +1,7 @@
 package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.linkit._constant.UIConstants
 import com.example.linkit.ui.theme.LinkItTheme
 
 @Composable
@@ -61,6 +63,27 @@ fun IconTextButton(
             color = textColor
         )
     }
+}
+
+@Composable
+fun IconTextButtonSmall(
+    modifier : Modifier = Modifier,
+    text: String,
+    icon: ImageVector? = null,
+    backgroundColor: Color = Color.Black,
+    onClick: () -> Unit = {}
+) {
+    val height = UIConstants.HEIGHT_BUTTON_SMALL
+    val innerPadding = UIConstants.PADDING_BUTTON_SLIM
+
+    IconTextButton(
+        modifier = modifier.height(height),
+        icon = icon,
+        text = "추가",
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(backgroundColor),
+        contentPadding = innerPadding
+    )
 }
 
 @Preview

@@ -76,6 +76,11 @@ fun ExplorerContent(
             modifier = Modifier
                 .padding(top=25.dp, start=25.dp, end=25.dp)
         ) {
+            item {
+                CardLinkAdd()
+                Spacer(Modifier.height(20.dp))
+            }
+
             items(links) { link ->
                 CardLink(
                     modifier = Modifier.height(80.dp),
