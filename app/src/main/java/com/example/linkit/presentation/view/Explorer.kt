@@ -1,10 +1,14 @@
 package com.example.linkit.presentation
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,10 +20,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit.domain.model.Link
 import com.example.linkit.R
+import com.example.linkit._enums.AnimationSpec
 import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
+import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.navigation.Screen
+import kotlinx.coroutines.launch
 
 @Composable
 fun Explorer(
@@ -45,7 +52,11 @@ fun Explorer(
                 navController = navController
             )
         },
-        bottomBar = { AppBottomBar() }
+        bottomBar = {
+            AppBottomBar(
+                onAddClick = { uiMode = ADD_LINK }
+            )
+        }
     ) { innerPadding ->
         ExplorerContent(
             navController = navController,
@@ -64,27 +75,40 @@ fun Explorer(
     ExplorerEditPopup(uiMode)
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExplorerContent(
     navController: NavController,
     modifier: Modifier = Modifier,
     links: List<Link>,
+    scrollState: LazyListState = rememberLazyListState(),
     onLongPress: () -> Unit,
     uiMode: UIMode
 ) {
+    val scope = rememberCoroutineScope()
+
     Column(modifier = modifier) {
         LazyColumn(
             modifier = Modifier
-                .padding(top=25.dp, start=25.dp, end=25.dp)
+                .padding(top=20.dp, start=25.dp, end=25.dp),
+            state = scrollState
         ) {
-            if (uiMode == ADD_LINK) {
-                item {
+            item {
+                // 가장 위쪽 화면으로 고정
+                scope.launch {
+                    scrollState.animateScrollToItem(0)
+                }
+
+                AnimatePopup(
+                    visible = uiMode == ADD_LINK,
+                    type = AnimationSpec.SLIDE_DOWN
+                ) {
                     CardLinkAdd()
-                    Spacer(Modifier.height(20.dp))
                 }
             }
 
             items(links) { link ->
+                Spacer(Modifier.height(20.dp))
                 CardLink(
                     modifier = Modifier.height(80.dp),
                     link = link,
@@ -96,7 +120,6 @@ fun ExplorerContent(
                     },
                     uiMode = uiMode
                 )
-                Spacer(Modifier.height(20.dp))
             }
         }
     }
