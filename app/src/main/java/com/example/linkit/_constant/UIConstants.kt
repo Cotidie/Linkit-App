@@ -1,5 +1,7 @@
 package com.example.linkit._constant
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.ui.unit.dp
 
 object UIConstants {
@@ -14,5 +16,8 @@ object UIConstants {
     val SIZE_ICON_TINY = 13.dp
     val SIZE_IMAGE_FOLDER = 110.dp
     val WIDTH_BUTTON_LONG = 130.dp
+    val WIDTH_DIALOG = 200.dp
+    val PADDING_DEFAULT = ButtonDefaults.ContentPadding
+    val PADDING_SLIM = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
     val ELEVATION_APP_BAR = 2.dp
 }
