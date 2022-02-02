@@ -109,4 +109,7 @@ dependencies {
 
     // Accompanist (Compose Util)
     implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
+
+    // Google OAuth
+    implementation "com.google.android.gms:play-services-auth:20.1.0"
 }
