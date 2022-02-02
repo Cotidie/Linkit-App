@@ -57,6 +57,7 @@ fun CardLink(
             modifier = Modifier
                 .padding(end = 15.dp)
                 .size(55.dp)
+                .background(Color.LightGray)
                 .clip(RoundedCornerShape(8.dp)),
             bitmap = link.image.asImageBitmap(),
             contentDescription = null,

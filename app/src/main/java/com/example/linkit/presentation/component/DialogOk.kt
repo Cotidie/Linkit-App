@@ -39,7 +39,7 @@ fun DialogOk(
                 Column(
                     modifier = Modifier
                         .background(Color.White)
-                        .padding(top = 20.dp, bottom = 10.dp),
+                        .padding(top = 20.dp, bottom = 3.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(text = text)
@@ -75,7 +75,7 @@ fun PreviewDialogOk() {
         Column(
             modifier = Modifier
                 .background(Color.White)
-                .padding(top=20.dp, bottom=10.dp),
+                .padding(top=20.dp, bottom=3.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = text)
