@@ -36,13 +36,22 @@ fun CardLink(
     uiMode: UIMode
 ) {
     val radius = UIConstants.RADIUS_CARD
+    var selected by remember { mutableStateOf(false) }
+
+    LaunchedEffect(uiMode) {
+        if (!uiMode.isEditMode())
+            selected = false
+    }
 
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(radius))
             .background(Color.White)
             .padding(start = 15.dp, top = 12.dp, bottom = 12.dp)
-            .longPress { onLongPress() }
+            .longPress {
+                onLongPress()
+                selected = true
+            }
     ) {
         Image(
             modifier = Modifier
@@ -65,7 +74,9 @@ fun CardLink(
                 .width(40.dp)
                 .padding(end = 8.dp),
             uiMode = uiMode,
-            onIconClick = onIconClick
+            onIconClick = onIconClick,
+            checked = selected && uiMode.isEditMode(),
+            onCheckClick = { selected = !selected }
         )
     }
 }
@@ -107,19 +118,19 @@ fun LinkAndTags(
 @Composable
 fun IconOrCheckbox(
     modifier: Modifier = Modifier,
+    checked: Boolean,
     uiMode: UIMode,
     onIconClick: () -> Unit = {},
+    onCheckClick: (Boolean) -> Unit = {}
 ) {
-    var checkState by remember { mutableStateOf(false) }
-
     if (uiMode.isEditMode()) {
         Box(
             modifier = modifier,
             contentAlignment = Alignment.Center
         ) {
             Checkbox(
-                checked = checkState,
-                onCheckedChange = { checkState = !checkState },
+                checked = checked,
+                onCheckedChange = onCheckClick,
                 colors = CheckboxDefaults.colors(Color.Black)
             )
         }
