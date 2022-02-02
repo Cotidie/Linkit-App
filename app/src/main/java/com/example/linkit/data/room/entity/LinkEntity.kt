@@ -10,9 +10,9 @@ data class LinkEntity(
     @ColumnInfo(name = "linkId")
     val id: Long = 0,
     @ColumnInfo(name = "title")
-    val title: String,
+    val title: String = "",
     @ColumnInfo(name="memo")
-    val memo: String,
+    val memo: String = "",
     @ColumnInfo(name="url")
     val url: String,
     @ColumnInfo(name="image")

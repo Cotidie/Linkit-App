@@ -9,7 +9,7 @@ interface FolderDao {
     @Query("SELECT * FROM folderTable")
     fun getAllFolders() : Flow<List<FolderEntity>>
 
-    @Query("SELECT * FROM folderTable WHERE id = :id")
+    @Query("SELECT * FROM folderTable WHERE folderId = :id")
     suspend fun getFolderById(id: Long) : FolderEntity
 
     @Insert

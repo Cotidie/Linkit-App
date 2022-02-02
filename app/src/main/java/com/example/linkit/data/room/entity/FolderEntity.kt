@@ -1,12 +1,11 @@
 package com.example.linkit.data.room.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "folderTable")
 data class FolderEntity(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name="folderId")
     val id: Long = 0,
     @ColumnInfo(name="name")
     val name: String,
@@ -17,4 +16,14 @@ data class FolderEntity(
     val snode: Long? = null,
     @ColumnInfo(name="gid")
     val gid: Long? = null
+)
+
+data class FolderWithLinks(
+    @Embedded val folder: FolderEntity,
+
+    @Relation(
+        parentColumn = "folderId",
+        entityColumn = "linkId"
+    )
+    val links: List<LinkEntity>
 )

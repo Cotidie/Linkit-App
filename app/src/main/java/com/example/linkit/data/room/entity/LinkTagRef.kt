@@ -49,7 +49,6 @@ data class TagWithLinks(
 data class LinkWithTags(
     @Embedded val link: LinkEntity,
     @Relation(
-        // 기준이 되는 테이블.
         parentColumn = "linkId",
         entityColumn = "tagId",
         associateBy = Junction(LinkTagRef::class)
