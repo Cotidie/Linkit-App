@@ -1,14 +1,14 @@
 package com.example.linkit.presentation
 
-import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Group
@@ -23,32 +23,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.linkit.R
+import com.example.linkit.LinkItApp
+import com.example.linkit.MainActivity
+import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
-import com.example.linkit._enums.UIMode
-import com.example.linkit.domain.model.EMPTY_BITMAP
 import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.LinkItTheme
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Home(navController: NavController) {
     val folders = remember { mutableStateListOf<IFolder>() }
-    val scope = rememberCoroutineScope()
     var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
     val folderNameFocus = remember { FocusRequester() }
 
     // 편집 모드에서는 일반 모드로 돌아와야 한다.
     BackHandler {
-        if (uiMode == UIMode.NORMAL)
-            navController.popBackStack()
-        else {
+        val prevScreen = navController.previousBackStackEntry?.destination
+
+        if (uiMode == UIMode.NORMAL) {
+            if (prevScreen == null) {
+                MainActivity.instance.finish()
+            } else {
+                navController.popBackStack()
+            }
+        } else {
             uiMode = UIMode.NORMAL
         }
     }
@@ -160,7 +163,7 @@ fun DropDownArea() {
 }
 
 @Composable
-fun FolderAddArea(
+private fun FolderAddArea(
     modifier: Modifier = Modifier,
     uiMode: UIMode,
     onClick: () -> Unit
@@ -184,7 +187,7 @@ fun FolderAddArea(
 }
 
 @Composable
-fun HomeEditPopup(
+private fun HomeEditPopup(
     uiMode: UIMode,
     onDeleteClick: () -> Unit = {},
     onRenameClick: () -> Unit = {},
@@ -205,24 +208,6 @@ fun HomeEditPopup(
             )
         }
     }
-}
-
-@Composable
-fun getFolderSamples() : ArrayList<IFolder> {
-    return arrayListOf(
-        FolderPrivate(1, "취미", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(2, "운동", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(3, "공부", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(4, "대학", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(5, "취업", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(6, "놀이", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(1, "취미", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(2, "운동", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(3, "공부", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(4, "대학", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(5, "취업", getBitmap(R.drawable.ic_sample_image_001)),
-        FolderPrivate(6, "놀이", getBitmap(R.drawable.ic_sample_image_001))
-    )
 }
 
 @Preview
