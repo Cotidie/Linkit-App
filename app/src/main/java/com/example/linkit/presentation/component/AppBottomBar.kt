@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
+import com.example.linkit.presentation.currentRoute
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.LinkItTheme
 
@@ -36,6 +37,8 @@ fun AppBottomBar(
         backgroundColor = Color.White,
         elevation = 2.dp
     ) {
+        val currentRoute = currentRoute(navController)
+
         BottomNavigationItem(
             selected = false,
             icon = {
@@ -60,6 +63,8 @@ fun AppBottomBar(
             },
             label = {Text("홈")},
             onClick = {
+                if (currentRoute == Screen.Home.route) return@BottomNavigationItem
+
                 onHomeClick()
                 navController.navigate(Screen.Home.route)
             },

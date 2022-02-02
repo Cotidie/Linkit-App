@@ -60,7 +60,7 @@ fun Int.toDp()
 
 @Composable
 /** 현재 화면의 route를 반환한다. */
-private fun currentRoute(navController: NavHostController): String? {
+fun currentRoute(navController: NavController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     return navBackStackEntry?.destination?.route
 }
