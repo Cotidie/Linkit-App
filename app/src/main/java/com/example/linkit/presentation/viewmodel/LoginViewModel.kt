@@ -6,7 +6,9 @@ import com.example.linkit.MainActivity
 import com.example.linkit.R
 import com.example.linkit.data.repository.UserRepository
 import com.example.linkit.domain.model.User
+import com.example.linkit.domain.model.log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +22,18 @@ class LoginViewModel @Inject constructor(
 
     fun isLoggedIn() : Boolean = !currentUser.isGuest()
 
-    private fun getGoogleLoginAuth(): GoogleSignInClient {
+    fun loginUserGoogle(account: GoogleSignInAccount) {
+        val user = User(
+            token = account.idToken!!,
+            id = account.id!!,
+            email = account.email!!,
+            name = account.displayName!!
+        )
+
+        userRepo.setLoggedInUser(user)
+    }
+
+    fun getGoogleLoginAuth(): GoogleSignInClient {
         val cxt = LinkItApp.cxt()
         val clientId = cxt.getString(R.string.google_client_ID)
 

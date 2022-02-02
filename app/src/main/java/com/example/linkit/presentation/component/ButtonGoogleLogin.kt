@@ -14,11 +14,11 @@ import com.example.linkit.ui.theme.Shapes
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun GoogleLogin() {
-    var isClicked by remember { mutableStateOf(false) }
-
+fun GoogleLogin(
+    onClick: () -> Unit = {},
+) {
     Surface(
-        onClick = { isClicked = !isClicked },
+        onClick = onClick,
         shape = Shapes.medium,
         color = MaterialTheme.colors.surface,
         elevation = 3.dp
@@ -40,14 +40,6 @@ fun GoogleLogin() {
                 modifier = Modifier.fillMaxWidth(),
                 text = "구글 계정으로 로그인",
             )
-
-            if (isClicked) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(16.dp, 16.dp),
-                    strokeWidth = 2.dp,
-                    color =MaterialTheme.colors.primary
-                )
-            }
         }
     }
 }
