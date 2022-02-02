@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,16 +28,22 @@ import com.example.linkit.R
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
 import com.example.linkit._enums.UIMode
+import com.example.linkit.domain.model.EMPTY_BITMAP
+import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.LinkItTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Home(navController: NavController) {
-    val folders = getFolderSamples()
+    val folders = remember { mutableStateListOf<IFolder>() }
+    val scope = rememberCoroutineScope()
     var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
+    val folderNameFocus = remember { FocusRequester() }
 
     // 편집 모드에서는 일반 모드로 돌아와야 한다.
     BackHandler {
@@ -70,6 +77,7 @@ fun Home(navController: NavController) {
                 uiMode = uiMode,
                 folders = folders,
                 cells = 3,
+                folderNameFocus = folderNameFocus,
                 onClick = { folder ->
                     navController.navigate(
                         Screen.Explorer.route.plus("/${folder.name}")
@@ -84,12 +92,20 @@ fun Home(navController: NavController) {
                     .fillMaxWidth()
                     .padding(innerPadding)
                     .height(80.dp),
-                uiMode = uiMode
+                uiMode = uiMode,
+                onClick = {
+                    folders.add(
+                        FolderPrivate(100, "추가")
+                    )
+                }
             )
         }
     }
 
-    HomeEditPopup(uiMode)
+    HomeEditPopup(
+        uiMode = uiMode,
+        onRenameClick = { uiMode = UIMode.RENAME_FOLDER }
+    )
 }
 
 /** Content 영역 중 상단의 드롭다운 버튼 영역*/
@@ -147,7 +163,8 @@ fun DropDownArea() {
 @Composable
 fun FolderAddArea(
     modifier: Modifier = Modifier,
-    uiMode: UIMode
+    uiMode: UIMode,
+    onClick: () -> Unit
 ) {
     Box(
         modifier = modifier,
@@ -160,7 +177,7 @@ fun FolderAddArea(
             icon = Icons.Filled.Add,
             iconColor = Color.Black,
             shape = CircleShape,
-            onClick = { /*TODO*/ },
+            onClick = onClick,
             colors = buttonColors(Color.White),
             contentPadding = PaddingValues(20.dp, 8.dp)
         )
@@ -168,7 +185,12 @@ fun FolderAddArea(
 }
 
 @Composable
-fun HomeEditPopup(uiMode: UIMode) {
+fun HomeEditPopup(
+    uiMode: UIMode,
+    onDeleteClick: () -> Unit = {},
+    onRenameClick: () -> Unit = {},
+    onReimageClick: () -> Unit = {}
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
@@ -176,14 +198,19 @@ fun HomeEditPopup(uiMode: UIMode) {
         AnimatePopup(
             visible = (uiMode == UIMode.EDIT_FOLDER)
         ) {
-            AppBottomBarEditFolder(text = "샘플")
+            AppBottomBarEditFolder(
+                text = "샘플",
+                onDeleteClick = onDeleteClick,
+                onRenameClick = onRenameClick,
+                onReimageClick = onReimageClick
+            )
         }
     }
 }
 
 @Composable
-fun getFolderSamples() : List<IFolder> {
-    return listOf(
+fun getFolderSamples() : ArrayList<IFolder> {
+    return arrayListOf(
         FolderPrivate(1, "취미", getBitmap(R.drawable.ic_sample_image_001)),
         FolderPrivate(2, "운동", getBitmap(R.drawable.ic_sample_image_001)),
         FolderPrivate(3, "공부", getBitmap(R.drawable.ic_sample_image_001)),
@@ -200,8 +227,8 @@ fun getFolderSamples() : List<IFolder> {
 }
 
 @Composable
-fun getBitmap(id: Int) : Bitmap? {
-    return AppCompatResources.getDrawable(cxt(), id)?.toBitmap()
+fun getBitmap(id: Int) : Bitmap {
+    return AppCompatResources.getDrawable(cxt(), id)?.toBitmap() ?: EMPTY_BITMAP
 }
 
 @Preview

@@ -36,14 +36,22 @@ import com.example.linkit.ui.theme.LinkItTheme
 fun CardFolder(
     folder: IFolder,
     uiMode: UIMode,
-    onClick: () -> Unit,
+    focusRequester: FocusRequester = FocusRequester(),
+    onClick: () -> Unit = {},
     onLongPress: () -> Unit = {},
     onDismissRequest: () -> Unit = {}
 ) {
+    var text by remember { mutableStateOf("이름없음") }
     // 최초 컴포즈 1회 실행
     var selected by remember { mutableStateOf(false) }
     // uiMode가 바뀔 때마다 다시 실행
-    selected = selected && uiMode.isEditMode()
+    selected = selected && (uiMode == EDIT_FOLDER || uiMode == RENAME_FOLDER)
+
+    SideEffect {
+        "SideEffect 호출!".log()
+        if (selected && uiMode == RENAME_FOLDER)
+            focusRequester.requestFocus()
+    }
 
     Column(
         modifier = Modifier
@@ -88,14 +96,21 @@ fun CardFolder(
                 .padding(vertical = 10.dp)
         ) {
             // 폴더명
-            Text(
+            BasicTextField(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(start = 10.dp),
-                text = folder.name,
-                color = Color.White,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                    .weight(1f)
+                    .padding(start = 6.dp)
+                    .focusRequester(focusRequester)
+                    .onFocusChanged {
+                        "텍스트 필드로 포커스 전환 ${it.hasFocus}".log()
+                    },
+                enabled = (selected && uiMode == RENAME_FOLDER),
+                value = text,
+                textStyle = TextStyle(color=Color.White),
+                singleLine = true,
+                cursorBrush = SolidColor(Color.White),
+                onValueChange = { text = it }
             )
             // 공유폴더 표시 아이콘
             if (folder.isShared()) {

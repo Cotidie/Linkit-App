@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.IFolder
@@ -18,6 +19,7 @@ fun FolderGrid(
     uiMode: UIMode,
     folders: List<IFolder>,
     cells: Int,
+    folderNameFocus: FocusRequester,
     onClick: (item: IFolder) -> Unit,
     onLongPress: () -> Unit,
     onDismissRequest: () -> Unit
@@ -32,6 +34,7 @@ fun FolderGrid(
             CardFolder(
                 folder = folder,
                 uiMode = uiMode,
+                focusRequester = folderNameFocus,
                 onClick = { onClick(folder) },
                 onLongPress = onLongPress,
                 onDismissRequest = onDismissRequest
