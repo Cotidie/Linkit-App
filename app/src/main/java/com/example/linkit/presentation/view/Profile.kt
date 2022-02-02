@@ -17,6 +17,7 @@ import com.example.linkit.domain.model.User
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.component.IconTextButton
 import com.example.linkit.presentation.model.Dialog
+import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.viewmodel.ProfileViewModel
 
 private enum class Dialogs {
@@ -36,7 +37,12 @@ fun ProfileScreen(navController: NavController) {
         ProfileBackgroundArea(innerPadding) {
             // 컨텐츠 영역: 배경 위에서 기본 패딩 설정
             ProfileContentArea {
-                CardProfile(user = viewModel.getCurrentUser())
+                CardProfile(
+                    user = viewModel.getCurrentUser(),
+                    onGuestClick = {
+                        navController.navigate(Screen.Login.route)
+                    }
+                )
                 Divider(
                     modifier = Modifier.padding(vertical = 40.dp),
                     color = Color.LightGray,
