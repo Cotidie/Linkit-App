@@ -47,8 +47,8 @@ fun CardFolder(
     // uiMode가 바뀔 때마다 다시 실행
     selected = selected && (uiMode == EDIT_FOLDER || uiMode == RENAME_FOLDER)
 
-    SideEffect {
-        "SideEffect 호출!".log()
+    // Composition 스코프에서 호출
+    LaunchedEffect(uiMode) {
         if (selected && uiMode == RENAME_FOLDER)
             focusRequester.requestFocus()
     }
