@@ -19,6 +19,7 @@ object UIConstants {
     val WIDTH_BUTTON_LONG = 130.dp
     val WIDTH_DIALOG = 200.dp
     val HEIGHT_BUTTON_SMALL = 30.dp
+    val HEIGHT_MAX_CONTENT_IMAGE = 300.dp
     val PADDING_BUTTON_DEFAULT = ButtonDefaults.ContentPadding
     val PADDING_BUTTON_SLIM = PaddingValues(horizontal = 4.dp, vertical = 4.dp)
     val ELEVATION_APP_BAR = 2.dp

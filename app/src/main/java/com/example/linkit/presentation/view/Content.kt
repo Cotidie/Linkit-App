@@ -164,6 +164,8 @@ fun ContentHeadArea(
 fun ImageArea(
     image: ImageBitmap
 ) {
+    val maxHeight = UIConstants.HEIGHT_MAX_CONTENT_IMAGE
+
     Box(
         modifier = Modifier,
         contentAlignment = Alignment.Center
@@ -171,6 +173,7 @@ fun ImageArea(
         Image(
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(0.dp, maxHeight)
                 .clip(RoundedCornerShape(10)),
             bitmap = image,
             contentScale = ContentScale.Crop,
