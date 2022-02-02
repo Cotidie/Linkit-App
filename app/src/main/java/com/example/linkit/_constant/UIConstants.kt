@@ -5,6 +5,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.ui.unit.dp
 
 object UIConstants {
+    val DURATION_ANIMATION_SPLASH = 3000 // 밀리초
     val HEIGHT_APP_BAR = 65.dp
     val HEIGHT_BOTTOM_BAR = 74.dp
     val HEIGHT_BOTTOM_HOVER = 130.dp
