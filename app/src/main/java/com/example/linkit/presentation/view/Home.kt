@@ -21,7 +21,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit.R
@@ -224,11 +223,6 @@ fun getFolderSamples() : ArrayList<IFolder> {
         FolderPrivate(5, "취업", getBitmap(R.drawable.ic_sample_image_001)),
         FolderPrivate(6, "놀이", getBitmap(R.drawable.ic_sample_image_001))
     )
-}
-
-@Composable
-fun getBitmap(id: Int) : Bitmap {
-    return AppCompatResources.getDrawable(cxt(), id)?.toBitmap() ?: EMPTY_BITMAP
 }
 
 @Preview

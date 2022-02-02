@@ -1,6 +1,9 @@
 package com.example.linkit.presentation
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -14,11 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.linkit._enums.AnimationSpec
 import com.example.linkit._enums.AnimationSpec.*
+import com.example.linkit.domain.model.EMPTY_BITMAP
 import kotlinx.coroutines.launch
 
 /** Composable 함수 내에서 현재 Context 반환. 축약형으로 쓰기 위함 */
@@ -63,4 +68,12 @@ fun Int.toDp()
 fun currentRoute(navController: NavController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     return navBackStackEntry?.destination?.route
+}
+
+@Composable
+/** Drawable 이미지를 Bitmap으로 변환한다. */
+fun getBitmap(id: Int) : Bitmap {
+    val drawable = AppCompatResources.getDrawable(cxt(), id)
+
+    return drawable?.toBitmap() ?: EMPTY_BITMAP
 }
