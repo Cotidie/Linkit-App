@@ -7,7 +7,7 @@ import java.util.*
 class FolderShared(
     override val id: Long,
     override var name: String,
-    override var image: Bitmap?,
+    override var image: Bitmap = EMPTY_BITMAP,
     override val created: Date = Date(),
     val snode: Long,
     val gid: Long,

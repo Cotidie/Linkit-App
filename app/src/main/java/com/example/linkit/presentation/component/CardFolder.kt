@@ -67,7 +67,7 @@ fun CardFolder(
         ImageWithCheckbox(
             modifier = Modifier
                 .size(UIConstants.SIZE_IMAGE_FOLDER),
-            image = folder.image!!.asImageBitmap(),
+            image = folder.image.asImageBitmap(),
             selected = selected,
             onCheckedChange = { checked ->
                 if (!checked) {

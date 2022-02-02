@@ -6,7 +6,7 @@ import android.graphics.Bitmap
 interface IFolder : IFile{
     val id: Long
     override var name: String
-    var image: Bitmap?
+    var image: Bitmap
 
     fun isShared() : Boolean
 }
