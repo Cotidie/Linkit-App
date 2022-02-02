@@ -40,8 +40,6 @@ fun SplashScreen(
             false -> Screen.Login
         }
         startAnimation = true
-        "다음화면 $nextScreen".log()
-        "로그인된 유저 ${loginViewModel.currentUser}".log()
 
         // 화면 전환
         delay(duration + 500L)

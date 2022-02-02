@@ -117,7 +117,7 @@ fun UserInfoGuest(
 @Preview
 @Composable
 fun PreviewCardProfile() {
-    val user = User("", 19, "daily142857@gmail.com", "원석")
+    val user = User("", "", "daily142857@gmail.com", "원석")
     val guest = User.GUEST
     CardProfile(user = user)
 }
