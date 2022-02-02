@@ -39,7 +39,7 @@ class LinkItPrefs @Inject constructor(@ApplicationContext context: Context) {
 
     // 키값 정의
     companion object {
-        private val LOGGED_IN_USER_ID = longPreferencesKey("logged_in_user_id")
+        private val LOGGED_IN_USER_ID = stringPreferencesKey("logged_in_user_id")
         private val LOGGED_IN_USER_EMAIL = stringPreferencesKey("logged_in_user_email")
         private val LOGGED_IN_USER_NAME = stringPreferencesKey("logged_in_user_name")
         private val LOGGED_IN_USER_TOKEN = stringPreferencesKey("logged_in_user_token")

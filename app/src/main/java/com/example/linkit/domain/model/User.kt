@@ -3,7 +3,7 @@ package com.example.linkit.domain.model
 /** 로그인한 유저를 표현하는 클래스 */
 class User(
     val token: String,
-    val id: Long,
+    val id: String,
     val email: String,
     val name: String,
 ) {
@@ -27,6 +27,6 @@ class User(
     }
 
     companion object {
-        val GUEST = User("", Long.MIN_VALUE, "", "Guest")
+        val GUEST = User("", "", "", "Guest")
     }
 }
