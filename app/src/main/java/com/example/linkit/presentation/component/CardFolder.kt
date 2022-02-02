@@ -58,6 +58,8 @@ fun CardFolder(
                 if (selected) Color.LightGray.copy(alpha = 0.2f)
                 else Color.Transparent
             )
+            .width(IntrinsicSize.Min)
+            .height(IntrinsicSize.Min)
             .border(
                 width = if (selected) 1.dp else (-1).dp,
                 color = Color.White,
@@ -93,7 +95,7 @@ fun CardFolder(
                 overflow = TextOverflow.Ellipsis
             )
             // 공유폴더 표시 아이콘
-            if (!folder.isShared()) {
+            if (folder.isShared()) {
                 Icon(
                     modifier = Modifier.scale(0.6f),
                     imageVector = Icons.Filled.Group,
@@ -117,7 +119,7 @@ fun CardFolder(
 }
 
 @Composable
-fun ImageWithCheckbox(
+private fun ImageWithCheckbox(
     modifier: Modifier = Modifier,
     selected: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -127,7 +129,8 @@ fun ImageWithCheckbox(
         Image(
             modifier = Modifier
                 .fillMaxSize()
-                .clip(RoundedCornerShape(10.dp)),
+                .clip(RoundedCornerShape(10.dp))
+                .background(Color.White),
             bitmap = image,
             contentScale = ContentScale.Crop,
             contentDescription = null
@@ -146,7 +149,7 @@ fun ImageWithCheckbox(
 
 @Preview
 @Composable
-fun PreviewFolderCard() {
+private fun PreviewFolderCard() {
     val folder = FolderPrivate(
         id = 5,
         name = "개인폴더",
@@ -155,6 +158,8 @@ fun PreviewFolderCard() {
     val uiMode = UIMode.EDIT_FOLDER
 
     LinkItTheme {
-        CardFolder(folder, uiMode, {}, {})
+        Box(modifier = Modifier.background(Color.Black)) {
+            CardFolder(folder, uiMode, {}, {})
+        }
     }
 }
