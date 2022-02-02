@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit._constant.UIConstants
@@ -16,6 +17,7 @@ import com.example.linkit.domain.model.User
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.component.IconTextButton
 import com.example.linkit.presentation.model.Dialog
+import com.example.linkit.presentation.viewmodel.ProfileViewModel
 
 private enum class Dialogs {
     NONE, VERSION, PUSH, NOTICE, FRIEND
@@ -23,9 +25,7 @@ private enum class Dialogs {
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    // 뷰모델이나 싱글톤에서 가져오기
-    val user = User("", 0, "daily142857@gmail.com", "원석")
-    val guest = User.GUEST
+    val viewModel = hiltViewModel<ProfileViewModel>()
     var type by remember { mutableStateOf(Dialogs.NONE) }
 
     Scaffold(
@@ -36,7 +36,7 @@ fun ProfileScreen(navController: NavController) {
         ProfileBackgroundArea(innerPadding) {
             // 컨텐츠 영역: 배경 위에서 기본 패딩 설정
             ProfileContentArea {
-                CardProfile(user = user)
+                CardProfile(user = viewModel.getCurrentUser())
                 Divider(
                     modifier = Modifier.padding(vertical = 40.dp),
                     color = Color.LightGray,
