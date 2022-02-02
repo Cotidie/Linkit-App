@@ -1,8 +1,13 @@
 package com.example.linkit.presentation
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -24,6 +29,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.linkit._enums.AnimationSpec
 import com.example.linkit._enums.AnimationSpec.*
 import com.example.linkit.domain.model.EMPTY_BITMAP
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.launch
 
 /** Composable 함수 내에서 현재 Context 반환. 축약형으로 쓰기 위함 */
@@ -77,3 +85,19 @@ fun getBitmap(id: Int) : Bitmap {
 
     return drawable?.toBitmap() ?: EMPTY_BITMAP
 }
+
+@Composable
+/** 다른 액티비티를 실행하는 런처를 반환한다. */
+fun activityLauncher(
+    onSuccess: (Intent) -> Unit = {},
+    onError: () -> Unit = {}
+) = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+
+            if (result.data != null) onSuccess(intent!!)
+            else onError()
+        } else {
+            onError()
+        }
+    }
