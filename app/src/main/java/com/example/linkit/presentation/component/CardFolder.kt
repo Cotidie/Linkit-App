@@ -134,9 +134,7 @@ fun CardFolder(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(bottom = 2.dp),
+                    modifier = Modifier,
                     imageVector = Icons.Filled.MoreVert,
                     contentDescription = null,
                     tint = Color.White
