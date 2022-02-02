@@ -17,14 +17,6 @@ val Context.dataStore by preferencesDataStore("settings")
 class LinkItPrefs @Inject constructor(@ApplicationContext context: Context) {
     private val linkItStore = context.dataStore
 
-    // 키값 정의
-    companion object {
-        private val LOGGED_IN_USER_ID = longPreferencesKey("logged_in_user_id")
-        private val LOGGED_IN_USER_EMAIL = stringPreferencesKey("logged_in_user_email")
-        private val LOGGED_IN_USER_NAME = stringPreferencesKey("logged_in_user_name")
-        private val LOGGED_IN_USER_TOKEN = stringPreferencesKey("logged_in_user_token")
-    }
-
     suspend fun setLoggedInUser(user: User) {
         linkItStore.edit { storeMap ->
             storeMap[LOGGED_IN_USER_ID] = user.id
@@ -43,5 +35,13 @@ class LinkItPrefs @Inject constructor(@ApplicationContext context: Context) {
 
             User(id = id, email = email, name = name, token = token)
         }
+    }
+
+    // 키값 정의
+    companion object {
+        private val LOGGED_IN_USER_ID = longPreferencesKey("logged_in_user_id")
+        private val LOGGED_IN_USER_EMAIL = stringPreferencesKey("logged_in_user_email")
+        private val LOGGED_IN_USER_NAME = stringPreferencesKey("logged_in_user_name")
+        private val LOGGED_IN_USER_TOKEN = stringPreferencesKey("logged_in_user_token")
     }
 }
