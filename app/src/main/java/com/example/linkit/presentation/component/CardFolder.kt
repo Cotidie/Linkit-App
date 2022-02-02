@@ -4,12 +4,14 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
@@ -18,6 +20,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,7 +34,7 @@ import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.ui.theme.LinkItTheme
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CardFolder(
     folder: IFolder,
@@ -42,6 +45,7 @@ fun CardFolder(
     onDismissRequest: () -> Unit = {}
 ) {
     var text by remember { mutableStateOf("이름없음") }
+    val keyboardController = LocalSoftwareKeyboardController.current
     // 최초 컴포즈 1회 실행
     var selected by remember { mutableStateOf(false) }
     // uiMode가 바뀔 때마다 다시 실행
@@ -101,15 +105,18 @@ fun CardFolder(
                     .fillMaxHeight()
                     .weight(1f)
                     .padding(start = 6.dp)
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        "텍스트 필드로 포커스 전환 ${it.hasFocus}".log()
-                    },
+                    .focusRequester(focusRequester),
                 enabled = (selected && uiMode == RENAME_FOLDER),
                 value = text,
                 textStyle = TextStyle(color=Color.White),
                 singleLine = true,
                 cursorBrush = SolidColor(Color.White),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onDismissRequest()
+                        keyboardController?.hide()
+                    }
+                ),
                 onValueChange = { text = it }
             )
             // 공유폴더 표시 아이콘
