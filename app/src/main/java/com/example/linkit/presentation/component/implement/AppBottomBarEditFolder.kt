@@ -14,7 +14,10 @@ import com.example.linkit._constant.UIConstants
 
 @Composable
 fun AppBottomBarEditFolder(
-    text: String
+    text: String,
+    onDeleteClick: () -> Unit = {},
+    onRenameClick: () -> Unit = {},
+    onReimageClick: () -> Unit = {}
 ) {
     AppBottomBarEdit(
         text = text,
@@ -30,7 +33,8 @@ fun AppBottomBarEditFolder(
             IconTextButtonVert(
                 icon = Icons.Filled.Delete,
                 iconSize = UIConstants.SIZE_ICON_MEDIUM_LARGE,
-                text = "삭제"
+                text = "삭제",
+                onClick = onDeleteClick
             )
         }
         Box(
@@ -42,7 +46,8 @@ fun AppBottomBarEditFolder(
             IconTextButtonVert(
                 icon = Icons.Filled.ModeEdit,
                 iconSize = UIConstants.SIZE_ICON_MEDIUM_LARGE,
-                text = "이름변경"
+                text = "이름변경",
+                onClick = onRenameClick
             )
         }
         Box(
@@ -54,7 +59,8 @@ fun AppBottomBarEditFolder(
             IconTextButtonVert(
                 icon = Icons.Filled.Wallpaper,
                 iconSize = UIConstants.SIZE_ICON_MEDIUM_LARGE,
-                text = "사진변경"
+                text = "사진변경",
+                onClick = onReimageClick
             )
         }
     }

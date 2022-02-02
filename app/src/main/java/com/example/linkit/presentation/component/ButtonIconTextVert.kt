@@ -27,10 +27,10 @@ fun IconTextButtonVert(
     iconSize: Dp = UIConstants.SIZE_ICON_MEDIUM,
     text: String,
     textStyle: TextStyle = MaterialTheme.typography.subtitle2,
-    behavior: () -> Unit = {}
+    onClick: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier.clickable { behavior() },
+        modifier = Modifier.clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (icon != null) {
