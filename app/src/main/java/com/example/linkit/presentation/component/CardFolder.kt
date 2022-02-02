@@ -56,13 +56,15 @@ fun CardFolder(
                 }
             )
             .background(
-                if (selected) Color.LightGray.copy(alpha = 0.2f)
-                else Color.Transparent
+                if (selected && uiMode == EDIT_FOLDER)
+                    Color.LightGray.copy(alpha = 0.2f)
+                else
+                    Color.Transparent
             )
             .width(IntrinsicSize.Min)
             .height(IntrinsicSize.Min)
             .border(
-                width = if (selected) 1.dp else (-1).dp,
+                width = if (selected && uiMode == EDIT_FOLDER) 1.dp else (-1).dp,
                 color = Color.White,
                 shape = RoundedCornerShape(10.dp)
             ),
@@ -105,7 +107,10 @@ fun CardFolder(
                 )
             }
             // 더보기 아이콘
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier.fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
                 Icon(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -160,7 +165,7 @@ private fun PreviewFolderCard() {
 
     LinkItTheme {
         Box(modifier = Modifier.background(Color.Black)) {
-            CardFolder(folder, uiMode, {}, {})
+            CardFolder(folder, uiMode)
         }
     }
 }
