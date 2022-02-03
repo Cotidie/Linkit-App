@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class FolderMapper @Inject constructor() : Mapper<FolderEntity, IFolder> {
-    override fun map(input: FolderEntity): IFolder {
+    override fun mapTo(input: FolderEntity): IFolder {
         return when (input.snode == null) {
             true -> {
                 FolderPrivate(
@@ -26,6 +26,24 @@ class FolderMapper @Inject constructor() : Mapper<FolderEntity, IFolder> {
                     gid = input.gid!!
                 )
             }
+        }
+    }
+
+    override fun mapFrom(input: IFolder) : FolderEntity {
+        return when (input.isShared()) {
+            true -> {
+                val casted = input as FolderShared
+                FolderEntity(
+                    name = casted.name,
+                    image = "임시",
+                    snode = casted.snode,
+                    gid = casted.gid
+                )
+            }
+            false -> FolderEntity(
+                name = input.name,
+                image = "임시"
+            )
         }
     }
 }
