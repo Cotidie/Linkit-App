@@ -21,6 +21,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit.LinkItApp
@@ -32,12 +33,14 @@ import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
+import com.example.linkit.presentation.viewmodel.HomeViewModel
 import com.example.linkit.ui.theme.LinkItTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Home(navController: NavController) {
-    val folders = remember { mutableStateListOf<IFolder>() }
+    val viewModel = hiltViewModel<HomeViewModel>()
+    val folders by viewModel.allFolders
     var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
     val folderNameFocus = remember { FocusRequester() }
 
@@ -96,8 +99,8 @@ fun Home(navController: NavController) {
                     .height(80.dp),
                 uiMode = uiMode,
                 onClick = {
-                    folders.add(
-                        FolderPrivate(100, "추가")
+                    viewModel.addFolder(
+                        FolderPrivate(name="추가")
                     )
                 }
             )
