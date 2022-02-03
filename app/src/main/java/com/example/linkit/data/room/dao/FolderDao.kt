@@ -9,6 +9,12 @@ interface FolderDao {
     @Query("SELECT * FROM folderTable")
     fun getAllFolders() : Flow<List<FolderEntity>>
 
+    @Query("SELECT * FROM folderTable WHERE snode != null")
+    fun getSharedFolders() : Flow<List<FolderEntity>>
+
+    @Query("SELECT * FROM folderTable WHERE snode == null")
+    fun getPrivateFolders() : Flow<List<FolderEntity>>
+
     @Query("SELECT * FROM folderTable WHERE folderId = :id")
     suspend fun getFolderById(id: Long) : FolderEntity
 
