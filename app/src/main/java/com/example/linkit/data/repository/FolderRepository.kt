@@ -19,7 +19,9 @@ class FolderRepository @Inject constructor(
         = folderDao.getAllFolders().flowOn(Dispatchers.IO).conflate().map { folderListMapper.mapTo(it) }
 
     suspend fun getFolder(id: Long) : FolderEntity = folderDao.getFolderById(id)
-    suspend fun insert(folder: IFolder) = folderDao.insert(folderMapper.mapFrom(folder))
+    suspend fun insert(folder: IFolder) {
+        folderDao.insert(folderMapper.mapFrom(folder))
+    }
     suspend fun update(folder: IFolder) = folderDao.update(folderMapper.mapFrom(folder))
     suspend fun delete(folder: IFolder) = folderDao.delete(folderMapper.mapFrom(folder))
     suspend fun deleteAll() = folderDao.deleteAll()
