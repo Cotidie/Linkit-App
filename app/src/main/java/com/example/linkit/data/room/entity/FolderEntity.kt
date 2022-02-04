@@ -10,7 +10,7 @@ data class FolderEntity(
     @ColumnInfo(name="name")
     val name: String,
     @ColumnInfo(name="image")
-    val image: String,
+    val image: String? = null,
     // 아래 두 컬럼은 공유폴더 전용
     @ColumnInfo(name="snode")
     val snode: Long? = null,
