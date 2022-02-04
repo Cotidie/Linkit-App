@@ -11,7 +11,7 @@ import com.example.linkit.data.room.entity.TagEntity
 
 @Database(
     entities = [LinkEntity::class, FolderEntity::class, LinkTagRef::class, TagEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false)
 abstract class LinkItDatabase : RoomDatabase() {
     abstract fun linkDao(): LinkDao
