@@ -19,7 +19,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val repository: FolderRepository
 ): ViewModel() {
-    // 내부의 값을 변경할 수 있는 hot flow (StateFlow)
     private val _allFolders = mutableStateOf(emptyList<IFolder>())
     val allFolders : State<List<IFolder>> = _allFolders
 

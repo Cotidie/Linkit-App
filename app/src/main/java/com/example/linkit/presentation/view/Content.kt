@@ -202,6 +202,5 @@ fun MemoArea(
 fun PreviewContentScreen() {
     val navController = rememberNavController()
     val link = Link.empty()
-    "리컴포즈 테스트: Preview".log()
     ContentScreen(navController, 5)
 }
