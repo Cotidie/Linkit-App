@@ -1,6 +1,7 @@
 package com.example.linkit.presentation
 
 import android.graphics.Bitmap
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -173,6 +174,13 @@ fun DropDownArea() {
                 expanded = false
             },
             onDismissRequest = { expanded = false }
+        )
+    }
+
+    if (selected.text == "공유폴더") {
+        DialogOk(
+            text = "준비중입니다.",
+            onDismissRequest = { selected = dropItems[0] }
         )
     }
 }
