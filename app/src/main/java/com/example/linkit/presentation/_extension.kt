@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -92,6 +93,15 @@ fun getBitmap(id: Int) : Bitmap {
 
     return drawable?.toBitmap() ?: EMPTY_BITMAP
 }
+
+@Composable
+/** 이미지 파일을 선택하는 런처 */
+fun chooseImageLauncher(
+    onResult: (Uri?) -> Unit
+) = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = onResult
+    )
 
 @Composable
 /** 다른 액티비티를 실행하는 런처를 반환한다. */
