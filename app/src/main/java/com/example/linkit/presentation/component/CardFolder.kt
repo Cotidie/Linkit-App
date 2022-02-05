@@ -39,17 +39,13 @@ import com.example.linkit.ui.theme.LinkItTheme
 fun CardFolder(
     folder: IFolder,
     uiMode: UIMode,
+    selected: Boolean,
     focusRequester: FocusRequester = FocusRequester(),
     onClick: () -> Unit = {},
     onLongPress: () -> Unit = {},
     onDismissRequest: () -> Unit = {}
 ) {
-    var text by remember { mutableStateOf("이름없음") }
     val keyboardController = LocalSoftwareKeyboardController.current
-    // 최초 컴포즈 1회 실행
-    var selected by remember { mutableStateOf(false) }
-    // uiMode가 바뀔 때마다 다시 실행
-    selected = selected && (uiMode == EDIT_FOLDER || uiMode == RENAME_FOLDER)
 
     // Composition 스코프에서 호출
     LaunchedEffect(uiMode) {
@@ -60,15 +56,12 @@ fun CardFolder(
     Column(
         modifier = Modifier
             .combinedClickable(
-                enabled = !uiMode.isEditMode(),
+                enabled = !uiMode.isEditMode() || selected,
                 onClick = onClick,
-                onLongClick = {
-                    onLongPress()
-                    selected = true
-                }
+                onLongClick = onLongPress
             )
             .background(
-                if (selected && uiMode == EDIT_FOLDER)
+                if (selected)
                     Color.LightGray.copy(alpha = 0.2f)
                 else
                     Color.Transparent
@@ -76,7 +69,7 @@ fun CardFolder(
             .width(IntrinsicSize.Min)
             .height(IntrinsicSize.Min)
             .border(
-                width = if (selected && uiMode == EDIT_FOLDER) 1.dp else (-1).dp,
+                width = if (selected) 1.dp else (-1).dp,
                 color = Color.White,
                 shape = RoundedCornerShape(10.dp)
             ),
@@ -85,10 +78,9 @@ fun CardFolder(
             modifier = Modifier
                 .size(UIConstants.SIZE_IMAGE_FOLDER),
             image = folder.image.asImageBitmap(),
-            selected = selected,
+            selected = selected && uiMode == EDIT_FOLDER,
             onCheckedChange = { checked ->
                 if (!checked) {
-                    selected = false
                     onDismissRequest()
                 }
             }

@@ -26,7 +26,7 @@ fun FolderGrid(
     folderNameFocus: FocusRequester,
     onClick: (item: IFolder) -> Unit,
     onLongPress: (item: IFolder) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: (item: IFolder) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -42,7 +42,7 @@ fun FolderGrid(
                 focusRequester = folderNameFocus,
                 onClick = { onClick(folder) },
                 onLongPress = { onLongPress(folder) },
-                onDismissRequest = onDismissRequest
+                onDismissRequest = { onDismissRequest(folder) }
             )
         }
     }
