@@ -2,7 +2,7 @@ package com.example.linkit.presentation.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import com.example.linkit.domain.model.Link
+import com.example.linkit.domain.interfaces.ILink
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -10,5 +10,5 @@ import javax.inject.Inject
 class ExplorerViewModel @Inject constructor(
 
 ): ViewModel() {
-    val links = mutableStateListOf<Link>()
+    val links = mutableStateListOf<ILink>()
 }

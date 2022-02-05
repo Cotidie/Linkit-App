@@ -18,7 +18,7 @@ import com.example.linkit.presentation.component.IconTextButtonSmall
 @Composable
 fun CardLinkAdd(
     modifier : Modifier = Modifier,
-    onAddClick : () -> Unit = {}
+    onAddClick : (String) -> Unit = {}
 ) {
     val radius = UIConstants.RADIUS_CARD
     var text by remember { mutableStateOf("") }
@@ -34,41 +34,34 @@ fun CardLinkAdd(
         HintArea()
 
         // 터치한 상태 (TextField)
-        TextFieldArea(
-            text = text,
-            onTextChange = { text = it }
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            BasicTextField(
+                modifier = Modifier.weight(1f),
+                value = text,
+                singleLine = true,
+                onValueChange = {text = it}
+            )
+            Spacer(Modifier.width(6.dp))
+            IconTextButtonSmall(
+                text = "추가",
+                onClick = {
+                    if (text.isBlank()) return@IconTextButtonSmall
+                    onAddClick(text)
+                    text = ""
+                },
+                backgroundColor = Color.Gray
+            )
+        }
     }
 }
 
 @Composable
 private fun HintArea() {
 
-}
-
-@Composable
-private fun TextFieldArea(
-    text: String,
-    onTextChange: (String) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        BasicTextField(
-            modifier = Modifier.weight(1f),
-            value = text,
-            singleLine = true,
-            onValueChange = onTextChange
-        )
-        Spacer(Modifier.width(6.dp))
-        IconTextButtonSmall(
-            text = "추가",
-            onClick = {},
-            backgroundColor = Color.Gray
-        )
-    }
 }
 
 @Preview
