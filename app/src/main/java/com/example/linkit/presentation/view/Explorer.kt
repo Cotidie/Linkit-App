@@ -14,9 +14,11 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +31,7 @@ import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.EMPTY_BITMAP
+import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.navigation.Screen
@@ -96,7 +99,7 @@ fun Explorer(
     ExplorerEditPopup(uiMode)
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ExplorerContent(
     navController: NavController,
@@ -106,6 +109,8 @@ fun ExplorerContent(
     onLongPress: () -> Unit,
     uiMode: UIMode
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     LazyColumn(
         modifier = Modifier
             .padding(top=20.dp, start=25.dp, end=25.dp),
@@ -116,7 +121,17 @@ fun ExplorerContent(
                 visible = uiMode == ADD_LINK,
                 type = AnimationSpec.SLIDE_DOWN,
             ) {
-                CardLinkAdd()
+                CardLinkAdd(
+                    onAddClick = { urlString ->
+                        keyboardController?.hide()
+                        val url = Url(urlString)
+
+                        if (!url.isValid()) {
+                            "부정확한 URL입니다.".toast()
+                            return@CardLinkAdd
+                        }
+                    }
+                )
             }
         }
 
@@ -143,10 +158,10 @@ fun ExplorerEditPopup(uiMode: UIMode) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     ) {
-        AnimatePopup(visible = (uiMode == UIMode.EDIT_LINK)) {
+        AnimatePopup(visible = (uiMode == EDIT_LINK)) {
             AppBottomBarEditLink(
                 modifier = Modifier,
-                text = "샘플"
+                text = "링크 편집"
             )
         }
     }
