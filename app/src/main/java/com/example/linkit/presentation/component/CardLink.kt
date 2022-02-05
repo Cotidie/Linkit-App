@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.linkit.R
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
+import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
@@ -29,7 +30,7 @@ import com.example.linkit.presentation.longPress
 @Composable
 fun CardLink(
     modifier: Modifier = Modifier,
-    link: Link,
+    link: ILink,
     onLongPress: () -> Unit = {},
     onCheck: () -> Unit = {},
     onIconClick: () -> Unit = {},
@@ -85,7 +86,7 @@ fun CardLink(
 @Composable
 fun LinkAndTags(
     modifier: Modifier,
-    link: Link
+    link: ILink
 ) {
     Column(
         modifier = modifier
