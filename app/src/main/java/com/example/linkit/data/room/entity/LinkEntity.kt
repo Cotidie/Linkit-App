@@ -9,6 +9,8 @@ data class LinkEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "linkId")
     val id: Long = 0,
+    @ColumnInfo(name = "parentFolderId")
+    val folderId: Long,
     @ColumnInfo(name = "title")
     val title: String = "",
     @ColumnInfo(name="memo")
