@@ -34,6 +34,7 @@ class FolderMapper @Inject constructor() : Mapper<FolderEntity, IFolder> {
             true -> {
                 val casted = input as FolderShared
                 FolderEntity(
+                    id = casted.id,
                     name = casted.name,
                     image = "임시",
                     snode = casted.snode,
@@ -41,6 +42,7 @@ class FolderMapper @Inject constructor() : Mapper<FolderEntity, IFolder> {
                 )
             }
             false -> FolderEntity(
+                id = input.id,
                 name = input.name,
                 image = "임시"
             )
