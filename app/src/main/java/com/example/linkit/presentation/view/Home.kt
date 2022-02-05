@@ -40,7 +40,7 @@ import com.example.linkit.ui.theme.LinkItTheme
 @Composable
 fun Home(navController: NavController) {
     val viewModel = hiltViewModel<HomeViewModel>()
-    val folders by viewModel.allFolders
+    var selected by remember { mutableStateOf<IFolder>(IFolder.DEFAULT) }
     var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
     val folderNameFocus = remember { FocusRequester() }
 
@@ -80,7 +80,8 @@ fun Home(navController: NavController) {
                     .weight(1f)
                     .padding(horizontal = 25.dp),
                 uiMode = uiMode,
-                folders = folders,
+                folders = viewModel.allFolders.value,
+                selected = selected,
                 cells = 3,
                 folderNameFocus = folderNameFocus,
                 onClick = { folder ->
@@ -88,10 +89,22 @@ fun Home(navController: NavController) {
                         Screen.Explorer.route.plus("/${folder.name}")
                     )
                 },
-                onLongPress = { uiMode = UIMode.EDIT_FOLDER },
+                onLongPress = { folder ->
+                    selected = folder
+                    uiMode = UIMode.EDIT_FOLDER
+                },
                 onDismissRequest = { uiMode = UIMode.NORMAL }
             )
             // '+ 폴더추가' 버튼 영역
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(innerPadding)
+                    .height(80.dp),
+                contentAlignment = Alignment.Center
+            ) {
+
+            }
             FolderAddArea(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -196,6 +209,11 @@ private fun HomeEditPopup(
     onRenameClick: () -> Unit = {},
     onReimageClick: () -> Unit = {}
 ) {
+    val viewModel = hiltViewModel<HomeViewModel>()
+    val launcher = chooseImageLauncher {
+        "$it".log()
+    }
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
@@ -207,7 +225,7 @@ private fun HomeEditPopup(
                 text = "샘플",
                 onDeleteClick = onDeleteClick,
                 onRenameClick = onRenameClick,
-                onReimageClick = onReimageClick
+                onReimageClick = { launcher.launch("image/*")  }
             )
         }
     }
