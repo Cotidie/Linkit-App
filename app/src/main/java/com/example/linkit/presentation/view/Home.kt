@@ -1,5 +1,6 @@
 package com.example.linkit.presentation
 
+import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -104,7 +105,6 @@ fun Home(navController: NavController) {
             HomeBottomButtonArea(
                 uiMode = uiMode,
                 onAddClick = {
-                    uiMode = UIMode.EDIT_FOLDER
                     viewModel.addFolder(name = "신규폴더")
                 },
                 onCompleteClick = {
@@ -117,7 +117,11 @@ fun Home(navController: NavController) {
 
     HomeEditPopup(
         uiMode = uiMode,
-        onRenameClick = { uiMode = UIMode.RENAME_FOLDER }
+        onRenameClick = { uiMode = UIMode.RENAME_FOLDER },
+        onReimageClick = { bitmap ->
+            selected.image = bitmap
+            viewModel.updateFolder(selected)
+        }
     )
 }
 
@@ -178,12 +182,8 @@ private fun HomeEditPopup(
     uiMode: UIMode,
     onDeleteClick: () -> Unit = {},
     onRenameClick: () -> Unit = {},
-    onReimageClick: () -> Unit = {}
+    onReimageClick: (Bitmap) -> Unit = {}
 ) {
-    val launcher = chooseImageLauncher {
-        "$it".log()
-    }
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
@@ -195,7 +195,7 @@ private fun HomeEditPopup(
                 text = "샘플",
                 onDeleteClick = onDeleteClick,
                 onRenameClick = onRenameClick,
-                onReimageClick = { launcher.launch("image/*")  }
+                onReimageClick = onReimageClick
             )
         }
     }
