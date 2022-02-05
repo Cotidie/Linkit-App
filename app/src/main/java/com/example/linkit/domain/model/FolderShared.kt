@@ -13,6 +13,8 @@ class FolderShared(
     val gid: Long,
 ) : IFolder {
     override fun isShared(): Boolean = true
+
+    override fun toString(): String = "공유폴더: $id, $name"
     override fun equals(other: Any?): Boolean {
         if (other !is FolderShared) return false
         return id == other.id
