@@ -11,4 +11,8 @@ class FolderPrivate(
     override val created: Date = Date()
 ) : IFolder {
     override fun isShared(): Boolean = false
+    override fun equals(other: Any?): Boolean {
+        if (other !is FolderPrivate) return false
+        return id == other.id
+    }
 }
