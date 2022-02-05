@@ -4,5 +4,8 @@ package com.example.linkit._enums
 enum class UIMode {
     NORMAL, EDIT_LINK, EDIT_FOLDER, ADD_LINK, ADD_FOLDER, RENAME_FOLDER;
 
-    fun isEditMode() = (this == EDIT_LINK || this == EDIT_FOLDER)
+    fun isEditMode() = when (this) {
+        EDIT_FOLDER, EDIT_LINK, RENAME_FOLDER -> true
+        else -> false
+    }
 }

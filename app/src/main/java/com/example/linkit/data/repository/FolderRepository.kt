@@ -9,14 +9,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-/** 도메인 모델 Folder, SharedFolder를 담당하는 Repository */
+/** 도메인 모델 [FolderPrivate], [FolderShared]를 담당하는 Repository */
 class FolderRepository @Inject constructor(
     private val folderDao: FolderDao,
     private val folderMapper: FolderMapper,
     private val folderListMapper: FolderListMapper
 ){
-    fun getAllFolders() : Flow<List<IFolder>>
-        = folderDao.getAllFolders().flowOn(Dispatchers.IO).conflate().map { folderListMapper.mapTo(it) }
+    fun getAllFolders() : Flow<List<IFolder>> {
+        return folderDao.getAllFolders()
+            .flowOn(Dispatchers.IO)
+            .conflate()
+            .map { folderListMapper.mapTo(it) }
+    }
 
     suspend fun getFolder(id: Long) : FolderEntity = folderDao.getFolderById(id)
     suspend fun insert(folder: IFolder) = folderDao.insert(folderMapper.mapFrom(folder))

@@ -9,8 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.IFolder
+import com.example.linkit.domain.model.log
+import com.example.linkit.presentation.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -18,11 +21,12 @@ fun FolderGrid(
     modifier: Modifier = Modifier,
     uiMode: UIMode,
     folders: List<IFolder>,
+    selected: IFolder,
     cells: Int,
     folderNameFocus: FocusRequester,
     onClick: (item: IFolder) -> Unit,
-    onLongPress: () -> Unit,
-    onDismissRequest: () -> Unit
+    onLongPress: (item: IFolder) -> Unit,
+    onDismissRequest: (item: IFolder) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -34,10 +38,11 @@ fun FolderGrid(
             CardFolder(
                 folder = folder,
                 uiMode = uiMode,
+                selected = (selected == folder) && uiMode.isEditMode(),
                 focusRequester = folderNameFocus,
                 onClick = { onClick(folder) },
-                onLongPress = onLongPress,
-                onDismissRequest = onDismissRequest
+                onLongPress = { onLongPress(folder) },
+                onDismissRequest = { onDismissRequest(folder) }
             )
         }
     }

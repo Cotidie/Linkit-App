@@ -39,17 +39,13 @@ import com.example.linkit.ui.theme.LinkItTheme
 fun CardFolder(
     folder: IFolder,
     uiMode: UIMode,
+    selected: Boolean,
     focusRequester: FocusRequester = FocusRequester(),
     onClick: () -> Unit = {},
     onLongPress: () -> Unit = {},
     onDismissRequest: () -> Unit = {}
 ) {
-    var text by remember { mutableStateOf("이름없음") }
     val keyboardController = LocalSoftwareKeyboardController.current
-    // 최초 컴포즈 1회 실행
-    var selected by remember { mutableStateOf(false) }
-    // uiMode가 바뀔 때마다 다시 실행
-    selected = selected && (uiMode == EDIT_FOLDER || uiMode == RENAME_FOLDER)
 
     // Composition 스코프에서 호출
     LaunchedEffect(uiMode) {
@@ -60,15 +56,12 @@ fun CardFolder(
     Column(
         modifier = Modifier
             .combinedClickable(
-                enabled = !uiMode.isEditMode(),
+                enabled = !uiMode.isEditMode() || selected,
                 onClick = onClick,
-                onLongClick = {
-                    onLongPress()
-                    selected = true
-                }
+                onLongClick = onLongPress
             )
             .background(
-                if (selected && uiMode == EDIT_FOLDER)
+                if (selected)
                     Color.LightGray.copy(alpha = 0.2f)
                 else
                     Color.Transparent
@@ -76,7 +69,7 @@ fun CardFolder(
             .width(IntrinsicSize.Min)
             .height(IntrinsicSize.Min)
             .border(
-                width = if (selected && uiMode == EDIT_FOLDER) 1.dp else (-1).dp,
+                width = if (selected) 1.dp else (-1).dp,
                 color = Color.White,
                 shape = RoundedCornerShape(10.dp)
             ),
@@ -85,10 +78,9 @@ fun CardFolder(
             modifier = Modifier
                 .size(UIConstants.SIZE_IMAGE_FOLDER),
             image = folder.image.asImageBitmap(),
-            selected = selected,
+            selected = selected && uiMode == EDIT_FOLDER,
             onCheckedChange = { checked ->
                 if (!checked) {
-                    selected = false
                     onDismissRequest()
                 }
             }
@@ -100,24 +92,16 @@ fun CardFolder(
                 .padding(vertical = 10.dp)
         ) {
             // 폴더명
-            BasicTextField(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f)
-                    .padding(start = 6.dp)
-                    .focusRequester(focusRequester),
-                enabled = (selected && uiMode == RENAME_FOLDER),
-                value = text,
-                textStyle = TextStyle(color=Color.White),
-                singleLine = true,
-                cursorBrush = SolidColor(Color.White),
+            NameTextField(
+                enabled = selected && uiMode == RENAME_FOLDER,
+                folder = folder,
                 keyboardActions = KeyboardActions(
                     onDone = {
                         onDismissRequest()
                         keyboardController?.hide()
                     }
                 ),
-                onValueChange = { text = it }
+                focusRequester = focusRequester
             )
             // 공유폴더 표시 아이콘
             if (folder.isShared()) {
@@ -173,6 +157,34 @@ private fun ImageWithCheckbox(
     }
 }
 
+@Composable
+private fun RowScope.NameTextField(
+    enabled: Boolean = false,
+    folder: IFolder,
+    keyboardActions: KeyboardActions,
+    focusRequester: FocusRequester,
+) {
+    var text by remember { mutableStateOf(folder.name) }
+
+    BasicTextField(
+        modifier = Modifier
+            .fillMaxHeight()
+            .weight(1f)
+            .padding(start = 6.dp)
+            .focusRequester(focusRequester),
+        enabled = enabled,
+        value = text,
+        textStyle = TextStyle(color=Color.White),
+        singleLine = true,
+        cursorBrush = SolidColor(Color.White),
+        keyboardActions = keyboardActions,
+        onValueChange = {
+            text = it
+            folder.name = it
+        }
+    )
+}
+
 @Preview
 @Composable
 private fun PreviewFolderCard() {
@@ -185,7 +197,7 @@ private fun PreviewFolderCard() {
 
     LinkItTheme {
         Box(modifier = Modifier.background(Color.Black)) {
-            CardFolder(folder, uiMode)
+            CardFolder(folder, uiMode, true)
         }
     }
 }
