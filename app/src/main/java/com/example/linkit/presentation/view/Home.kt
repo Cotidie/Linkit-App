@@ -24,15 +24,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.linkit.LinkItApp
 import com.example.linkit.MainActivity
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.IFolder
-import com.example.linkit.domain.model.FolderPrivate
 import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
+import com.example.linkit.presentation.view.Home.HomeBottomButtonArea
 import com.example.linkit.presentation.viewmodel.HomeViewModel
 import com.example.linkit.ui.theme.LinkItTheme
 
@@ -70,10 +69,12 @@ fun Home(navController: NavController) {
     ) { innerPadding ->
         Column(modifier = Modifier
             .fillMaxSize()
+            .padding(innerPadding)
             .background(Color.Black)
         ) {
             // '개인폴더' 등 선택옵션 드롭다운 영역
             DropDownArea()
+
             // 폴더 표시 영역
             FolderGrid(
                 modifier = Modifier
@@ -93,28 +94,22 @@ fun Home(navController: NavController) {
                     selected = folder
                     uiMode = UIMode.EDIT_FOLDER
                 },
-                onDismissRequest = { uiMode = UIMode.NORMAL }
+                onDismissRequest = { folder ->
+                    uiMode = UIMode.NORMAL
+                    viewModel.updateFolder(folder)
+                }
             )
-            // '+ 폴더추가' 버튼 영역
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(innerPadding)
-                    .height(80.dp),
-                contentAlignment = Alignment.Center
-            ) {
 
-            }
-            FolderAddArea(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(innerPadding)
-                    .height(80.dp),
+            // '+ 폴더추가 / 완료' 버튼 영역
+            HomeBottomButtonArea(
                 uiMode = uiMode,
-                onClick = {
-                    viewModel.addFolder(
-                        FolderPrivate(name="추가")
-                    )
+                onAddClick = {
+                    uiMode = UIMode.EDIT_FOLDER
+                    viewModel.addFolder(name = "신규폴더")
+                },
+                onCompleteClick = {
+                    uiMode = UIMode.NORMAL
+                    viewModel.updateFolder(folder = selected)
                 }
             )
         }
@@ -179,37 +174,12 @@ fun DropDownArea() {
 }
 
 @Composable
-private fun FolderAddArea(
-    modifier: Modifier = Modifier,
-    uiMode: UIMode,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        IconTextButton(
-            enabled = (!uiMode.isEditMode()),
-            text = "폴더 추가",
-            textColor = Color.Black,
-            icon = Icons.Filled.Add,
-            iconColor = Color.Black,
-            shape = CircleShape,
-            onClick = onClick,
-            colors = buttonColors(Color.White),
-            contentPadding = PaddingValues(20.dp, 8.dp)
-        )
-    }
-}
-
-@Composable
 private fun HomeEditPopup(
     uiMode: UIMode,
     onDeleteClick: () -> Unit = {},
     onRenameClick: () -> Unit = {},
     onReimageClick: () -> Unit = {}
 ) {
-    val viewModel = hiltViewModel<HomeViewModel>()
     val launcher = chooseImageLauncher {
         "$it".log()
     }
