@@ -24,6 +24,7 @@ import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link
+import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
 
@@ -152,8 +153,8 @@ fun PreviewLinkCard() {
         0, 
         "네이버", 
         "네이버캐스트", 
-        "https://www.naver.com", 
-        getBitmap(id = R.drawable.ic_sample_image_001)!!,
+        Url("https://www.naver.com"),
+        getBitmap(id = R.drawable.ic_sample_image_001),
         listOf("유명", "네이버", "검색")
     )
     
