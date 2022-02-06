@@ -8,22 +8,23 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.linkit.data.repository.LinkRepository
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.interfaces.ILink
-import com.example.linkit.domain.model.EMPTY_BITMAP
-import com.example.linkit.domain.model.Link
-import com.example.linkit.domain.model.Url
-import com.example.linkit.domain.model.log
+import com.example.linkit.domain.model.*
 import com.example.linkit.presentation.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ExplorerViewModel @Inject constructor(
     private val repository: LinkRepository
 ): ViewModel() {
-    val links = mutableStateListOf<ILink>()
-    val currentFolder = mutableStateOf(IFolder.DEFAULT)
-    val testBitmap = mutableStateOf(EMPTY_BITMAP)
+    val links = mutableStateOf(emptyList<ILink>())
+    val currentFolder = MutableStateFlow(EMPTY_LONG)
+
+    init { collectLinks() }
 
     fun addLink(urlString: String) {
         val url = Url(urlString)
@@ -35,16 +36,23 @@ class ExplorerViewModel @Inject constructor(
         viewModelScope.launch { repository.addLink(link) }
     }
 
-    /** 링크 목록을 담은 Flow에 연결한다. 화면 내비게이션 시 실행한다. */
-    fun collectLinks(id: Long) {
+    /** 현재 폴더가 변경되면 자동으로 폴더 내의 링크들을 불러온다. */
+    private fun collectLinks() {
         viewModelScope.launch {
-
+            currentFolder
+                .flatMapLatest { folderId ->
+                    repository.getLinksInFolder(folderId)
+                }
+                .distinctUntilChanged()
+                .collect {
+                    links.value = it
+                }
         }
     }
 
     /** url을 받아 Link 객체를 만든다. */
     private fun createNewLink(url: Url) : ILink {
-        val folderId = currentFolder.value.id
+        val folderId = currentFolder.value
 
         return Link(parentFolder = folderId, url = url)
     }
