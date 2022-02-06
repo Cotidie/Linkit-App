@@ -19,5 +19,9 @@ data class LinkEntity(
     @ColumnInfo(name="url")
     val url: String,
     @ColumnInfo(name="image")
-    val image: Bitmap
+    val image: Bitmap,
+    @ColumnInfo(name="snode")
+    val snode: Long? = null,
+    @ColumnInfo(name="gid")
+    val gid: Long? = null
 )
