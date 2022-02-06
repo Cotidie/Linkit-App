@@ -10,8 +10,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FolderMapper @Inject constructor() : Mapper<FolderEntity, IFolder> {
-    override fun mapTo(input: FolderEntity): IFolder {
+class EntityToFolder @Inject constructor() : Mapper<FolderEntity, IFolder> {
+    override fun map(input: FolderEntity): IFolder {
         val image = input.image ?: EMPTY_BITMAP
 
         return when (input.snode == null) {
@@ -33,8 +33,11 @@ class FolderMapper @Inject constructor() : Mapper<FolderEntity, IFolder> {
             }
         }
     }
+}
 
-    override fun mapFrom(input: IFolder) : FolderEntity {
+@Singleton
+class FolderToEntity : Mapper<IFolder, FolderEntity> {
+    override fun map(input: IFolder): FolderEntity {
         return when (input.isShared()) {
             true -> {
                 val casted = input as FolderShared

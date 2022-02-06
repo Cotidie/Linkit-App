@@ -9,5 +9,10 @@ import javax.inject.Singleton
 
 @Singleton
 class FolderListMapper @Inject constructor(
-    folderMapper : FolderMapper
-) : ListMapperImpl<FolderEntity, IFolder>(folderMapper)
+    folderMapper : FolderToEntity
+) : ListMapperImpl<IFolder, FolderEntity>(folderMapper)
+
+@Singleton
+class FolderEntityListMapper @Inject constructor(
+    entityMapper : EntityToFolder
+) : ListMapperImpl<FolderEntity, IFolder>(entityMapper)
