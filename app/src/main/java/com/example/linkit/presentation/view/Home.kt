@@ -89,7 +89,7 @@ fun Home(navController: NavController) {
                 folderNameFocus = folderNameFocus,
                 onClick = { folder ->
                     navController.navigate(
-                        Screen.Explorer.route.plus("/${folder.name}")
+                        Screen.Explorer.route.plus("/${folder.id}")
                     )
                 },
                 onLongPress = { folder ->

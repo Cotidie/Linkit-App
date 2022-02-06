@@ -1,6 +1,8 @@
 package com.example.linkit.presentation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -9,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.view.ContentScreen
 import com.example.linkit.presentation.view.ProfileScreen
+import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -26,15 +29,19 @@ fun NavGraph(navController: NavHostController) {
             Home(navController)
         }
         composable(
-            route = Screen.Explorer.route.plus("/{folderName}"),
+            route = Screen.Explorer.route.plus("/{folderId}"),
             arguments = listOf(
-                navArgument("folderName") {
-                    type = NavType.StringType
+                navArgument("folderId") {
+                    type = NavType.LongType
                 }
             )
         ) { backStackEntry ->
-            val folderName = backStackEntry.arguments?.getString("folderName")
-            Explorer(navController, folderName!!)
+            val viewModel = hiltViewModel<ExplorerViewModel>(cxt() as ViewModelStoreOwner)
+            val folderId = backStackEntry.arguments?.getLong("folderId")!!
+
+            viewModel.clearScreen()
+            viewModel.setCurrentFolder(folderId)
+            Explorer(navController, viewModel, folderId)
         }
         composable(route = Screen.Profile.route) {
             ProfileScreen(navController)

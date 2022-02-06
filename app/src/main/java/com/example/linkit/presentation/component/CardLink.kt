@@ -23,6 +23,7 @@ import com.example.linkit.R
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.ILink
+import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.getBitmap
@@ -150,7 +151,8 @@ fun IconOrCheckbox(
 @Composable
 fun PreviewLinkCard() {
     val link = Link(
-        0, 
+        0,
+        parentFolder= EMPTY_LONG,
         "네이버", 
         "네이버캐스트", 
         Url("https://www.naver.com"),

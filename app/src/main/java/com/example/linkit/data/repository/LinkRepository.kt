@@ -7,6 +7,7 @@ import com.example.linkit.data.network.dto.BitmapMapper
 import com.example.linkit.data.repository.dto.LinkMappers
 import com.example.linkit.data.room.dao.LinkDao
 import com.example.linkit.data.room.entity.LinkEntity
+import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Url
@@ -14,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -34,14 +36,24 @@ class LinkRepository @Inject constructor(
             .conflate()
     }
 
-    fun getLinksInFolder(folderId: Long) {
-
+    fun getLinksInFolder(folderId: Long) : Flow<List<ILink>> {
+        return linkDao.getLinksInFolder(folderId)
+            .flowOn(Dispatchers.IO)
+            .conflate()
+            .map { linkDto.map(it) }
     }
 
     /** 링크가 주어지면 이미지를 웹에서 불러오고, 그후 Room에 저장한다. */
     suspend fun addLink(link: ILink) {
         link.image = getFavicon(link.url)
-        linkDao.insert(linkDto.map(link))
+        val linkWithTags = linkDto.map(link)
+        // 링크 insert
+        val linkId = linkDao.insert(linkWithTags.link)
+        // 태그 및 다대다 테이블 insert
+        for (tag in linkWithTags.tags) {
+            val tagId = linkDao.insert(tag)
+            linkDao.insert(LinkTagRef(linkId = linkId, tagId = tagId))
+        }
     }
     suspend fun updateLink(linkEntity: LinkEntity) = linkDao.update(linkEntity)
     suspend fun deleteLink(linkEntity: LinkEntity) = linkDao.deleteLink(linkEntity)

@@ -1,29 +1,45 @@
 package com.example.linkit.presentation.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.linkit.data.repository.FolderRepository
 import com.example.linkit.data.repository.LinkRepository
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.interfaces.ILink
-import com.example.linkit.domain.model.EMPTY_BITMAP
-import com.example.linkit.domain.model.Link
-import com.example.linkit.domain.model.Url
-import com.example.linkit.domain.model.log
+import com.example.linkit.domain.model.*
 import com.example.linkit.presentation.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ExplorerViewModel @Inject constructor(
-    private val repository: LinkRepository
+    private val linkRepo: LinkRepository,
+    private val folderRepo: FolderRepository
 ): ViewModel() {
-    val links = mutableStateListOf<ILink>()
-    val currentFolder = mutableStateOf(IFolder.DEFAULT)
-    val testBitmap = mutableStateOf(EMPTY_BITMAP)
+    val links = mutableStateOf(emptyList<ILink>())
+    val currentFolder = MutableStateFlow(IFolder.DEFAULT)
+
+    init { collectLinks() }
+
+    fun clearScreen() {
+        viewModelScope.launch {
+            currentFolder.update { IFolder.DEFAULT }
+        }
+    }
+
+    fun setCurrentFolder(id: Long) {
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                currentFolder.update {
+                    folderRepo.getFolder(id)
+                }
+            }
+        }
+    }
 
     fun addLink(urlString: String) {
         val url = Url(urlString)
@@ -32,20 +48,27 @@ class ExplorerViewModel @Inject constructor(
             return
         }
         val link = createNewLink(url)
-        viewModelScope.launch { repository.addLink(link) }
+        viewModelScope.launch { linkRepo.addLink(link) }
     }
 
-    /** 링크 목록을 담은 Flow에 연결한다. 화면 내비게이션 시 실행한다. */
-    fun collectLinks(id: Long) {
+    /** 현재 폴더가 변경되면 자동으로 폴더 내의 링크들을 불러온다. */
+    private fun collectLinks() {
         viewModelScope.launch {
-
+            currentFolder
+                .flatMapLatest { folder ->
+                    linkRepo.getLinksInFolder(folder.id)
+                }
+                .distinctUntilChanged()
+                .collect {
+                    links.value = it
+                }
         }
     }
 
     /** url을 받아 Link 객체를 만든다. */
     private fun createNewLink(url: Url) : ILink {
-        val folderId = currentFolder.value.id
+        val folder = currentFolder.value
 
-        return Link(parentFolder = folderId, url = url)
+        return Link(parentFolder = folder.id, url = url)
     }
 }
