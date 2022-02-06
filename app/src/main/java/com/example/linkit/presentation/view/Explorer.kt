@@ -1,24 +1,19 @@
 package com.example.linkit.presentation
 
-import android.app.Application
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.linkit.R
 import com.example.linkit._enums.AnimationSpec
 import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
@@ -35,15 +29,15 @@ import com.example.linkit.domain.model.*
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 
 @Composable
 fun Explorer(
     navController: NavController,
+    viewModel: ExplorerViewModel,
     folderId: Long
 ) {
-    val viewModel = hiltViewModel<ExplorerViewModel>(cxt() as ViewModelStoreOwner)
+    val currentFolder by viewModel.currentFolder.collectAsState()
     var uiMode by remember { mutableStateOf(NORMAL) }
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
@@ -64,7 +58,7 @@ fun Explorer(
     Scaffold(
         topBar = {
             AppBarExplorer(
-                folderName = viewModel.currentFolder.collectAsState().value.toString(),
+                folderName = currentFolder.name,
                 navController = navController
             )
         },
@@ -179,10 +173,10 @@ fun getSampleLinks() : List<Link> {
     return links
 }
 
-@Preview
-@Composable
-fun PreviewExplorer() {
-    val navController = rememberNavController()
-
-    Explorer(navController, EMPTY_LONG)
-}
+//@Preview
+//@Composable
+//fun PreviewExplorer() {
+//    val navController = rememberNavController()
+//
+//    Explorer(navController, EMPTY_LONG)
+//}
