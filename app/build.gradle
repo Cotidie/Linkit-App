@@ -112,4 +112,7 @@ dependencies {
 
     // Google OAuth
     implementation "com.google.android.gms:play-services-auth:20.1.0"
+
+    // JSOUP (HTML Parser)
+    implementation "org.jsoup:jsoup:1.14.2"
 }
