@@ -25,6 +25,7 @@ import com.example.linkit._constant.ColorConstants
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.model.Link
+import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CustomChip
@@ -45,7 +46,7 @@ fun ContentScreen(
                 linkId,
                 "링크",
                 "오늘은 낚시를 갔다. 물고기를 많이 잡았다. 뿌듯했다.",
-                "https://www.google.com/search?q=jetpack+compose+maxsize&newwindow=1&hl=en&biw=1396&bih=656&sxsrf=APq-WBsnuSZEUIwVd7jld09SJvANZoqdGw%3A1643644748914&ei=TAf4Yb2ON83yhwOd9J2QDA&ved=0ahUKEwi95JTrrdz1AhVN-WEKHR16B8IQ4dUDCA8&uact=5&oq=jetpack+compose+maxsize&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABMgUIIRCgAToECCMQJzoFCAAQkQI6BQgAEIAEOgUILhCABDoECC4QQzoLCC4QgAQQxwEQ0QM6BAgAEEM6CgguEMcBENEDEEM6BQgAEMsBOgYIABAWEB5KBAhBGABKBAhGGABQAFjUFGCVFWgAcAJ4AIABmwGIAZUWkgEEMC4yMZgBAKABAcABAQ&sclient=gws-wiz",
+                Url("https://www.google.com/search?q=jetpack+compose+maxsize&newwindow=1&hl=en&biw=1396&bih=656&sxsrf=APq-WBsnuSZEUIwVd7jld09SJvANZoqdGw%3A1643644748914&ei=TAf4Yb2ON83yhwOd9J2QDA&ved=0ahUKEwi95JTrrdz1AhVN-WEKHR16B8IQ4dUDCA8&uact=5&oq=jetpack+compose+maxsize&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABMgUIIRCgAToECCMQJzoFCAAQkQI6BQgAEIAEOgUILhCABDoECC4QQzoLCC4QgAQQxwEQ0QM6BAgAEEM6CgguEMcBENEDEEM6BQgAEMsBOgYIABAWEB5KBAhBGABKBAhGGABQAFjUFGCVFWgAcAJ4AIABmwGIAZUWkgEEMC4yMZgBAKABAcABAQ&sclient=gws-wiz"),
                 bitmap,
                 listOf("낚시", "밤낚시", "물고기")
             )
@@ -79,7 +80,7 @@ fun ContentScreen(
                 // URL 영역
                 TextUrl(
                     modifier = Modifier,
-                    url = link.url
+                    url = link.url.getString(true)
                 )
 
                 Spacer(Modifier.height(10.dp))

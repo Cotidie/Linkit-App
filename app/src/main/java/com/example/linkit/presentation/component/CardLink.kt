@@ -95,7 +95,7 @@ fun LinkAndTags(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            text = link.url,
+            text = link.url.getString(false),
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1
         )
