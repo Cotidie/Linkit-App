@@ -13,6 +13,6 @@ interface IFolder : IFile{
     fun isShared() : Boolean
 
     companion object {
-        val DEFAULT = FolderPrivate(id= EMPTY_LONG, name="무제폴더")
+        val DEFAULT: IFolder = FolderPrivate(id= EMPTY_LONG, name="무제폴더")
     }
 }
