@@ -1,9 +1,7 @@
 package com.example.linkit.data.room.dao
 
 import androidx.room.*
-import com.example.linkit.data.room.entity.LinkEntity
-import com.example.linkit.data.room.entity.LinkWithTags
-import com.example.linkit.data.room.entity.TagWithLinks
+import com.example.linkit.data.room.entity.*
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -23,11 +21,21 @@ interface LinkDao {
     @Query("SELECT * FROM tagTable")
     fun getTags() : Flow<List<TagWithLinks>>
 
+    @Transaction
+    @Query("SELECT * from linkTable where parentFolderId = :folderId")
+    fun getLinksInFolder(folderId: Long) : Flow<List<LinkWithTags>>
+
     @Query("SELECT * from linkTable where linkId = :id")
     suspend fun getLinkById(id: Long): LinkWithTags
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(linkEntity: LinkEntity)
+    suspend fun insert(linkEntity: LinkEntity) : Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(tagEntity: TagEntity) : Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(linkTagRef : LinkTagRef)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(linkEntity: LinkEntity)
