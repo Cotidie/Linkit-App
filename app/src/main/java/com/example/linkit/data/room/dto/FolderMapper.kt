@@ -36,7 +36,7 @@ class EntityToFolder @Inject constructor() : Mapper<FolderEntity, IFolder> {
 }
 
 @Singleton
-class FolderToEntity : Mapper<IFolder, FolderEntity> {
+class FolderToEntity @Inject constructor() : Mapper<IFolder, FolderEntity> {
     override fun map(input: IFolder): FolderEntity {
         return when (input.isShared()) {
             true -> {
