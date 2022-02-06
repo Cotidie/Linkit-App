@@ -22,7 +22,7 @@ class FolderRepository @Inject constructor(
             .map { folderDto.map(it) }
     }
 
-    suspend fun getFolder(id: Long) : FolderEntity = folderDao.getFolderById(id)
+    suspend fun getFolder(id: Long) : IFolder = folderDao.getFolderById(id).run { folderDto.map(this) }
     suspend fun insert(folder: IFolder) = folderDao.insert(folderDto.map(folder))
     suspend fun update(folder: IFolder) = folderDao.update(folderDto.map(folder))
     suspend fun delete(folder: IFolder) = folderDao.delete(folderDto.map(folder))
