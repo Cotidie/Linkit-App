@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun Explorer(
     navController: NavController,
-    folderName: String
+    folderId: Long
 ) {
     val viewModel = hiltViewModel<ExplorerViewModel>(cxt() as ViewModelStoreOwner)
     var uiMode by remember { mutableStateOf(NORMAL) }
@@ -57,10 +57,14 @@ fun Explorer(
         }
     }
 
+    LaunchedEffect(folderId) {
+        viewModel.setCurrentFolder(folderId)
+    }
+
     Scaffold(
         topBar = {
             AppBarExplorer(
-                folderName = folderName,
+                folderName = viewModel.currentFolder.collectAsState().value.toString(),
                 navController = navController
             )
         },
@@ -86,7 +90,7 @@ fun Explorer(
             ExplorerContent(
                 navController = navController,
                 viewModel = viewModel,
-                links = viewModel.links.toList(),
+                links = viewModel.links.value.toList(),
                 scrollState = scrollState,
                 onLongPress = { uiMode = EDIT_LINK },
                 uiMode = uiMode
@@ -180,5 +184,5 @@ fun getSampleLinks() : List<Link> {
 fun PreviewExplorer() {
     val navController = rememberNavController()
 
-    Explorer(navController,"취미폴더")
+    Explorer(navController, EMPTY_LONG)
 }

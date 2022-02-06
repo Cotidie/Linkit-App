@@ -26,15 +26,15 @@ fun NavGraph(navController: NavHostController) {
             Home(navController)
         }
         composable(
-            route = Screen.Explorer.route.plus("/{folderName}"),
+            route = Screen.Explorer.route.plus("/{folderId}"),
             arguments = listOf(
-                navArgument("folderName") {
-                    type = NavType.StringType
+                navArgument("folderId") {
+                    type = NavType.LongType
                 }
             )
         ) { backStackEntry ->
-            val folderName = backStackEntry.arguments?.getString("folderName")
-            Explorer(navController, folderName!!)
+            val folderId = backStackEntry.arguments?.getLong("folderId")
+            Explorer(navController, folderId!!)
         }
         composable(route = Screen.Profile.route) {
             ProfileScreen(navController)

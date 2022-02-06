@@ -26,6 +26,10 @@ class ExplorerViewModel @Inject constructor(
 
     init { collectLinks() }
 
+    fun setCurrentFolder(id: Long) {
+        currentFolder.update { id }
+    }
+
     fun addLink(urlString: String) {
         val url = Url(urlString)
         if (!url.isValid()) {
