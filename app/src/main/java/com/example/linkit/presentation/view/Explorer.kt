@@ -1,5 +1,6 @@
 package com.example.linkit.presentation
 
+import android.app.Application
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -22,20 +23,19 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.linkit.domain.model.Link
 import com.example.linkit.R
 import com.example.linkit._enums.AnimationSpec
 import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
 import com.example.linkit.domain.interfaces.ILink
-import com.example.linkit.domain.model.EMPTY_BITMAP
-import com.example.linkit.domain.model.Url
-import com.example.linkit.domain.model.log
+import com.example.linkit.domain.model.*
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 
 @Composable
@@ -43,7 +43,7 @@ fun Explorer(
     navController: NavController,
     folderName: String
 ) {
-    val viewModel = hiltViewModel<ExplorerViewModel>()
+    val viewModel = hiltViewModel<ExplorerViewModel>(cxt() as ViewModelStoreOwner)
     var uiMode by remember { mutableStateOf(NORMAL) }
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
@@ -85,10 +85,7 @@ fun Explorer(
         ) {
             ExplorerContent(
                 navController = navController,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.DarkGray)
-                    .padding(innerPadding),
+                viewModel = viewModel,
                 links = viewModel.links.toList(),
                 scrollState = scrollState,
                 onLongPress = { uiMode = EDIT_LINK },
@@ -103,7 +100,7 @@ fun Explorer(
 @Composable
 fun ExplorerContent(
     navController: NavController,
-    modifier: Modifier = Modifier,
+    viewModel: ExplorerViewModel,
     links: List<ILink>,
     scrollState: LazyListState = rememberLazyListState(),
     onLongPress: () -> Unit,
@@ -124,12 +121,7 @@ fun ExplorerContent(
                 CardLinkAdd(
                     onAddClick = { urlString ->
                         keyboardController?.hide()
-                        val url = Url(urlString)
-
-                        if (!url.isValid()) {
-                            "부정확한 URL입니다.".toast()
-                            return@CardLinkAdd
-                        }
+                        viewModel.addLink(urlString)
                     }
                 )
             }
@@ -170,12 +162,12 @@ fun ExplorerEditPopup(uiMode: UIMode) {
 @Composable
 fun getSampleLinks() : List<Link> {
     val titles = listOf("네이버", "다음","네이버", "다음","네이버", "다음")
-    val url = "https://developer.android.com/jetpack/compose/layout?hl=ko"
+    val url = Url("https://developer.android.com/jetpack/compose/layout?hl=ko")
     val tags = listOf("유명", "네이버", "검색")
     val links = ArrayList<Link>().apply {
         titles.forEachIndexed { index, s ->
             add(Link(
-                index.toLong(), s, "", url, EMPTY_BITMAP, tags
+                index.toLong(), EMPTY_LONG, s, "", url, EMPTY_BITMAP, tags
             ))
         }
     }
