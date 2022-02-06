@@ -1,6 +1,7 @@
 package com.example.linkit.domain.interfaces
 
 import android.graphics.Bitmap
+import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.FolderPrivate
 
 /** 폴더의 기본 형식을 정의한다. */
@@ -12,6 +13,6 @@ interface IFolder : IFile{
     fun isShared() : Boolean
 
     companion object {
-        val DEFAULT = FolderPrivate(id=Long.MIN_VALUE, name="무제폴더")
+        val DEFAULT = FolderPrivate(id= EMPTY_LONG, name="무제폴더")
     }
 }
