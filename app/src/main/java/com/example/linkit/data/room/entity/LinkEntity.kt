@@ -1,5 +1,6 @@
 package com.example.linkit.data.room.entity
 
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,6 +10,8 @@ data class LinkEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "linkId")
     val id: Long = 0,
+    @ColumnInfo(name = "parentFolderId")
+    val folderId: Long,
     @ColumnInfo(name = "title")
     val title: String = "",
     @ColumnInfo(name="memo")
@@ -16,5 +19,5 @@ data class LinkEntity(
     @ColumnInfo(name="url")
     val url: String,
     @ColumnInfo(name="image")
-    val image: String
+    val image: Bitmap
 )

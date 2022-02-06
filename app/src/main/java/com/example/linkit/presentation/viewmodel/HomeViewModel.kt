@@ -45,4 +45,9 @@ class HomeViewModel @Inject constructor(
                 }
         }
     }
+
+    override fun onCleared() {
+        "HomeViewModel 제거!".log()
+        super.onCleared()
+    }
 }

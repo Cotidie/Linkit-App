@@ -37,30 +37,3 @@ fun <T> DropDownButton(
         }
     }
 }
-
-///** State 값을 분리하기 위한 Wrapper */
-//@Composable
-//fun <T> DropDownButton(
-//    modifier: Modifier = Modifier,
-//    items: List<T>,
-//    button: @Composable (selected: T, showHide: () -> Unit) -> Unit,
-//    item: @Composable (index: Int, item: T) -> Unit
-//) {
-//    var selected by remember { mutableStateOf(items[0]) }
-//    var expanded by remember { mutableStateOf(false) }
-//
-//    DropDownButton(
-//        modifier = modifier,
-//        items = items,
-//        button = { button(selected) {
-//            expanded = !expanded
-//        } },
-//        item = item,
-//        onItemClick = { clickedItem ->
-//            selected = clickedItem
-//            expanded = false
-//        },
-//        onDismissRequest = { expanded = false },
-//        expanded = expanded
-//    )
-//}

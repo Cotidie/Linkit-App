@@ -24,7 +24,7 @@ data class FolderWithLinks(
 
     @Relation(
         parentColumn = "folderId",
-        entityColumn = "linkId"
+        entityColumn = "parentFolderId"
     )
     val links: List<LinkEntity>
 )

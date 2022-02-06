@@ -22,14 +22,16 @@ import androidx.compose.ui.unit.dp
 import com.example.linkit.R
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
+import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link
+import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
 
 @Composable
 fun CardLink(
     modifier: Modifier = Modifier,
-    link: Link,
+    link: ILink,
     onLongPress: () -> Unit = {},
     onCheck: () -> Unit = {},
     onIconClick: () -> Unit = {},
@@ -57,8 +59,8 @@ fun CardLink(
             modifier = Modifier
                 .padding(end = 15.dp)
                 .size(55.dp)
-                .background(Color.LightGray)
-                .clip(RoundedCornerShape(8.dp)),
+                .clip(RoundedCornerShape(8.dp))
+                .background(Color.LightGray),
             bitmap = link.image.asImageBitmap(),
             contentDescription = null,
             contentScale = ContentScale.Crop
@@ -85,7 +87,7 @@ fun CardLink(
 @Composable
 fun LinkAndTags(
     modifier: Modifier,
-    link: Link
+    link: ILink
 ) {
     Column(
         modifier = modifier
@@ -94,7 +96,7 @@ fun LinkAndTags(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            text = link.url,
+            text = link.url.getString(false),
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1
         )
@@ -151,8 +153,8 @@ fun PreviewLinkCard() {
         0, 
         "네이버", 
         "네이버캐스트", 
-        "https://www.naver.com", 
-        getBitmap(id = R.drawable.ic_sample_image_001)!!,
+        Url("https://www.naver.com"),
+        getBitmap(id = R.drawable.ic_sample_image_001),
         listOf("유명", "네이버", "검색")
     )
     

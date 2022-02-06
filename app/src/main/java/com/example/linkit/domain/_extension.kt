@@ -31,3 +31,6 @@ fun Uri.toBitmap() : Bitmap {
 
 /** 빈 비트맵 */
 val EMPTY_BITMAP = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888)
+
+/** 빈 Long: Long.MIN_VALUE */
+val EMPTY_LONG = Long.MIN_VALUE

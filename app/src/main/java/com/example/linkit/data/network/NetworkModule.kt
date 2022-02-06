@@ -1,6 +1,7 @@
 package com.example.linkit.data.network
 
 import com.example.linkit.data.network.api.IDeveloperApi
+import com.example.linkit.data.network.api.ILinkApi
 import com.example.linkit.data.network.api.IUserApi
 import dagger.Module
 import dagger.Provides
@@ -11,22 +12,24 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 class NetworkModule {
-    private val BASE_URL = "https://link-manage-apptive.herokuapp.com"
+    private val BASE_URL = "https://link-manage-apptive.herokuapp.com/"
 
     @Singleton
     @Provides
+    @Named("AuthInterceptor")
     /** 요청 헤더에 JWT 토큰(로그인 인증 용도)을 붙여 보낸다. */
     fun providesAuthInterceptor() : Interceptor {
         return Interceptor {
             // 기존 요청에 헤더를 붙인다.
             val newRequest = it.request()
                 .newBuilder()
-                .addHeader("Authorization", "로그인 토큰")
+                .addHeader("Authorization", "aaaaa")
                 .build()
             // 요청을 보낸다.
             it.proceed(newRequest)
@@ -35,6 +38,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
+    @Named("LogginInterceptor")
     /** 요청과 응답마다 Body 부분을 디버그 로깅한다. */
     fun providesLogginInterceptor() : Interceptor {
         return HttpLoggingInterceptor()
@@ -45,7 +49,9 @@ class NetworkModule {
     @Provides
     /** Retrofit에서 이용할 OkHttpClient 생성 */
     fun providesOkHttpClient(
+        @Named("AuthInterceptor")
         authInterceptor: Interceptor,
+        @Named("LogginInterceptor")
         loggingInterceptor: Interceptor
     ) : OkHttpClient {
         return OkHttpClient.Builder()
@@ -77,5 +83,12 @@ class NetworkModule {
     /** IDeveloperAPI를 구현한다. */
     fun providesDeveloperApi(retrofit: Retrofit) : IDeveloperApi {
         return retrofit.create(IDeveloperApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    /** ILinkAPI를 구현한다 */
+    fun providesLinkApi(retrofit: Retrofit) : ILinkApi {
+        return retrofit.create(ILinkApi::class.java)
     }
 }
