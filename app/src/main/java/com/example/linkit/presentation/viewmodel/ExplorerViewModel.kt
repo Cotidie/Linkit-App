@@ -3,6 +3,7 @@ package com.example.linkit.presentation.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.linkit._enums.SearchKey
 import com.example.linkit.data.repository.FolderRepository
 import com.example.linkit.data.repository.LinkRepository
 import com.example.linkit.domain.interfaces.IFolder
@@ -20,10 +21,16 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
+/**
+ * 폴더 내 링크들을 표시하는 Explorer.kt와 연결된 뷰모델
+ * @property allLinks 현재 폴더에 존재하는 모든 링크들
+ * @property links Explorer 쪽에 표시할 링크들
+ */
 class ExplorerViewModel @Inject constructor(
     private val linkRepo: LinkRepository,
     private val folderRepo: FolderRepository,
 ) : ViewModel() {
+    private var allLinks : List<ILink> = emptyList()
     val links = mutableStateOf(emptyList<ILink>())
     val currentFolder = MutableStateFlow(IFolder.DEFAULT)
 
@@ -55,8 +62,14 @@ class ExplorerViewModel @Inject constructor(
         }
         val link = createNewLink(url)
         viewModelScope.launch {
-            linkRepo.addLink(link)
+            withContext(Dispatchers.IO) {
+                linkRepo.addLink(link)
+            }
         }
+    }
+
+    fun searchLinks(text: String, key: SearchKey) {
+
     }
 
     /** 현재 폴더가 변경되면 자동으로 폴더 내의 링크들을 불러온다. */
@@ -68,7 +81,7 @@ class ExplorerViewModel @Inject constructor(
                 }
                 .distinctUntilChanged()
                 .collect {
-                    links.value = it
+                    allLinks = it
                 }
         }
     }
@@ -78,6 +91,4 @@ class ExplorerViewModel @Inject constructor(
         val folder = currentFolder.value
         return Link(parentFolder = folder.id, url = url)
     }
-
-
 }
