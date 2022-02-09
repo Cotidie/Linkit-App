@@ -22,10 +22,12 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * 도메인 모델 Link를 담당하는 Repository
  */
+@Singleton
 class LinkRepository @Inject constructor(
     private val linkDao: LinkDao,
     private val linkDto: LinkMappers,
@@ -33,7 +35,6 @@ class LinkRepository @Inject constructor(
     private val bitmapMapper: BitmapMapper,
 ) {
     private val appContext = LinkItApp.cxt()
-
     /** Flow를 IO 쓰레드에서 동작시키고, emit과 collector를 다른 코루틴에서 실행시킨다 (conflate) */
     fun getAllLinks() : Flow<List<LinkWithTags>> {
         return linkDao.getLinks()
@@ -51,8 +52,7 @@ class LinkRepository @Inject constructor(
     /** 링크가 주어지면 이미지를 웹에서 불러오고, 그후 Room에 저장한다. */
     suspend fun addLink(link: ILink) {
         link.favicon = getFavicon(link.url)
-
-        getMetaImg(link)
+        link.metaImg = getMetaImg(link)
         Log.d("##12","metaimgBuyt ${link.metaImg}")
 
         val linkWithTags = linkDto.map(link)
@@ -67,7 +67,10 @@ class LinkRepository @Inject constructor(
     suspend fun updateLink(linkEntity: LinkEntity) = linkDao.update(linkEntity)
     suspend fun deleteLink(linkEntity: LinkEntity) = linkDao.deleteLink(linkEntity)
     suspend fun deleteAllLinks() = linkDao.delete()
-
+    suspend fun searchLinkByUrl(text: String) : List<ILink> {
+//        val roomResult : List<LinkWithTags>
+//        return linkDto.map(roomResult)
+    }
     private suspend fun getFavicon(url: Url) : Bitmap {
         val faviconUrl = url.getFaviconUrl()
         val rawResponse = linkApi.fetchUrl(faviconUrl).body()
@@ -75,13 +78,10 @@ class LinkRepository @Inject constructor(
     }
 
     /** 크롤링 함수 */
-    private suspend fun getMetaImg(link : ILink){
-        withContext(Dispatchers.IO) {
-            val metaImg = link.url.getMetaImg()?.get("image")
-            Log.d("##12","metaimg $metaImg")
-            link.metaImg = stringToBitmap(metaImg)
-        }
-
+    private suspend fun getMetaImg(link : ILink) : Bitmap {
+        val metaImg = link.url.getMetaImg()?.get("image")
+        Log.d("##12","metaimg $metaImg")
+        return stringToBitmap(metaImg)
     }
 
     private fun stringToBitmap(encodedString: String?): Bitmap {
