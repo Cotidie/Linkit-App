@@ -3,7 +3,7 @@
 
 # Android Studio
 *.iml
-.idea/
+.idea/*
 
 .DS_Store
 /build
