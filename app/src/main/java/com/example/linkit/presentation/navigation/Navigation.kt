@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.view.ContentScreen
 import com.example.linkit.presentation.view.ProfileScreen
+import com.example.linkit.presentation.view.SearchResultScreen
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 
 @Composable
@@ -49,13 +50,20 @@ fun NavGraph(navController: NavHostController) {
         composable(
             route = Screen.Content.route.plus("/{linkId}"),
             arguments = listOf(
-                navArgument("linkId") {
-                    type = NavType.LongType
-                }
+                navArgument("linkId") { type = NavType.LongType }
             )
         ) { backStackEntry ->
             val linkId = backStackEntry.arguments?.getLong("linkId")
             ContentScreen(navController, linkId!!)
+        }
+        composable(
+            route = Screen.SearchResult.route.plus("/{text}"),
+            arguments = listOf(
+                navArgument("text") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val text = backStackEntry.arguments?.getString("text")
+            SearchResultScreen(navController, text = text!!)
         }
     }
 
