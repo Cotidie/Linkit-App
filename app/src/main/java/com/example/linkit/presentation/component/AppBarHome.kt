@@ -19,10 +19,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.SearchBarState.*
 import com.example.linkit.presentation.navigation.Screen
+import com.example.linkit.presentation.viewmodel.HomeViewModel
 import com.example.linkit.ui.theme.LinkItTheme
 
 @Composable
-fun AppBarHome(navController: NavController) {
+fun AppBarHome(navController: NavController, viewModel: HomeViewModel) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
     var text by remember { mutableStateOf("") }
 
@@ -43,7 +44,8 @@ fun AppBarHome(navController: NavController) {
                         searchBarState = CLOSED
                     }
                 },
-                onTextChange = { text = it }
+                onTextChange = { text = it },
+                onSearchClicked = { viewModel.searchLink(text) }
             )
         }
     }

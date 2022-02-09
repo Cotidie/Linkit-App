@@ -10,7 +10,8 @@ class Link(
     override var name: String = "",
     override var memo: String = "",
     override var url: Url,
-    override var image: Bitmap = EMPTY_BITMAP,
+    override var favicon: Bitmap = EMPTY_BITMAP,
+    override var metaImg: Bitmap = EMPTY_BITMAP,
     override val tags: List<String> = ArrayList(),
     override val created: Date = Date()
 ) : ILink {

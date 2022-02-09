@@ -9,6 +9,7 @@ interface ILink : IFile{
     override var name: String
     var memo: String
     var url: Url
-    var image: Bitmap
+    var favicon: Bitmap // image -> favicon 으로 변경
+    var metaImg : Bitmap
     val tags: List<String>
 }

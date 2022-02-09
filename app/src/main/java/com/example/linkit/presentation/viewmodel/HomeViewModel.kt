@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -17,13 +18,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: FolderRepository
-): ViewModel() {
+    private val repository: FolderRepository,
+) : ViewModel() {
     private val _allFolders = mutableStateOf(emptyList<IFolder>())
-    val allFolders : State<List<IFolder>> = _allFolders
+    val allFolders: State<List<IFolder>> = _allFolders
 
     // 관찰할 Flow를 등록한다.
-    init { collectAllFolders() ; "HomeViewModel 생성!".log()}
+    init {
+        collectAllFolders(); "HomeViewModel 생성!".log()
+    }
 
     fun addFolder(name: String, shared: Boolean = false) {
         val folder = when (shared) {
@@ -35,6 +38,9 @@ class HomeViewModel @Inject constructor(
 
     fun updateFolder(folder: IFolder) = viewModelScope.launch { repository.update(folder) }
     fun removeFolder(folder: IFolder) = viewModelScope.launch { repository.delete(folder) }
+    fun searchLink(text: String) {
+        Log.d("##12", "$text")
+    }
 
     private fun collectAllFolders() {
         viewModelScope.launch {

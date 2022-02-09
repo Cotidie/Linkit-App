@@ -1,6 +1,5 @@
 package com.example.linkit.presentation.component
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.UiMode
 import androidx.compose.ui.unit.dp
 import com.example.linkit.R
 import com.example.linkit._constant.UIConstants
@@ -62,7 +60,7 @@ fun CardLink(
                 .size(55.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color.LightGray),
-            bitmap = link.image.asImageBitmap(),
+            bitmap = link.favicon.asImageBitmap(),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
@@ -156,6 +154,7 @@ fun PreviewLinkCard() {
         "네이버", 
         "네이버캐스트", 
         Url("https://www.naver.com"),
+        getBitmap(id = R.drawable.ic_sample_image_001), //
         getBitmap(id = R.drawable.ic_sample_image_001),
         listOf("유명", "네이버", "검색")
     )

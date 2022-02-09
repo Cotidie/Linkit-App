@@ -21,7 +21,8 @@ fun AppBarSearch(
     modifier : Modifier = Modifier,
     text : String,
     onClearClicked: () -> Unit = {},
-    onTextChange: (String) -> Unit = {}
+    onTextChange: (String) -> Unit = {},
+    onSearchClicked: () -> Unit = {},
 ) {
     TopAppBar(
         modifier = modifier.height(UIConstants.HEIGHT_APP_BAR),
@@ -49,7 +50,8 @@ fun AppBarSearch(
                         contentDescription = null
                     )
                 },
-                onTextChange = { onTextChange(it) }
+                onTextChange = { onTextChange(it) },
+                onSearchClicked = { onSearchClicked()}
             )
         },
         backgroundColor = Color.White,

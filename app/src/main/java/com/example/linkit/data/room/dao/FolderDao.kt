@@ -1,5 +1,6 @@
 package com.example.linkit.data.room.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.linkit.data.room.entity.FolderEntity
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +18,9 @@ interface FolderDao {
 
     @Query("SELECT * FROM folderTable WHERE folderId = :id")
     suspend fun getFolderById(id: Long) : FolderEntity
+
+//    @Query("SELECT * FROM linkTable WHERE tags LIKE :query || '%' ORDER BY `key` DESC ")
+//    fun getQueryLink(query: String): LiveData<List<Link>>
 
     @Insert
     suspend fun insert(folderEntity: FolderEntity)

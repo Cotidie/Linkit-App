@@ -61,7 +61,7 @@ fun Home(navController: NavController) {
     }
 
     Scaffold(
-        topBar = { AppBarHome(navController) },
+        topBar = { AppBarHome(navController, viewModel) },
         bottomBar = {
             AppBottomBar(
                 navController = navController,

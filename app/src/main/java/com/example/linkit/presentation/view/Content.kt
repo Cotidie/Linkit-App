@@ -13,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -28,12 +27,10 @@ import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
-import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CustomChip
 import com.example.linkit.presentation.component.TextUrl
 import com.example.linkit.presentation.getBitmap
-import com.example.linkit.presentation.toDp
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
@@ -50,6 +47,7 @@ fun ContentScreen(
                 "링크",
                 "오늘은 낚시를 갔다. 물고기를 많이 잡았다. 뿌듯했다.",
                 Url("https://www.google.com/search?q=jetpack+compose+maxsize&newwindow=1&hl=en&biw=1396&bih=656&sxsrf=APq-WBsnuSZEUIwVd7jld09SJvANZoqdGw%3A1643644748914&ei=TAf4Yb2ON83yhwOd9J2QDA&ved=0ahUKEwi95JTrrdz1AhVN-WEKHR16B8IQ4dUDCA8&uact=5&oq=jetpack+compose+maxsize&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABMgUIIRCgAToECCMQJzoFCAAQkQI6BQgAEIAEOgUILhCABDoECC4QQzoLCC4QgAQQxwEQ0QM6BAgAEEM6CgguEMcBENEDEEM6BQgAEMsBOgYIABAWEB5KBAhBGABKBAhGGABQAFjUFGCVFWgAcAJ4AIABmwGIAZUWkgEEMC4yMZgBAKABAcABAQ&sclient=gws-wiz"),
+                bitmap,
                 bitmap,
                 listOf("낚시", "밤낚시", "물고기")
             )
@@ -75,7 +73,7 @@ fun ContentScreen(
                 )
                 // 이미지 영역
                 ImageArea(
-                    image = link.image.asImageBitmap()
+                    image = link.favicon.asImageBitmap()
                 )
 
                 Spacer(Modifier.height(10.dp))

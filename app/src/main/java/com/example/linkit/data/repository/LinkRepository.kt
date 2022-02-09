@@ -1,6 +1,9 @@
 package com.example.linkit.data.repository
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+import android.util.Log
 import com.example.linkit.LinkItApp
 import com.example.linkit.data.network.api.ILinkApi
 import com.example.linkit.data.network.dto.BitmapMapper
@@ -10,12 +13,14 @@ import com.example.linkit.data.room.entity.LinkEntity
 import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.domain.interfaces.ILink
+import com.example.linkit.domain.model.EMPTY_BITMAP
 import com.example.linkit.domain.model.Url
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -45,7 +50,11 @@ class LinkRepository @Inject constructor(
 
     /** 링크가 주어지면 이미지를 웹에서 불러오고, 그후 Room에 저장한다. */
     suspend fun addLink(link: ILink) {
-        link.image = getFavicon(link.url)
+        link.favicon = getFavicon(link.url)
+
+        getMetaImg(link)
+        Log.d("##12","metaimgBuyt ${link.metaImg}")
+
         val linkWithTags = linkDto.map(link)
         // 링크 insert
         val linkId = linkDao.insert(linkWithTags.link)
@@ -63,6 +72,26 @@ class LinkRepository @Inject constructor(
         val faviconUrl = url.getFaviconUrl()
         val rawResponse = linkApi.fetchUrl(faviconUrl).body()
         return bitmapMapper.map(rawResponse)
+    }
+
+    /** 크롤링 함수 */
+    private suspend fun getMetaImg(link : ILink){
+        withContext(Dispatchers.IO) {
+            val metaImg = link.url.getMetaImg()?.get("image")
+            Log.d("##12","metaimg $metaImg")
+            link.metaImg = stringToBitmap(metaImg)
+        }
+
+    }
+
+    private fun stringToBitmap(encodedString: String?): Bitmap {
+        return try {
+            val encodeByte: ByteArray = Base64.decode(encodedString, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
+        } catch (e: Exception) {
+            e.message
+            EMPTY_BITMAP
+        }
     }
 
 }
