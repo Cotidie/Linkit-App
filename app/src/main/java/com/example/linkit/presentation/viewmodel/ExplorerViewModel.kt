@@ -7,11 +7,15 @@ import com.example.linkit.data.repository.FolderRepository
 import com.example.linkit.data.repository.LinkRepository
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.interfaces.ILink
-import com.example.linkit.domain.model.*
+import com.example.linkit.domain.model.Link
+import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -21,14 +25,14 @@ class ExplorerViewModel @Inject constructor(
     private val folderRepo: FolderRepository
 ): ViewModel() {
     val links = mutableStateOf(emptyList<ILink>())
-    val currentFolder = MutableStateFlow(IFolder.DEFAULT)
+    val selected = ArrayList<ILink>()
+    val currentFolder: MutableStateFlow<IFolder?> = MutableStateFlow(IFolder.DEFAULT)
 
     init { collectLinks() }
 
+    /** 화면을 비운다. */
     fun clearScreen() {
-        viewModelScope.launch {
-            currentFolder.update { IFolder.DEFAULT }
-        }
+        currentFolder.update { null }
     }
 
     fun setCurrentFolder(id: Long) {
@@ -51,10 +55,13 @@ class ExplorerViewModel @Inject constructor(
         }
     }
 
+    /** 편집할 폴더를 선택한다. */
+    fun selectFolder(link: ILink) { selected.add(link) }
+
     /** 현재 폴더가 변경되면 자동으로 폴더 내의 링크들을 불러온다. */
     private fun collectLinks() {
         viewModelScope.launch {
-            currentFolder
+            currentFolder.filterNotNull()
                 .flatMapLatest { folder ->
                     linkRepo.getLinksInFolder(folder.id)
                 }
@@ -68,6 +75,7 @@ class ExplorerViewModel @Inject constructor(
     /** url을 받아 Link 객체를 만든다. */
     private fun createNewLink(url: Url) : ILink {
         val folder = currentFolder.value
+        if (folder == null) return ILink.EMPTY
 
         return Link(parentFolder = folder.id, url = url)
     }

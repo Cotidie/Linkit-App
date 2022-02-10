@@ -58,7 +58,7 @@ fun Explorer(
     Scaffold(
         topBar = {
             AppBarExplorer(
-                folderName = currentFolder.name,
+                folderName = currentFolder?.name ?: "",
                 navController = navController
             )
         },
