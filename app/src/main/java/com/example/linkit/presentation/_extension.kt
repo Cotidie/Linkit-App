@@ -25,6 +25,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -41,6 +42,9 @@ import kotlinx.coroutines.launch
 /** Composable 함수 내에서 현재 Context 반환. 축약형으로 쓰기 위함 */
 @Composable
 fun cxt() : Context = LocalContext.current
+
+@Composable
+fun viewModelOwner() : ViewModelStoreOwner = cxt() as ViewModelStoreOwner
 
 /** 간단한 토스트 메시지를 하단에 띄운다. */
 fun String.toast(length: Int = Toast.LENGTH_SHORT) {
