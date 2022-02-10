@@ -14,6 +14,7 @@ import javax.inject.Singleton
 class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
     override fun map(input: ILink): LinkWithTags {
         val link =  LinkEntity(
+            id = input.id,
             folderId = input.parentFolder,
             url = input.url.getString(true),
             image = input.image
