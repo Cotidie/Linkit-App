@@ -15,12 +15,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.linkit._enums.AnimationSpec
 import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
@@ -149,7 +145,7 @@ fun ExplorerEditPopup(uiMode: UIMode) {
         contentAlignment = Alignment.BottomCenter
     ) {
         AnimatePopup(visible = (uiMode == EDIT_LINK)) {
-            AppBottomBarEditLink(
+            PopupEditLink(
                 modifier = Modifier,
                 text = "링크 편집"
             )

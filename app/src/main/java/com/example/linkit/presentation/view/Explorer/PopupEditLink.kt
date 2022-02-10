@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import com.example.linkit._constant.UIConstants
 
 @Composable
-fun AppBottomBarEditLink(
+fun PopupEditLink(
     modifier: Modifier = Modifier,
     text: String
 ) {

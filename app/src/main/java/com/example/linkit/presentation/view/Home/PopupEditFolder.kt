@@ -18,7 +18,7 @@ import com.example.linkit.presentation.chooseImageLauncher
 import com.example.linkit.presentation.cxt
 
 @Composable
-fun AppBottomBarEditFolder(
+fun PopupEditFolder(
     text: String,
     onDeleteClick: () -> Unit = {},
     onRenameClick: () -> Unit = {},
