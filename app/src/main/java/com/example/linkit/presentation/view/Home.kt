@@ -1,18 +1,15 @@
 package com.example.linkit.presentation
 
 import android.graphics.Bitmap
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Person
@@ -29,7 +26,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.linkit.MainActivity
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.IFolder
-import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
@@ -199,7 +195,7 @@ private fun HomeEditPopup(
         AnimatePopup(
             visible = (uiMode == UIMode.EDIT_FOLDER)
         ) {
-            AppBottomBarEditFolder(
+            PopupEditFolder(
                 text = "샘플",
                 onDeleteClick = onDeleteClick,
                 onRenameClick = onRenameClick,

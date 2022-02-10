@@ -1,6 +1,8 @@
 package com.example.linkit.domain.interfaces
 
 import android.graphics.Bitmap
+import com.example.linkit.domain.model.EMPTY_LONG
+import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 
 interface ILink : IFile{
@@ -11,4 +13,8 @@ interface ILink : IFile{
     var url: Url
     var image: Bitmap
     val tags: List<String>
+
+    companion object {
+        val EMPTY = Link(id = EMPTY_LONG, url = Url())
+    }
 }

@@ -15,12 +15,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.example.linkit._constant.ColorConstants
 import com.example.linkit._enums.AnimationSpec
 import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
@@ -58,7 +55,7 @@ fun Explorer(
     Scaffold(
         topBar = {
             AppBarExplorer(
-                folderName = currentFolder.name,
+                folderName = currentFolder?.name ?: "",
                 navController = navController
             )
         },
@@ -75,12 +72,7 @@ fun Explorer(
             )
         }
     ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.DarkGray)
-                .padding(innerPadding)
-        ) {
+        ExplorerBackground(innerPadding) {
             ExplorerContent(
                 navController = navController,
                 viewModel = viewModel,
@@ -91,7 +83,25 @@ fun Explorer(
             )
         }
     }
-    ExplorerEditPopup(uiMode)
+    ExplorerEditPopup(
+        uiMode = uiMode,
+        onDelete = {
+            viewModel.deleteLinks()
+            uiMode = NORMAL
+        }
+    )
+}
+
+@Composable
+private fun ExplorerBackground(
+    padding: PaddingValues,
+    content: @Composable BoxScope.() -> Unit
+) {
+    BackgroundArea(
+        innerPadding = padding,
+        color = Color.DarkGray,
+        content = content
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
@@ -143,15 +153,19 @@ fun ExplorerContent(
 }
 
 @Composable
-fun ExplorerEditPopup(uiMode: UIMode) {
+fun ExplorerEditPopup(
+    uiMode: UIMode,
+    onDelete: () -> Unit
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     ) {
         AnimatePopup(visible = (uiMode == EDIT_LINK)) {
-            AppBottomBarEditLink(
+            PopupEditLink(
                 modifier = Modifier,
-                text = "링크 편집"
+                text = "링크 편집",
+                onDelete = onDelete
             )
         }
     }

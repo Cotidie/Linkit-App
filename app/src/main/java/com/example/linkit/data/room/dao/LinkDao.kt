@@ -41,8 +41,11 @@ interface LinkDao {
     suspend fun update(linkEntity: LinkEntity)
 
     @Query("DELETE FROM linkTable")
-    suspend fun delete()
+    suspend fun deleteAll()
 
     @Delete
     suspend fun deleteLink(linkEntity: LinkEntity)
+
+    @Query("DELETE FROM linkTable WHERE linkId IN (:ids)")
+    suspend fun deleteLinks(ids: List<Long>)
 }

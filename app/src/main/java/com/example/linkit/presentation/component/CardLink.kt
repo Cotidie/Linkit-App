@@ -1,6 +1,5 @@
 package com.example.linkit.presentation.component
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,8 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.UiMode
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.linkit.R
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
@@ -26,8 +25,11 @@ import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
+import com.example.linkit.presentation.cxt
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
+import com.example.linkit.presentation.viewModelOwner
+import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 
 @Composable
 fun CardLink(
@@ -38,6 +40,7 @@ fun CardLink(
     onIconClick: () -> Unit = {},
     uiMode: UIMode
 ) {
+    val viewModel = hiltViewModel<ExplorerViewModel>(viewModelOwner())
     val radius = UIConstants.RADIUS_CARD
     var selected by remember { mutableStateOf(false) }
 
@@ -54,6 +57,7 @@ fun CardLink(
             .longPress {
                 onLongPress()
                 selected = true
+                viewModel.select(link)
             }
     ) {
         Image(
@@ -80,7 +84,11 @@ fun CardLink(
             uiMode = uiMode,
             onIconClick = onIconClick,
             checked = selected && uiMode.isEditMode(),
-            onCheckClick = { selected = !selected }
+            onCheckClick = {
+                selected = !selected
+                if (selected)   viewModel.select(link)
+                else            viewModel.unselect(link)
+            }
         )
     }
 }

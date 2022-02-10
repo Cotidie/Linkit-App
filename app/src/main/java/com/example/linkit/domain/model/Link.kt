@@ -5,7 +5,7 @@ import com.example.linkit.domain.interfaces.ILink
 import java.util.*
 
 class Link(
-    override val id: Long = EMPTY_LONG,
+    override val id: Long = 0,
     override var parentFolder: Long = EMPTY_LONG,
     override var name: String = "",
     override var memo: String = "",
@@ -14,8 +14,13 @@ class Link(
     override val tags: List<String> = ArrayList(),
     override val created: Date = Date()
 ) : ILink {
+
+    override fun toString(): String {
+        return "Link(id: $id, name: $name)"
+    }
+
     companion object {
-        val EMPTY = Link(Long.MIN_VALUE, EMPTY_LONG, "", "", Url(""), EMPTY_BITMAP)
-        fun empty() = Link(Long.MIN_VALUE, EMPTY_LONG,"", "", Url(""), EMPTY_BITMAP)
+        val EMPTY = Link(0, EMPTY_LONG, "", "", Url(""), EMPTY_BITMAP)
+        fun empty() = Link(0, EMPTY_LONG,"", "", Url(""), EMPTY_BITMAP)
     }
 }

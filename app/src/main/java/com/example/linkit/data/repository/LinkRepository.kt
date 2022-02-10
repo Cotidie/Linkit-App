@@ -11,6 +11,7 @@ import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Url
+import com.example.linkit.domain.model.log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
@@ -55,9 +56,11 @@ class LinkRepository @Inject constructor(
             linkDao.insert(LinkTagRef(linkId = linkId, tagId = tagId))
         }
     }
-    suspend fun updateLink(linkEntity: LinkEntity) = linkDao.update(linkEntity)
-    suspend fun deleteLink(linkEntity: LinkEntity) = linkDao.deleteLink(linkEntity)
-    suspend fun deleteAllLinks() = linkDao.delete()
+    suspend fun deleteLinks(links: List<ILink>) {
+        val entities = linkDto.map(links)
+        val ids = entities.map { it.link.id }; "삭제할 링크: $ids".log()
+        linkDao.deleteLinks(ids)
+    }
 
     private suspend fun getFavicon(url: Url) : Bitmap {
         val faviconUrl = url.getFaviconUrl()
