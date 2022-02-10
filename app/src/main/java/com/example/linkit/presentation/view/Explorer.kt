@@ -83,7 +83,13 @@ fun Explorer(
             )
         }
     }
-    ExplorerEditPopup(uiMode)
+    ExplorerEditPopup(
+        uiMode = uiMode,
+        onDelete = {
+            viewModel.deleteLinks()
+            uiMode = NORMAL
+        }
+    )
 }
 
 @Composable
@@ -147,7 +153,10 @@ fun ExplorerContent(
 }
 
 @Composable
-fun ExplorerEditPopup(uiMode: UIMode) {
+fun ExplorerEditPopup(
+    uiMode: UIMode,
+    onDelete: () -> Unit
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
@@ -155,7 +164,8 @@ fun ExplorerEditPopup(uiMode: UIMode) {
         AnimatePopup(visible = (uiMode == EDIT_LINK)) {
             PopupEditLink(
                 modifier = Modifier,
-                text = "링크 편집"
+                text = "링크 편집",
+                onDelete = onDelete
             )
         }
     }

@@ -8,12 +8,15 @@ import androidx.compose.material.icons.filled.East
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.linkit._constant.UIConstants
+import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 
 @Composable
 fun PopupEditLink(
     modifier: Modifier = Modifier,
-    text: String
+    text: String,
+    onDelete: () -> Unit
 ) {
     AppBottomBarEdit(
         modifier = modifier,
@@ -28,7 +31,8 @@ fun PopupEditLink(
             IconTextButtonVert(
                 icon = Icons.Filled.Delete,
                 iconSize = UIConstants.SIZE_ICON_MEDIUM_LARGE,
-                text = "삭제"
+                text = "삭제",
+                onClick = onDelete
             )
         }
         Box(
