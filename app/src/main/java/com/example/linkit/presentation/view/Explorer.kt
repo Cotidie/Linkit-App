@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.linkit._constant.ColorConstants
 import com.example.linkit._enums.AnimationSpec
 import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
@@ -71,12 +72,7 @@ fun Explorer(
             )
         }
     ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.DarkGray)
-                .padding(innerPadding)
-        ) {
+        ExplorerBackground(innerPadding) {
             ExplorerContent(
                 navController = navController,
                 viewModel = viewModel,
@@ -88,6 +84,18 @@ fun Explorer(
         }
     }
     ExplorerEditPopup(uiMode)
+}
+
+@Composable
+private fun ExplorerBackground(
+    padding: PaddingValues,
+    content: @Composable BoxScope.() -> Unit
+) {
+    BackgroundArea(
+        innerPadding = padding,
+        color = Color.DarkGray,
+        content = content
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
