@@ -33,10 +33,8 @@ class ExplorerViewModel @Inject constructor(
 
     fun setCurrentFolder(id: Long) {
         runBlocking {
-            withContext(Dispatchers.IO) {
-                currentFolder.update {
-                    folderRepo.getFolder(id)
-                }
+            currentFolder.update {
+                folderRepo.getFolder(id)
             }
         }
     }
@@ -48,7 +46,9 @@ class ExplorerViewModel @Inject constructor(
             return
         }
         val link = createNewLink(url)
-        viewModelScope.launch { linkRepo.addLink(link) }
+        viewModelScope.launch(Dispatchers.IO) {
+            linkRepo.addLink(link)
+        }
     }
 
     /** 현재 폴더가 변경되면 자동으로 폴더 내의 링크들을 불러온다. */

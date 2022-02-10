@@ -42,6 +42,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun cxt() : Context = LocalContext.current
 
+/** 간단한 토스트 메시지를 하단에 띄운다. */
 fun String.toast(length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(LinkItApp.cxt(), this, Toast.LENGTH_SHORT).show()
 }
