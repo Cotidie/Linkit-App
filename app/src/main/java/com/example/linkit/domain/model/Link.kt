@@ -16,7 +16,7 @@ class Link(
 ) : ILink {
 
     override fun toString(): String {
-        return "Link(id: $id, name: $name)"
+        return "Link(id: $id, url: ${url.getString()})"
     }
 
     companion object {
