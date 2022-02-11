@@ -3,6 +3,7 @@ package com.example.linkit.presentation.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.linkit._enums.UIMode
 import com.example.linkit.data.repository.FolderRepository
 import com.example.linkit.data.repository.LinkRepository
 import com.example.linkit.domain.interfaces.IFolder
@@ -25,6 +26,7 @@ class ExplorerViewModel @Inject constructor(
     private val linkRepo: LinkRepository,
     private val folderRepo: FolderRepository
 ): ViewModel() {
+    val uiMode = mutableStateOf(UIMode.NORMAL)
     val links = mutableStateOf(emptyList<ILink>())
     val selected = ArrayList<ILink>()
     val currentFolder: MutableStateFlow<IFolder?> = MutableStateFlow(IFolder.DEFAULT)

@@ -28,6 +28,12 @@ import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 import kotlinx.coroutines.launch
 
+/**
+ * UI는 다음 두 단계로 구성된다. 또한 private 컴포넌트는 ViewModel, NavController를 전달받는다.
+ *   - Background: 배경색 설정
+ *   - Content: 공통 여백 설정
+ */
+
 @Composable
 fun Explorer(
     navController: NavController,
@@ -35,7 +41,7 @@ fun Explorer(
     folderId: Long
 ) {
     val currentFolder by viewModel.currentFolder.collectAsState()
-    var uiMode by remember { mutableStateOf(NORMAL) }
+    var uiMode by viewModel.uiMode
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
 
@@ -76,10 +82,7 @@ fun Explorer(
             ExplorerContent(
                 navController = navController,
                 viewModel = viewModel,
-                links = viewModel.links.value.toList(),
                 scrollState = scrollState,
-                onLongPress = { uiMode = EDIT_LINK },
-                uiMode = uiMode
             )
         }
     }
@@ -109,12 +112,11 @@ private fun ExplorerBackground(
 fun ExplorerContent(
     navController: NavController,
     viewModel: ExplorerViewModel,
-    links: List<ILink>,
     scrollState: LazyListState = rememberLazyListState(),
-    onLongPress: () -> Unit,
-    uiMode: UIMode
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    var uiMode by viewModel.uiMode
+    val links by viewModel.links
 
     LazyColumn(
         modifier = Modifier
@@ -140,7 +142,16 @@ fun ExplorerContent(
             CardLink(
                 modifier = Modifier.height(80.dp),
                 link = link,
-                onLongPress = onLongPress,
+                onCheckClick = { check ->
+                    "대상 링크 $link".log()
+                    if (check)   viewModel.select(link)
+                    else         viewModel.unselect(link)
+                },
+                onLongPress = {
+                    uiMode = EDIT_LINK
+                    "대상 링크 $link".log()
+                    viewModel.select(link)
+                },
                 onIconClick = {
                     navController.navigate(
                         route = Screen.Content.route.plus("/${link.id}")
