@@ -1,8 +1,7 @@
 package com.example.linkit.presentation.component
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -14,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,22 +25,23 @@ import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
+import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.cxt
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
 import com.example.linkit.presentation.viewModelOwner
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CardLink(
     modifier: Modifier = Modifier,
     link: ILink,
-    onLongPress: () -> Unit = {},
-    onCheck: () -> Unit = {},
+    onCheckClick: (Boolean) -> Unit = {},
+    onLongPress: (ILink) -> Unit = {},
     onIconClick: () -> Unit = {},
     uiMode: UIMode
 ) {
-    val viewModel = hiltViewModel<ExplorerViewModel>(viewModelOwner())
     val radius = UIConstants.RADIUS_CARD
     var selected by remember { mutableStateOf(false) }
 
@@ -54,10 +55,9 @@ fun CardLink(
             .clip(RoundedCornerShape(radius))
             .background(Color.White)
             .padding(start = 15.dp, top = 12.dp, bottom = 12.dp)
-            .longPress {
-                onLongPress()
+            .longPress(key=link) {
                 selected = true
-                viewModel.select(link)
+                onLongPress(link)
             }
     ) {
         Image(
@@ -65,7 +65,8 @@ fun CardLink(
                 .padding(end = 15.dp)
                 .size(55.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(Color.LightGray),
+                .background(Color.LightGray)
+                .combinedClickable {  },
             bitmap = link.image.asImageBitmap(),
             contentDescription = null,
             contentScale = ContentScale.Crop
@@ -85,9 +86,8 @@ fun CardLink(
             onIconClick = onIconClick,
             checked = selected && uiMode.isEditMode(),
             onCheckClick = {
-                selected = !selected
-                if (selected)   viewModel.select(link)
-                else            viewModel.unselect(link)
+                onCheckClick(it)
+                selected = it
             }
         )
     }
@@ -172,7 +172,7 @@ fun PreviewLinkCard() {
         modifier = Modifier.height(80.dp),
         link = link,
         onLongPress = {},
-        onCheck = {},
+        onCheckClick = {},
         uiMode = UIMode.EDIT_LINK
     )
 }

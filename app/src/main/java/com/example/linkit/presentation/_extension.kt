@@ -21,9 +21,12 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.debugInspectorInfo
+import androidx.compose.ui.semantics.Role
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
@@ -52,10 +55,12 @@ fun String.toast(length: Int = Toast.LENGTH_SHORT) {
 }
 
 /** Modifier 관련 익스텐션 */
-@Composable
-fun Modifier.longPress(behavior: () -> Unit) = pointerInput(Unit) {
-    detectTapGestures( onLongPress = {behavior()} )
-}
+fun <T>Modifier.longPress(
+    key: T,
+    onLongClick: () -> Unit,
+) = pointerInput(key) {
+        detectTapGestures( onLongPress = {onLongClick()} )
+    }
 
 /** 애니메이션 Wrapper */
 @Composable
