@@ -11,6 +11,7 @@ interface ILink : IFile{
     override var name: String
     var memo: String
     var url: Url
+    var favicon: Bitmap
     var image: Bitmap
     val tags: List<String>
 

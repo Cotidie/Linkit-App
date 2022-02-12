@@ -6,7 +6,6 @@ import com.example.linkit.data.network.api.ILinkApi
 import com.example.linkit.data.network.dto.BitmapMapper
 import com.example.linkit.data.repository.dto.LinkMappers
 import com.example.linkit.data.room.dao.LinkDao
-import com.example.linkit.data.room.entity.LinkEntity
 import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.domain.interfaces.ILink
@@ -46,7 +45,7 @@ class LinkRepository @Inject constructor(
 
     /** 링크가 주어지면 이미지를 웹에서 불러오고, 그후 Room에 저장한다. */
     suspend fun addLink(link: ILink) {
-        link.image = getFavicon(link.url)
+        link.favicon = getFavicon(link.url)
         val linkWithTags = linkDto.map(link)
         // 링크 insert
         val linkId = linkDao.insert(linkWithTags.link)

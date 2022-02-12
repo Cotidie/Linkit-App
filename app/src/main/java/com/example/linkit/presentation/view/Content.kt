@@ -2,8 +2,6 @@ package com.example.linkit.presentation.view
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
@@ -11,11 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -35,8 +30,6 @@ import com.example.linkit.presentation.component.CustomChip
 import com.example.linkit.presentation.component.TextUrl
 import com.example.linkit.presentation.getBitmap
 import com.google.accompanist.flowlayout.FlowRow
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun ContentScreen(
@@ -77,7 +70,7 @@ fun ContentScreen(
                 )
                 // 이미지 영역
                 ImageArea(
-                    image = link.image.asImageBitmap()
+                    image = link.favicon.asImageBitmap()
                 )
 
                 Spacer(Modifier.height(10.dp))
