@@ -158,6 +158,7 @@ fun PreviewLinkCard() {
         "네이버캐스트", 
         Url("https://www.naver.com"),
         getBitmap(id = R.drawable.ic_sample_image_001),
+        getBitmap(id = R.drawable.ic_sample_image_001),
         listOf("유명", "네이버", "검색")
     )
     

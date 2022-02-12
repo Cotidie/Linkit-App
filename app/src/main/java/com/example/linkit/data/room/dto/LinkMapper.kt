@@ -17,6 +17,7 @@ class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
             id = input.id,
             folderId = input.parentFolder,
             url = input.url.getString(true),
+            image = input.image,
             favicon = input.favicon
         )
 

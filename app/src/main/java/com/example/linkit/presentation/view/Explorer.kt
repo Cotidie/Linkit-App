@@ -190,7 +190,7 @@ fun getSampleLinks() : List<Link> {
     val links = ArrayList<Link>().apply {
         titles.forEachIndexed { index, s ->
             add(Link(
-                index.toLong(), EMPTY_LONG, s, "", url, EMPTY_BITMAP, tags
+                index.toLong(), EMPTY_LONG, s, "", url, EMPTY_BITMAP, EMPTY_BITMAP,tags
             ))
         }
     }
