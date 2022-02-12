@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.view
 
+import androidx.annotation.ContentView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit.R
@@ -29,6 +31,8 @@ import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CustomChip
 import com.example.linkit.presentation.component.TextUrl
 import com.example.linkit.presentation.getBitmap
+import com.example.linkit.presentation.viewModelOwner
+import com.example.linkit.presentation.viewmodel.ContentViewModel
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
@@ -36,22 +40,8 @@ fun ContentScreen(
     navController: NavController,
     linkId: Long
 ) {
-    val bitmap = getBitmap(id = R.drawable.ic_sample_image_001)
-    val link by remember {
-        mutableStateOf(
-            Link(
-                linkId,
-                parentFolder = EMPTY_LONG,
-                "링크",
-                "오늘은 낚시를 갔다. 물고기를 많이 잡았다. 뿌듯했다.",
-                Url("https://www.google.com/search?q=jetpack+compose+maxsize&newwindow=1&hl=en&biw=1396&bih=656&sxsrf=APq-WBsnuSZEUIwVd7jld09SJvANZoqdGw%3A1643644748914&ei=TAf4Yb2ON83yhwOd9J2QDA&ved=0ahUKEwi95JTrrdz1AhVN-WEKHR16B8IQ4dUDCA8&uact=5&oq=jetpack+compose+maxsize&gs_lcp=Cgdnd3Mtd2l6EAMyBQghEKABMgUIIRCgAToECCMQJzoFCAAQkQI6BQgAEIAEOgUILhCABDoECC4QQzoLCC4QgAQQxwEQ0QM6BAgAEEM6CgguEMcBENEDEEM6BQgAEMsBOgYIABAWEB5KBAhBGABKBAhGGABQAFjUFGCVFWgAcAJ4AIABmwGIAZUWkgEEMC4yMZgBAKABAcABAQ&sclient=gws-wiz"),
-                bitmap,
-                bitmap,
-                listOf("낚시", "밤낚시", "물고기")
-            )
-        )
-    }
-    var memoString by remember { mutableStateOf("오늘은 낚시를 갔다. 물고기를 많이 잡았다. 뿌듯했다.")}
+    val viewModel = hiltViewModel<ContentViewModel>(viewModelOwner())
+    val link by viewModel.link
     var uiMode by remember {mutableStateOf(UIMode.NORMAL)}
 
     Scaffold(

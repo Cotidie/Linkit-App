@@ -2,11 +2,9 @@ package com.example.linkit.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.linkit.LinkItApp
-import com.example.linkit.MainActivity
 import com.example.linkit.R
-import com.example.linkit.data.repository.UserRepository
+import com.example.linkit.domain.repository.UserRepository
 import com.example.linkit.domain.model.User
-import com.example.linkit.domain.model.log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

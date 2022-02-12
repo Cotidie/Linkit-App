@@ -2,6 +2,7 @@ package com.example.linkit.data.room.dto
 
 import com.example.linkit.data.room.entity.FolderEntity
 import com.example.linkit.domain.interfaces.IFolder
+import com.example.linkit.domain.interfaces.ListMapperImpl
 import com.example.linkit.domain.interfaces.Mapper
 import com.example.linkit.domain.model.EMPTY_BITMAP
 import com.example.linkit.domain.model.FolderPrivate
@@ -57,3 +58,13 @@ class FolderToEntity @Inject constructor() : Mapper<IFolder, FolderEntity> {
         }
     }
 }
+
+@Singleton
+class EntitiesToFolders @Inject constructor(
+    entityMapper : EntityToFolder
+) : ListMapperImpl<FolderEntity, IFolder>(entityMapper)
+
+@Singleton
+class FoldersToEntities @Inject constructor(
+    folderMapper : FolderToEntity
+) : ListMapperImpl<IFolder, FolderEntity>(folderMapper)

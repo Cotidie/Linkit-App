@@ -4,6 +4,7 @@ import com.example.linkit.data.room.entity.LinkEntity
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.data.room.entity.TagEntity
 import com.example.linkit.domain.interfaces.ILink
+import com.example.linkit.domain.interfaces.ListMapperImpl
 import com.example.linkit.domain.interfaces.Mapper
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
@@ -28,13 +29,6 @@ class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
     }
 }
 
-//@Singleton
-//class LinkToTagEntity @Inject constructor() : Mapper<ILink, List<TagEntity>> {
-//    override fun map(input: ILink): List<TagEntity> {
-//        return input.tags.map { TagEntity(name = it) }
-//    }
-//}
-
 @Singleton
 class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
     override fun map(input: LinkWithTags): ILink {
@@ -47,3 +41,13 @@ class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
         )
     }
 }
+
+@Singleton
+class LinkListMapper @Inject constructor(
+    linkMapper : LinkToEntity
+) : ListMapperImpl<ILink, LinkWithTags>(linkMapper)
+
+@Singleton
+class LinkEntityListMapper @Inject constructor(
+    entityMapper : EntityToLink
+) : ListMapperImpl<LinkWithTags, ILink>(entityMapper)

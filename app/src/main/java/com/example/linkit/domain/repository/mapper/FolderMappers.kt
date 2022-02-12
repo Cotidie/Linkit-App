@@ -1,4 +1,4 @@
-package com.example.linkit.data.repository.dto
+package com.example.linkit.domain.repository.mapper
 
 import com.example.linkit.data.room.dto.*
 import com.example.linkit.data.room.entity.FolderEntity
@@ -10,8 +10,8 @@ import javax.inject.Singleton
 class FolderMappers @Inject constructor(
     private val entityMapper: EntityToFolder,
     private val folderMapper: FolderToEntity,
-    private val entityListMapper: FolderEntityListMapper,
-    private val folderListMapper: FolderListMapper
+    private val entityListMapper: EntitiesToFolders,
+    private val folderListMapper: FoldersToEntities
 ) {
     fun map(folder: IFolder) : FolderEntity = folderMapper.map(folder)
     fun map(folder: FolderEntity) : IFolder = entityMapper.map(folder)

@@ -1,6 +1,6 @@
-package com.example.linkit.data.repository
+package com.example.linkit.domain.repository
 
-import com.example.linkit.data.repository.dto.FolderMappers
+import com.example.linkit.domain.repository.mapper.FolderMappers
 import com.example.linkit.data.room.dao.FolderDao
 import com.example.linkit.domain.interfaces.IFolder
 import kotlinx.coroutines.Dispatchers

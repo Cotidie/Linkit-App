@@ -1,10 +1,9 @@
-package com.example.linkit.data.repository
+package com.example.linkit.domain.repository
 
 import android.graphics.Bitmap
 import com.example.linkit.LinkItApp
 import com.example.linkit.data.network.api.ILinkApi
-import com.example.linkit.data.network.dto.BitmapMapper
-import com.example.linkit.data.repository.dto.LinkMappers
+import com.example.linkit.domain.repository.mapper.LinkMappers
 import com.example.linkit.data.room.dao.LinkDao
 import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
@@ -25,7 +24,7 @@ class LinkRepository @Inject constructor(
     private val linkDao: LinkDao,
     private val linkDto: LinkMappers,
     private val linkApi: ILinkApi,
-    private val bitmapMapper: BitmapMapper,
+    private val bitmapMapper: ResponseToBitmap,
 ) {
     private val appContext = LinkItApp.cxt()
 
