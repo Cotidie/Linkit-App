@@ -1,8 +1,9 @@
 package com.example.linkit.presentation.view
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
@@ -10,8 +11,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -27,13 +30,13 @@ import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
-import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CustomChip
 import com.example.linkit.presentation.component.TextUrl
 import com.example.linkit.presentation.getBitmap
-import com.example.linkit.presentation.toDp
 import com.google.accompanist.flowlayout.FlowRow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun ContentScreen(
@@ -107,7 +110,6 @@ fun ContentScreen(
             }
         }
     }
-
 }
 
 @Composable
@@ -189,11 +191,12 @@ fun ImageArea(
 fun MemoArea(
     modifier : Modifier = Modifier,
     memo: String,
-    onTextChange: (String) -> Unit
+    onTextChange: (String) -> Unit,
 ) {
     Box(modifier = modifier) {
         BasicTextField(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(),
             value = memo,
             onValueChange = onTextChange
         )
