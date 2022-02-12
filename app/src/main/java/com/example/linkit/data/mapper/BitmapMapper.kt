@@ -2,6 +2,7 @@ package com.example.linkit.data.mapper
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Base64
 import com.example.linkit.domain.interfaces.Mapper
 import com.example.linkit.domain.model.EMPTY_BITMAP
 import okhttp3.ResponseBody
@@ -21,9 +22,17 @@ class ResponseToBitmap @Inject constructor() : Mapper<ResponseBody?, Bitmap> {
 }
 
 @Singleton
-class StringToBitmap @Inject constructor(): Mapper<String, Bitmap> {
+class StringToBitmap @Inject constructor(
+    private val binaryToBitmap: BinaryToBitmap
+): Mapper<String, Bitmap> {
     override fun map(input: String): Bitmap {
-        TODO("Not yet implemented")
+        return try {
+            val encodeByte: ByteArray = Base64.decode(input, Base64.DEFAULT)
+            binaryToBitmap.map(encodeByte)!!
+        } catch (e: Exception) {
+            e.message
+            EMPTY_BITMAP
+        }
     }
 }
 
