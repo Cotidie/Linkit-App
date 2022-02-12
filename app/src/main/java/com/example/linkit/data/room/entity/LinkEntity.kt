@@ -18,6 +18,8 @@ data class LinkEntity(
     val memo: String = "",
     @ColumnInfo(name="url")
     val url: String,
+    @ColumnInfo(name="favicon")
+    val favicon: Bitmap,
     @ColumnInfo(name="image")
     val image: Bitmap,
     @ColumnInfo(name="snode")
