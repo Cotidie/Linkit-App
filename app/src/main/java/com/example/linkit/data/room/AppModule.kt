@@ -46,14 +46,17 @@ class AppModule {
     @Provides
     fun provideLinkItDatabase(
         @ApplicationContext context: Context,
-        callback: RoomDatabase.Callback
+        callback: RoomDatabase.Callback,
+        converter: Converters
     ) : LinkItDatabase
         = Room.databaseBuilder(
-        context,
-        LinkItDatabase::class.java,
-        "linkit_db")
+            context,
+            LinkItDatabase::class.java,
+            "linkit_db"
+        )
         // 스키마를 업데이트하면 기존 데이터를 비운다.
         .fallbackToDestructiveMigration()
         .addCallback(callback)
+        .addTypeConverter(converter)
         .build()
 }
