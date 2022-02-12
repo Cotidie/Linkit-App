@@ -42,6 +42,7 @@ fun ContentScreen(
 ) {
     val viewModel = hiltViewModel<ContentViewModel>(viewModelOwner())
     val link by viewModel.link
+    var memo by remember {mutableStateOf("샘플메모")}
     var uiMode by remember {mutableStateOf(UIMode.NORMAL)}
 
     Scaffold(
@@ -88,8 +89,8 @@ fun ContentScreen(
                 // 메모 영역
                 MemoArea(
                     modifier = Modifier.fillMaxSize(),
-                    memo = memoString,
-                    onTextChange = {memoString = it}
+                    memo = memo,
+                    onTextChange = {memo = it}
                 )
             }
         }

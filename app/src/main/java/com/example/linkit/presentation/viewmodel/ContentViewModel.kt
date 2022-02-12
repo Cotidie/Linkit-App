@@ -22,7 +22,6 @@ class ContentViewModel @Inject constructor(
     /** DB에서 화면에 표시할 링크를 불러온다. */
     fun setLink(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            linkRepo.
         }
     }
 }
