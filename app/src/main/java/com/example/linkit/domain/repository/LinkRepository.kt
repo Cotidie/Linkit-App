@@ -10,6 +10,7 @@ import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
+import com.example.linkit.domain.repository.mapper.BitmapMappers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
@@ -21,10 +22,10 @@ import javax.inject.Inject
  * 도메인 모델 Link를 담당하는 Repository
  */
 class LinkRepository @Inject constructor(
-    private val linkDao: LinkDao,
-    private val linkDto: LinkMappers,
     private val linkApi: ILinkApi,
-    private val bitmapMapper: ResponseToBitmap,
+    private val linkDao: LinkDao,
+    private val linkMapper: LinkMappers,
+    private val bitmapMapper: BitmapMappers,
 ) {
     private val appContext = LinkItApp.cxt()
 
@@ -39,13 +40,13 @@ class LinkRepository @Inject constructor(
         return linkDao.getLinksInFolder(folderId)
             .flowOn(Dispatchers.IO)
             .conflate()
-            .map { linkDto.map(it) }
+            .map { linkMapper.map(it) }
     }
 
     /** 링크가 주어지면 이미지를 웹에서 불러오고, 그후 Room에 저장한다. */
     suspend fun addLink(link: ILink) {
         link.favicon = getFavicon(link.url)
-        val linkWithTags = linkDto.map(link)
+        val linkWithTags = linkMapper.map(link)
         // 링크 insert
         val linkId = linkDao.insert(linkWithTags.link)
         // 태그 및 다대다 테이블 insert
@@ -55,7 +56,7 @@ class LinkRepository @Inject constructor(
         }
     }
     suspend fun deleteLinks(links: List<ILink>) {
-        val entities = linkDto.map(links)
+        val entities = linkMapper.map(links)
         val ids = entities.map { it.link.id }; "삭제할 링크: $ids".log()
         linkDao.deleteLinks(ids)
     }
