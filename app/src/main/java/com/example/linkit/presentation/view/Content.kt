@@ -1,6 +1,5 @@
 package com.example.linkit.presentation.view
 
-import androidx.annotation.ContentView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,18 +19,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.linkit.R
 import com.example.linkit._constant.ColorConstants
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
-import com.example.linkit.domain.model.EMPTY_LONG
+import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link
-import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CustomChip
 import com.example.linkit.presentation.component.TextUrl
-import com.example.linkit.presentation.getBitmap
-import com.example.linkit.presentation.viewModelOwner
 import com.example.linkit.presentation.viewmodel.ContentViewModel
 import com.google.accompanist.flowlayout.FlowRow
 
@@ -40,7 +35,7 @@ fun ContentScreen(
     navController: NavController,
     linkId: Long
 ) {
-    val viewModel = hiltViewModel<ContentViewModel>(viewModelOwner())
+    val viewModel = hiltViewModel<ContentViewModel>()
     val link by viewModel.link
     var memo by remember {mutableStateOf("샘플메모")}
     var uiMode by remember {mutableStateOf(UIMode.NORMAL)}
@@ -55,38 +50,22 @@ fun ContentScreen(
     ) { innerPadding ->
         ContentBackgroundArea(innerPadding) {
             ContentContentArea {
-                ContentHeadArea(
+                HeadBarArea(
                     onCompleteClick = {
                         navController.popBackStack()
                     }
                 )
-                // 이미지 영역
                 ImageArea(
                     image = link.favicon.asImageBitmap()
                 )
-
                 Spacer(Modifier.height(10.dp))
 
-                // URL 영역
-                TextUrl(
-                    modifier = Modifier,
-                    url = link.url.getString(true)
-                )
-
+                URLArea(link = link)
                 Spacer(Modifier.height(10.dp))
 
-                // 태그 영역
-                FlowRow(
-                    mainAxisSpacing = 15.dp
-                ) {
-                    for (tag in link.tags) {
-                        CustomChip(text = "# $tag")
-                    }
-                }
-
+                TagArea(link = link)
                 Spacer(Modifier.height(10.dp))
 
-                // 메모 영역
                 MemoArea(
                     modifier = Modifier.fillMaxSize(),
                     memo = memo,
@@ -125,7 +104,7 @@ fun ContentContentArea(
 
 /** 공유유저들 표시와 '완료'버튼이 들어갈 자리 */
 @Composable
-fun ContentHeadArea(
+private fun HeadBarArea(
     onCompleteClick: () -> Unit = {}
 ) {
     Box(
@@ -151,7 +130,7 @@ fun ContentHeadArea(
 }
 
 @Composable
-fun ImageArea(
+private fun ImageArea(
     image: ImageBitmap
 ) {
     val maxHeight = UIConstants.HEIGHT_MAX_CONTENT_IMAGE
@@ -173,7 +152,32 @@ fun ImageArea(
 }
 
 @Composable
-fun MemoArea(
+private fun URLArea(
+    link: ILink
+) {
+    TextUrl(
+        modifier = Modifier,
+        url = link.url.getString(true)
+    )
+}
+
+@Composable
+private fun TagArea(
+    link: ILink
+) {
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        mainAxisSpacing = 15.dp
+    ) {
+        for (tag in link.tags) {
+            CustomChip(text = "# $tag")
+        }
+        CustomChip(text = "# + ")
+    }
+}
+
+@Composable
+private fun MemoArea(
     modifier : Modifier = Modifier,
     memo: String,
     onTextChange: (String) -> Unit,

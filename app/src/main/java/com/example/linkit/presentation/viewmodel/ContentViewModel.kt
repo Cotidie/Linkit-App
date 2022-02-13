@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.linkit.domain.repository.LinkRepository
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link
+import com.example.linkit.domain.model.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,5 +24,10 @@ class ContentViewModel @Inject constructor(
     fun setLink(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
         }
+    }
+
+    override fun onCleared() {
+        "ContentViewModel 제거!".log()
+        super.onCleared()
     }
 }
