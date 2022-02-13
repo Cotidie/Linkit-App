@@ -7,7 +7,7 @@ import androidx.room.ForeignKey.CASCADE
 /** Link 테이블과 Tag 테이블 간 다대다 관계를 정의한다. */
 @Entity(
     tableName = "linkTagTable",
-    primaryKeys = ["linkId", "tagId"],
+    primaryKeys = ["linkId", "name"],
     foreignKeys = [
         ForeignKey(
             entity = LinkEntity::class,
@@ -17,8 +17,8 @@ import androidx.room.ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = TagEntity::class,
-            parentColumns = ["tagId"],
-            childColumns = ["tagId"],
+            parentColumns = ["name"],
+            childColumns = ["name"],
             onDelete = CASCADE
         )
     ]
@@ -26,8 +26,8 @@ import androidx.room.ForeignKey.CASCADE
 data class LinkTagRef(
     @ColumnInfo(name="linkId")
     val linkId : Long,
-    @ColumnInfo(name="tagId")
-    val tagId : Long
+    @ColumnInfo(name="name")
+    val tag : String
 )
 
 
@@ -37,7 +37,7 @@ data class TagWithLinks(
     @Embedded val tag: TagEntity,
     @Relation(
         // 기준이 되는 테이블 (TagEntity)
-        parentColumn = "tagId",
+        parentColumn = "name",
         // Join할 테이블 (LinkEntity)
         entityColumn = "linkId",
         // Join 테이블 제공 (다대다 연결 테이블)
@@ -50,7 +50,7 @@ data class LinkWithTags(
     @Embedded val link: LinkEntity,
     @Relation(
         parentColumn = "linkId",
-        entityColumn = "tagId",
+        entityColumn = "name",
         associateBy = Junction(LinkTagRef::class)
     ) val tags: List<TagEntity>
 )
