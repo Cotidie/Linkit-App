@@ -29,7 +29,7 @@ import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.presentation.component.*
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
-import com.example.linkit.presentation.view.Home.HomeBottomButtonArea
+import com.example.linkit.presentation.view.Home.HomeBottomButton
 import com.example.linkit.presentation.viewmodel.HomeViewModel
 import com.example.linkit.ui.theme.LinkItTheme
 
@@ -99,7 +99,7 @@ fun Home(navController: NavController) {
             )
 
             // '+ 폴더추가 / 완료' 버튼 영역
-            HomeBottomButtonArea(
+            HomeBottomButton(
                 uiMode = uiMode,
                 onAddClick = {
                     viewModel.addFolder(name = "신규폴더")

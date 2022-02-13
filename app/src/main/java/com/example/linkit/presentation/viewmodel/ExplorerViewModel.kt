@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.linkit._enums.UIMode
-import com.example.linkit.data.repository.FolderRepository
-import com.example.linkit.data.repository.LinkRepository
+import com.example.linkit.domain.repository.FolderRepository
+import com.example.linkit.domain.repository.LinkRepository
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link

@@ -1,4 +1,4 @@
-package com.example.linkit.data.repository
+package com.example.linkit.domain.repository
 
 import com.example.linkit.data.storage.LinkItPrefs
 import com.example.linkit.domain.model.User

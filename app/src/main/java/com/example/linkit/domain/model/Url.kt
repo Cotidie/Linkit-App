@@ -1,13 +1,11 @@
 package com.example.linkit.domain.model
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.util.Patterns
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
+import org.jsoup.Connection
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 import java.net.MalformedURLException
 import java.net.URL
 
@@ -59,6 +57,60 @@ class Url constructor() {
     fun getFaviconUrl(size: Int = 128) : String {
 //        return "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${getDomain()}&size=$size"
         return "https://www.google.com/s2/favicons?sz=$size&domain_url=${getDomain(true)}"
+    }
+
+    fun getMetaImg(): HashMap<String, String>? {
+
+        val map = HashMap<String, String>()
+
+        try {
+            val con: Connection = Jsoup.connect("https://github.com/")
+            val doc: Document = con.get()
+            var orgTags: Elements = doc.select("meta[property^=og:]")
+            if (orgTags.size != 0) {
+                for (i in 0 until orgTags.size) {
+                    val tag: Element = orgTags[i]
+                    when (tag.attr("property")) {
+                        "og:image" -> {
+                            map["image"] = tag.attr("content")
+
+                        }
+//                        "og:url" -> {
+//                            map["url"] = tag.attr("content")
+//                        }
+//                        "og:title" -> {
+//                            map["title"] = tag.attr("content")
+//
+//                        }
+//                        "og:description" -> {
+//                            map["description"] = tag.attr("content")
+//                        }
+                    }
+                }
+            } else {
+                orgTags = doc.select("meta[name^=twitter:]")
+                for (i in 0 until orgTags.size) {
+                    val tag: Element = orgTags[i]
+                    when (tag.attr("name")) {
+                        "twitter:image" -> {
+                            map["image"] = tag.attr("content")
+
+                        }
+//                        "twitter:title" -> {
+//                            map["title"] = tag.attr("content")
+//
+//                        }
+//                        "twitter:description" -> {
+//                            map["description"] = tag.attr("content")
+//                        }
+                    }
+                }
+            }
+            return map
+        } catch (e: Exception) {
+            "에러 : $e".log()
+            return null
+        }
     }
 
     private fun attachHttp(url: String) : String {

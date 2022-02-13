@@ -1,7 +1,6 @@
 package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,11 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.linkit.R
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
@@ -25,12 +22,8 @@ import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
-import com.example.linkit.domain.model.log
-import com.example.linkit.presentation.cxt
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
-import com.example.linkit.presentation.viewModelOwner
-import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -67,7 +60,7 @@ fun CardLink(
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color.LightGray)
                 .combinedClickable {  },
-            bitmap = link.image.asImageBitmap(),
+            bitmap = link.favicon.asImageBitmap(),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
@@ -164,6 +157,7 @@ fun PreviewLinkCard() {
         "네이버", 
         "네이버캐스트", 
         Url("https://www.naver.com"),
+        getBitmap(id = R.drawable.ic_sample_image_001),
         getBitmap(id = R.drawable.ic_sample_image_001),
         listOf("유명", "네이버", "검색")
     )

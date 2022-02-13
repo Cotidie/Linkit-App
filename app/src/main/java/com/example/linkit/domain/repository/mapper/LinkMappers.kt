@@ -1,4 +1,4 @@
-package com.example.linkit.data.repository.dto
+package com.example.linkit.domain.repository.mapper
 
 import com.example.linkit.data.room.dto.EntityToLink
 import com.example.linkit.data.room.dto.LinkEntityListMapper

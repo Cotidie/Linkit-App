@@ -4,7 +4,9 @@ import com.example.linkit.data.room.entity.LinkEntity
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.data.room.entity.TagEntity
 import com.example.linkit.domain.interfaces.ILink
+import com.example.linkit.domain.interfaces.ListMapperImpl
 import com.example.linkit.domain.interfaces.Mapper
+import com.example.linkit.domain.model.EMPTY_BITMAP
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 import javax.inject.Inject
@@ -13,11 +15,20 @@ import javax.inject.Singleton
 @Singleton
 class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
     override fun map(input: ILink): LinkWithTags {
+        val favicon = when (input.favicon == EMPTY_BITMAP) {
+            true -> null
+            false -> input.favicon
+        }
+        val image = when (input.image == EMPTY_BITMAP) {
+            true -> null
+            false -> input.image
+        }
         val link =  LinkEntity(
             id = input.id,
             folderId = input.parentFolder,
             url = input.url.getString(true),
-            image = input.image
+            favicon = favicon,
+            image = image,
         )
 
         return LinkWithTags(
@@ -27,22 +38,29 @@ class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
     }
 }
 
-//@Singleton
-//class LinkToTagEntity @Inject constructor() : Mapper<ILink, List<TagEntity>> {
-//    override fun map(input: ILink): List<TagEntity> {
-//        return input.tags.map { TagEntity(name = it) }
-//    }
-//}
-
 @Singleton
 class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
     override fun map(input: LinkWithTags): ILink {
+        val favicon = input.link.favicon ?: EMPTY_BITMAP
+        val image = input.link.favicon ?: EMPTY_BITMAP
+
         return Link(
             id = input.link.id,
             parentFolder = input.link.folderId,
             url = Url(input.link.url),
-            image = input.link.image,
+            favicon = favicon,
+            image = image,
             tags = input.tags.map { it.name }
         )
     }
 }
+
+@Singleton
+class LinkListMapper @Inject constructor(
+    linkMapper : LinkToEntity
+) : ListMapperImpl<ILink, LinkWithTags>(linkMapper)
+
+@Singleton
+class LinkEntityListMapper @Inject constructor(
+    entityMapper : EntityToLink
+) : ListMapperImpl<LinkWithTags, ILink>(entityMapper)

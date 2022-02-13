@@ -9,7 +9,8 @@ class Link(
     override var parentFolder: Long = EMPTY_LONG,
     override var name: String = "",
     override var memo: String = "",
-    override var url: Url,
+    override var url: Url = Url(""),
+    override var favicon: Bitmap = EMPTY_BITMAP,
     override var image: Bitmap = EMPTY_BITMAP,
     override val tags: List<String> = ArrayList(),
     override val created: Date = Date()
@@ -20,7 +21,6 @@ class Link(
     }
 
     companion object {
-        val EMPTY = Link(0, EMPTY_LONG, "", "", Url(""), EMPTY_BITMAP)
-        fun empty() = Link(0, EMPTY_LONG,"", "", Url(""), EMPTY_BITMAP)
+        val EMPTY = Link()
     }
 }

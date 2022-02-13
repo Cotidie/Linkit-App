@@ -1,17 +1,16 @@
-package com.example.linkit.data.repository
+package com.example.linkit.domain.repository
 
 import android.graphics.Bitmap
 import com.example.linkit.LinkItApp
 import com.example.linkit.data.network.api.ILinkApi
-import com.example.linkit.data.network.dto.BitmapMapper
-import com.example.linkit.data.repository.dto.LinkMappers
+import com.example.linkit.domain.repository.mapper.LinkMappers
 import com.example.linkit.data.room.dao.LinkDao
-import com.example.linkit.data.room.entity.LinkEntity
 import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
+import com.example.linkit.domain.repository.mapper.BitmapMappers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
@@ -23,13 +22,11 @@ import javax.inject.Inject
  * 도메인 모델 Link를 담당하는 Repository
  */
 class LinkRepository @Inject constructor(
-    private val linkDao: LinkDao,
-    private val linkDto: LinkMappers,
     private val linkApi: ILinkApi,
-    private val bitmapMapper: BitmapMapper,
+    private val linkDao: LinkDao,
+    private val linkMapper: LinkMappers,
+    private val bitmapMapper: BitmapMappers,
 ) {
-    private val appContext = LinkItApp.cxt()
-
     /** Flow를 IO 쓰레드에서 동작시키고, emit과 collector를 다른 코루틴에서 실행시킨다 (conflate) */
     fun getAllLinks() : Flow<List<LinkWithTags>> {
         return linkDao.getLinks()
@@ -41,13 +38,19 @@ class LinkRepository @Inject constructor(
         return linkDao.getLinksInFolder(folderId)
             .flowOn(Dispatchers.IO)
             .conflate()
-            .map { linkDto.map(it) }
+            .map { linkMapper.map(it) }
+    }
+
+    suspend fun getLink(linkId: Long) : ILink {
+        val entity =  linkDao.getLinkById(linkId)
+        return linkMapper.map(entity)
     }
 
     /** 링크가 주어지면 이미지를 웹에서 불러오고, 그후 Room에 저장한다. */
     suspend fun addLink(link: ILink) {
-        link.image = getFavicon(link.url)
-        val linkWithTags = linkDto.map(link)
+        link.favicon = getFavicon(link.url)
+        link.image = getImage(link.url)
+        val linkWithTags = linkMapper.map(link)
         // 링크 insert
         val linkId = linkDao.insert(linkWithTags.link)
         // 태그 및 다대다 테이블 insert
@@ -57,7 +60,7 @@ class LinkRepository @Inject constructor(
         }
     }
     suspend fun deleteLinks(links: List<ILink>) {
-        val entities = linkDto.map(links)
+        val entities = linkMapper.map(links)
         val ids = entities.map { it.link.id }; "삭제할 링크: $ids".log()
         linkDao.deleteLinks(ids)
     }
@@ -68,4 +71,8 @@ class LinkRepository @Inject constructor(
         return bitmapMapper.map(rawResponse)
     }
 
+    private suspend fun getImage(url: Url): Bitmap {
+        val metaImg: String? = url.getMetaImg()?.get("image")
+        return bitmapMapper.map(metaImg)
+    }
 }
