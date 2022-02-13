@@ -11,6 +11,6 @@ class BitmapMappers @Inject constructor(
     private val stringToBitmap: StringToBitmap,
     private val responseToBitmap: ResponseToBitmap
 ) {
-    fun map(string: String) = stringToBitmap.map(string)
+    fun map(string: String?) = stringToBitmap.map(string)
     fun map(response: ResponseBody?) = responseToBitmap.map(response)
 }

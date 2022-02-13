@@ -24,8 +24,10 @@ class ResponseToBitmap @Inject constructor() : Mapper<ResponseBody?, Bitmap> {
 @Singleton
 class StringToBitmap @Inject constructor(
     private val binaryToBitmap: BinaryToBitmap
-): Mapper<String, Bitmap> {
-    override fun map(input: String): Bitmap {
+): Mapper<String?, Bitmap> {
+    override fun map(input: String?): Bitmap {
+        if (input == null) return EMPTY_BITMAP
+
         return try {
             val encodeByte: ByteArray = Base64.decode(input, Base64.DEFAULT)
             binaryToBitmap.map(encodeByte)!!

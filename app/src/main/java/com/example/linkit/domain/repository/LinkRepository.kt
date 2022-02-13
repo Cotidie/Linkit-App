@@ -46,6 +46,7 @@ class LinkRepository @Inject constructor(
     /** 링크가 주어지면 이미지를 웹에서 불러오고, 그후 Room에 저장한다. */
     suspend fun addLink(link: ILink) {
         link.favicon = getFavicon(link.url)
+        link.image = getImage(link.url)
         val linkWithTags = linkMapper.map(link)
         // 링크 insert
         val linkId = linkDao.insert(linkWithTags.link)
@@ -67,4 +68,8 @@ class LinkRepository @Inject constructor(
         return bitmapMapper.map(rawResponse)
     }
 
+    private suspend fun getImage(url: Url): Bitmap {
+        val metaImg: String? = url.getMetaImg()?.get("image")
+        return bitmapMapper.map(metaImg)
+    }
 }
