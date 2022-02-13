@@ -50,7 +50,7 @@ class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
             url = Url(input.link.url),
             favicon = favicon,
             image = image,
-            tags = input.tags.map { it.name }
+            tags = ArrayList(input.tags.map { it.name })
         )
     }
 }

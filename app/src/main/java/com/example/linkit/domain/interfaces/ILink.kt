@@ -13,7 +13,7 @@ interface ILink : IFile{
     var url: Url
     var favicon: Bitmap
     var image: Bitmap
-    val tags: List<String>
+    val tags: ArrayList<String>
 
     companion object {
         val EMPTY: ILink = Link(id = EMPTY_LONG, url = Url())

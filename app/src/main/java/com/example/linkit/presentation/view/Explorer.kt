@@ -186,7 +186,7 @@ fun ExplorerEditPopup(
 fun getSampleLinks() : List<Link> {
     val titles = listOf("네이버", "다음","네이버", "다음","네이버", "다음")
     val url = Url("https://developer.android.com/jetpack/compose/layout?hl=ko")
-    val tags = listOf("유명", "네이버", "검색")
+    val tags = arrayListOf("유명", "네이버", "검색")
     val links = ArrayList<Link>().apply {
         titles.forEachIndexed { index, s ->
             add(Link(

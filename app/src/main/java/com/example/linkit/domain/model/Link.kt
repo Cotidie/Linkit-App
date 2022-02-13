@@ -12,7 +12,7 @@ class Link(
     override var url: Url = Url(""),
     override var favicon: Bitmap = EMPTY_BITMAP,
     override var image: Bitmap = EMPTY_BITMAP,
-    override val tags: List<String> = ArrayList(),
+    override val tags: ArrayList<String> = ArrayList(),
     override val created: Date = Date()
 ) : ILink {
 
