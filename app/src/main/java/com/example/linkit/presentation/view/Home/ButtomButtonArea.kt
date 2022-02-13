@@ -18,7 +18,7 @@ import com.example.linkit.presentation.component.IconTextButton
 import com.example.linkit.presentation.viewmodel.HomeViewModel
 
 @Composable
-fun HomeBottomButtonArea(
+fun HomeBottomButton(
     uiMode: UIMode,
     onAddClick: () -> Unit,
     onCompleteClick: () -> Unit,

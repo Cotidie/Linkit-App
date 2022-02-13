@@ -48,8 +48,8 @@ fun ContentScreen(
             )
         }
     ) { innerPadding ->
-        ContentBackgroundArea(innerPadding) {
-            ContentContentArea {
+        ScreenBackground(innerPadding) {
+            ScreenContent {
                 HeadBarArea(
                     onCompleteClick = {
                         navController.popBackStack()
@@ -77,7 +77,7 @@ fun ContentScreen(
 }
 
 @Composable
-fun ContentBackgroundArea(
+private fun ScreenBackground(
     innerPadding: PaddingValues,
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -91,7 +91,7 @@ fun ContentBackgroundArea(
 }
 
 @Composable
-fun ContentContentArea(
+private fun ScreenContent(
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
