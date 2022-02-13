@@ -27,6 +27,13 @@ class ContentViewModel @Inject constructor(
         }
     }
 
+    /** 현재 링크를 DB에 반영한다. */
+    fun saveLink() {
+        viewModelScope.launch(Dispatchers.IO) {
+            linkRepo.updateLink(_link.value)
+        }
+    }
+
     override fun onCleared() {
         "ContentViewModel 제거!".log()
         super.onCleared()

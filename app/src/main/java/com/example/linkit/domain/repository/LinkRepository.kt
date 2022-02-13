@@ -1,12 +1,12 @@
 package com.example.linkit.domain.repository
 
 import android.graphics.Bitmap
-import com.example.linkit.LinkItApp
 import com.example.linkit.data.network.api.ILinkApi
 import com.example.linkit.domain.repository.mapper.LinkMappers
 import com.example.linkit.data.room.dao.LinkDao
 import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
+import com.example.linkit.data.room.entity.TagEntity
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
@@ -50,19 +50,44 @@ class LinkRepository @Inject constructor(
     suspend fun addLink(link: ILink) {
         link.favicon = getFavicon(link.url)
         link.image = getImage(link.url)
-        val linkWithTags = linkMapper.map(link)
-        // 링크 insert
-        val linkId = linkDao.insert(linkWithTags.link)
+        val entity = linkMapper.map(link)
+        val linkId = linkDao.insert(entity.link)
         // 태그 및 다대다 테이블 insert
-        for (tag in linkWithTags.tags) {
-            val tagId = linkDao.insert(tag)
-            linkDao.insert(LinkTagRef(linkId = linkId, tagId = tagId))
+        for (tag in entity.tags) {
+            linkDao.insert(tag)
+            linkDao.insert(LinkTagRef(linkId = linkId, tag = tag.name))
         }
     }
+
+    suspend fun updateLink(link: ILink) {
+        val original = linkDao.getLinkById(link.id)
+        val modified = linkMapper.map(link)
+        val newTags = findNewTags(original = original.tags, modified = modified.tags)
+        val deletedTags = findDeletedTags(original = original.tags, modified = modified.tags)
+
+        linkDao.update(modified.link)
+        for (tag in newTags) addTag(tag = tag, linkId = link.id)
+        for (tag in deletedTags) removeTag(tag = tag, linkId = link.id)
+    }
+
     suspend fun deleteLinks(links: List<ILink>) {
         val entities = linkMapper.map(links)
         val ids = entities.map { it.link.id }; "삭제할 링크: $ids".log()
         linkDao.deleteLinks(ids)
+    }
+
+    private suspend fun addTag(tag: TagEntity, linkId: Long) {
+        linkDao.insert(tag)
+        linkDao.insert(LinkTagRef(linkId = linkId, tag = tag.name))
+    }
+
+    /** 태그와 연결된 링크가 1개 뿐이면 완전 삭제하고, 여러 개이면 연결만 끊는다. */
+    private suspend fun removeTag(tag: TagEntity, linkId: Long) {
+        val count = linkDao.countLinksByTag(tag.name)
+        if (count == 1)
+            linkDao.delete(tag)
+        else
+            linkDao.delete(LinkTagRef(linkId = linkId, tag = tag.name))
     }
 
     private suspend fun getFavicon(url: Url) : Bitmap {
@@ -74,5 +99,13 @@ class LinkRepository @Inject constructor(
     private suspend fun getImage(url: Url): Bitmap {
         val metaImg: String? = url.getMetaImg()?.get("image")
         return bitmapMapper.map(metaImg)
+    }
+
+    private fun findNewTags(original: List<TagEntity>, modified: List<TagEntity>): List<TagEntity> {
+        return modified.filter { !original.contains(it) }
+    }
+
+    private fun findDeletedTags(original: List<TagEntity>, modified: List<TagEntity>): List<TagEntity> {
+        return original.filter { !modified.contains(it) }
     }
 }
