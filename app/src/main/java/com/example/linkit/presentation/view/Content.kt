@@ -57,18 +57,17 @@ fun ContentScreen(
             ScreenContent {
                 HeadBarArea(
                     onCompleteClick = {
+                        viewModel.saveLink()
                         navController.popBackStack()
                     }
                 )
-                ImageArea(
-                    image = link.image
-                )
+                ImageArea(image = link.image)
                 Spacer(Modifier.height(10.dp))
 
                 URLArea(link = link)
                 Spacer(Modifier.height(10.dp))
 
-                TagArea(link = link)
+                TagArea(viewModel = viewModel, link = link)
                 Spacer(Modifier.height(10.dp))
 
                 MemoArea(
@@ -168,6 +167,7 @@ private fun URLArea(
 
 @Composable
 private fun TagArea(
+    viewModel: ContentViewModel,
     link: ILink
 ) {
     FlowRow(
@@ -177,7 +177,7 @@ private fun TagArea(
         for (tag in link.tags) {
             CustomChip(text = "# $tag")
         }
-        CustomChip(text = "+ 태그추가")
+        CustomChip(text = "+ 태그", borderWidth = 1.dp)
     }
 }
 

@@ -110,11 +110,8 @@ fun LinkAndTags(
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (tag in link.tags) {
-                CustomChip(
-                    modifier = Modifier.padding(end = 8.dp),
-                    textModifier = Modifier.padding(horizontal = 3.dp),
-                    text = "# $tag"
-                )
+                CustomChip(text = "# $tag")
+                Spacer(Modifier.width(8.dp))
             }
         }
     }
@@ -159,7 +156,7 @@ fun PreviewLinkCard() {
         Url("https://www.naver.com"),
         getBitmap(id = R.drawable.ic_sample_image_001),
         getBitmap(id = R.drawable.ic_sample_image_001),
-        listOf("유명", "네이버", "검색")
+        arrayListOf("유명", "네이버", "검색")
     )
     
     CardLink(
