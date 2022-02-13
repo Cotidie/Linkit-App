@@ -27,8 +27,6 @@ class LinkRepository @Inject constructor(
     private val linkMapper: LinkMappers,
     private val bitmapMapper: BitmapMappers,
 ) {
-    private val appContext = LinkItApp.cxt()
-
     /** Flow를 IO 쓰레드에서 동작시키고, emit과 collector를 다른 코루틴에서 실행시킨다 (conflate) */
     fun getAllLinks() : Flow<List<LinkWithTags>> {
         return linkDao.getLinks()
