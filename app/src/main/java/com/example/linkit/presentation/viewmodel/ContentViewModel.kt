@@ -17,12 +17,13 @@ import javax.inject.Inject
 class ContentViewModel @Inject constructor(
     private val linkRepo: LinkRepository
 ): ViewModel() {
-    private val _link = mutableStateOf(Link())
+    private val _link = mutableStateOf(ILink.EMPTY)
     val link: State<ILink> = _link
 
     /** DB에서 화면에 표시할 링크를 불러온다. */
     fun setLink(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
+            _link.value = linkRepo.getLink(id)
         }
     }
 

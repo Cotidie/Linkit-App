@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.view
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,6 +41,10 @@ fun ContentScreen(
     var memo by remember {mutableStateOf("샘플메모")}
     var uiMode by remember {mutableStateOf(UIMode.NORMAL)}
 
+    LaunchedEffect(linkId) {
+        viewModel.setLink(linkId)
+    }
+
     Scaffold(
         bottomBar = {
             AppBottomBar(
@@ -56,7 +61,7 @@ fun ContentScreen(
                     }
                 )
                 ImageArea(
-                    image = link.favicon.asImageBitmap()
+                    image = link.image
                 )
                 Spacer(Modifier.height(10.dp))
 
@@ -131,7 +136,7 @@ private fun HeadBarArea(
 
 @Composable
 private fun ImageArea(
-    image: ImageBitmap
+    image: Bitmap
 ) {
     val maxHeight = UIConstants.HEIGHT_MAX_CONTENT_IMAGE
 
@@ -144,7 +149,7 @@ private fun ImageArea(
                 .fillMaxWidth()
                 .heightIn(0.dp, maxHeight)
                 .clip(RoundedCornerShape(10)),
-            bitmap = image,
+            bitmap = image.asImageBitmap(),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
@@ -172,7 +177,7 @@ private fun TagArea(
         for (tag in link.tags) {
             CustomChip(text = "# $tag")
         }
-        CustomChip(text = "# + ")
+        CustomChip(text = "+ 태그추가")
     }
 }
 
