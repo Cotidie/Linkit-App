@@ -181,27 +181,3 @@ fun ExplorerEditPopup(
         }
     }
 }
-
-@Composable
-fun getSampleLinks() : List<Link> {
-    val titles = listOf("네이버", "다음","네이버", "다음","네이버", "다음")
-    val url = Url("https://developer.android.com/jetpack/compose/layout?hl=ko")
-    val tags = arrayListOf("유명", "네이버", "검색")
-    val links = ArrayList<Link>().apply {
-        titles.forEachIndexed { index, s ->
-            add(Link(
-                index.toLong(), EMPTY_LONG, s, "", url, EMPTY_BITMAP, EMPTY_BITMAP,tags
-            ))
-        }
-    }
-
-    return links
-}
-
-//@Preview
-//@Composable
-//fun PreviewExplorer() {
-//    val navController = rememberNavController()
-//
-//    Explorer(navController, EMPTY_LONG)
-//}

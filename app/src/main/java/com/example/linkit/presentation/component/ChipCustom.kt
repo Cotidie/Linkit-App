@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 fun CustomChip(
     text: String,
     prefix: String = "",
-    padding: PaddingValues = PaddingValues(horizontal = 6.dp),
+    padding: PaddingValues = PaddingValues(horizontal = 5.dp),
     borderWidth: Dp = (-1).dp,
     borderColor: Color = Color.Black,
     backgroundColor: Color = Color.Transparent,

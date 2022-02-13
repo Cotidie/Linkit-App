@@ -55,7 +55,7 @@ fun CardLink(
     ) {
         Image(
             modifier = Modifier
-                .padding(end = 15.dp)
+                .padding(end = 10.dp)
                 .size(55.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color.LightGray)
@@ -96,6 +96,7 @@ fun LinkAndTags(
     ) {
         Text(
             modifier = Modifier
+                .padding(start=5.dp)
                 .weight(1f)
                 .fillMaxWidth(),
             text = link.url.getString(false),
@@ -110,8 +111,8 @@ fun LinkAndTags(
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (tag in link.tags) {
-                CustomChip(text = "# $tag")
-                Spacer(Modifier.width(8.dp))
+                CustomChip(prefix = "# ", text = tag)
+                Spacer(Modifier.width(4.dp))
             }
         }
     }
