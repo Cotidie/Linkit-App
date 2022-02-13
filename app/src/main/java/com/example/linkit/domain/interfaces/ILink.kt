@@ -16,6 +16,6 @@ interface ILink : IFile{
     val tags: List<String>
 
     companion object {
-        val EMPTY = Link(id = EMPTY_LONG, url = Url())
+        val EMPTY: ILink = Link(id = EMPTY_LONG, url = Url())
     }
 }
