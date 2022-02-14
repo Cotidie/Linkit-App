@@ -28,6 +28,7 @@ import com.example.linkit.domain.model.Link
 import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CustomChip
 import com.example.linkit.presentation.component.TextUrl
+import com.example.linkit.presentation.viewModelOwner
 import com.example.linkit.presentation.viewmodel.ContentViewModel
 import com.google.accompanist.flowlayout.FlowRow
 
@@ -161,7 +162,7 @@ private fun URLArea(
 ) {
     TextUrl(
         modifier = Modifier,
-        url = link.url.getString(true)
+        url = link.url
     )
 }
 
@@ -170,14 +171,22 @@ private fun TagArea(
     viewModel: ContentViewModel,
     link: ILink
 ) {
+    val tags = remember { link.tags.toMutableStateList() }
+
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        mainAxisSpacing = 15.dp
+        mainAxisSpacing = 5.dp,
     ) {
-        for (tag in link.tags) {
+        for (tag in tags) {
             CustomChip(text = "# $tag")
         }
-        CustomChip(text = "+ 태그", borderWidth = 1.dp)
+        CustomChip(
+            text = "+ 태그",
+            borderWidth = 1.dp,
+            onClick = {
+                tags.add("dd")
+            }
+        )
     }
 }
 

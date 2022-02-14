@@ -5,7 +5,7 @@ import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 
-interface ILink : IFile{
+interface ILink : IFile, ICopyable<ILink>{
     val id: Long
     var parentFolder: Long // 링크는 어느 폴더에 속해야 한다.
     override var name: String
@@ -13,7 +13,7 @@ interface ILink : IFile{
     var url: Url
     var favicon: Bitmap
     var image: Bitmap
-    val tags: ArrayList<String>
+    val tags: List<String>
 
     companion object {
         val EMPTY: ILink = Link(id = EMPTY_LONG, url = Url())
