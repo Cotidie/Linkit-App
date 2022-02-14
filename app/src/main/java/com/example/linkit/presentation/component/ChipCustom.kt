@@ -1,11 +1,9 @@
 package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.ExperimentalMaterialApi
@@ -13,7 +11,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,24 +30,34 @@ fun CustomChip(
     borderWidth: Dp = (-1).dp,
     borderColor: Color = Color.Black,
     backgroundColor: Color = Color.Transparent,
+    write: Boolean = false,
     onClick: () -> Unit = {},
 ) {
     Surface(
+        modifier = Modifier.height((21.5).dp),
         onClick = onClick,
         shape = CircleShape,
         color = backgroundColor,
         border = BorderStroke(borderWidth, borderColor)
     ) {
-        Row(Modifier.padding(padding)) {
+        Row(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxHeight(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = prefix,
                 style = MaterialTheme.typography.subtitle1
             )
 
-            Text(
-                text = text,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.subtitle1
+            BasicTextField(
+                modifier = Modifier
+                    .width(IntrinsicSize.Min),
+                value = text,
+                onValueChange = {},
+                textStyle = MaterialTheme.typography.subtitle1,
+                enabled = write
             )
         }
     }
