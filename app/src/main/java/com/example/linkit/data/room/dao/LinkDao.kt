@@ -16,11 +16,9 @@ interface LinkDao {
     @Transaction
     @Query("SELECT * FROM linkTable")
     fun getLinks() : Flow<List<LinkWithTags>>
-
     @Transaction
     @Query("SELECT * FROM tagTable")
     fun getTags() : Flow<List<TagWithLinks>>
-
     @Transaction
     @Query("SELECT * from linkTable where parentFolderId = :folderId")
     fun getLinksInFolder(folderId: Long) : Flow<List<LinkWithTags>>
@@ -28,13 +26,14 @@ interface LinkDao {
     @Query("SELECT * from linkTable where linkId = :id")
     suspend fun getLinkById(id: Long): LinkWithTags
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(linkEntity: LinkEntity) : Long
+    @Query("SELECT COUNT(name) FROM linkTagTable WHERE name = :name")
+    fun countLinksByTag(name: String): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(tagEntity: TagEntity) : Long
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(linkEntity: LinkEntity): Long
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(tagEntity: TagEntity): Long
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(linkTagRef : LinkTagRef)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -42,10 +41,12 @@ interface LinkDao {
 
     @Query("DELETE FROM linkTable")
     suspend fun deleteAll()
-
     @Delete
-    suspend fun deleteLink(linkEntity: LinkEntity)
-
+    suspend fun delete(link: LinkEntity)
+    @Delete
+    suspend fun delete(tag: TagEntity)
+    @Delete
+    suspend fun delete(ref: LinkTagRef)
     @Query("DELETE FROM linkTable WHERE linkId IN (:ids)")
     suspend fun deleteLinks(ids: List<Long>)
 }

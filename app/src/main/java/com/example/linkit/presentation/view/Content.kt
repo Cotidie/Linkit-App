@@ -28,6 +28,9 @@ import com.example.linkit.domain.model.Link
 import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CustomChip
 import com.example.linkit.presentation.component.TextUrl
+import com.example.linkit.presentation.view.Content.TagAddChip
+import com.example.linkit.presentation.view.Content.TagInputChip
+import com.example.linkit.presentation.viewModelOwner
 import com.example.linkit.presentation.viewmodel.ContentViewModel
 import com.google.accompanist.flowlayout.FlowRow
 
@@ -57,18 +60,17 @@ fun ContentScreen(
             ScreenContent {
                 HeadBarArea(
                     onCompleteClick = {
+                        viewModel.saveLink()
                         navController.popBackStack()
                     }
                 )
-                ImageArea(
-                    image = link.image
-                )
+                ImageArea(image = link.image)
                 Spacer(Modifier.height(10.dp))
 
                 URLArea(link = link)
                 Spacer(Modifier.height(10.dp))
 
-                TagArea(link = link)
+                TagArea(viewModel = viewModel, link = link)
                 Spacer(Modifier.height(10.dp))
 
                 MemoArea(
@@ -162,22 +164,40 @@ private fun URLArea(
 ) {
     TextUrl(
         modifier = Modifier,
-        url = link.url.getString(true)
+        url = link.url
     )
 }
 
 @Composable
 private fun TagArea(
+    viewModel: ContentViewModel,
     link: ILink
 ) {
+    var uiMode by viewModel.uiMode
+    val tags = remember { link.tags.toMutableStateList() }
+
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        mainAxisSpacing = 15.dp
+        mainAxisSpacing = 5.dp,
     ) {
-        for (tag in link.tags) {
+        for (tag in tags) {
             CustomChip(text = "# $tag")
         }
-        CustomChip(text = "+ 태그추가")
+
+        if (uiMode != UIMode.ADD_TAG)
+            TagAddChip(
+                onClick = {
+                    uiMode = UIMode.ADD_TAG
+                }
+            )
+        if (uiMode == UIMode.ADD_TAG)
+            TagInputChip(
+                onDone = { text ->
+                    tags.add(text)
+                    uiMode = UIMode.NORMAL
+                }
+            )
+
     }
 }
 

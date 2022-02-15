@@ -55,7 +55,7 @@ fun CardLink(
     ) {
         Image(
             modifier = Modifier
-                .padding(end = 15.dp)
+                .padding(end = 10.dp)
                 .size(55.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color.LightGray)
@@ -96,6 +96,7 @@ fun LinkAndTags(
     ) {
         Text(
             modifier = Modifier
+                .padding(start=5.dp)
                 .weight(1f)
                 .fillMaxWidth(),
             text = link.url.getString(false),
@@ -110,11 +111,8 @@ fun LinkAndTags(
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (tag in link.tags) {
-                CustomChip(
-                    modifier = Modifier.padding(end = 8.dp),
-                    textModifier = Modifier.padding(horizontal = 3.dp),
-                    text = "# $tag"
-                )
+                CustomChip(prefix = "# ", text = tag)
+                Spacer(Modifier.width(4.dp))
             }
         }
     }
@@ -159,7 +157,7 @@ fun PreviewLinkCard() {
         Url("https://www.naver.com"),
         getBitmap(id = R.drawable.ic_sample_image_001),
         getBitmap(id = R.drawable.ic_sample_image_001),
-        listOf("유명", "네이버", "검색")
+        arrayListOf("유명", "네이버", "검색")
     )
     
     CardLink(

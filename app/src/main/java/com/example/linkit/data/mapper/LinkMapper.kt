@@ -42,7 +42,7 @@ class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
 class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
     override fun map(input: LinkWithTags): ILink {
         val favicon = input.link.favicon ?: EMPTY_BITMAP
-        val image = input.link.favicon ?: EMPTY_BITMAP
+        val image = input.link.image ?: EMPTY_BITMAP
 
         return Link(
             id = input.link.id,
@@ -50,7 +50,7 @@ class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
             url = Url(input.link.url),
             favicon = favicon,
             image = image,
-            tags = input.tags.map { it.name }
+            tags = ArrayList(input.tags.map { it.name })
         )
     }
 }
