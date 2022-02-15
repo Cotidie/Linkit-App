@@ -18,6 +18,7 @@ object UIConstants {
     val SIZE_IMAGE_FOLDER = 110.dp
     val WIDTH_BUTTON_LONG = 130.dp
     val WIDTH_DIALOG = 200.dp
+    val WIDTH_TAG_DEFAULT = 45.dp
     val HEIGHT_BUTTON_SMALL = 30.dp
     val HEIGHT_MAX_CONTENT_IMAGE = 300.dp
     val PADDING_BUTTON_DEFAULT = ButtonDefaults.ContentPadding

@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.repository.LinkRepository
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link
@@ -19,6 +20,7 @@ class ContentViewModel @Inject constructor(
 ): ViewModel() {
     private val _link = mutableStateOf(ILink.EMPTY)
     val link: State<ILink> = _link
+    var uiMode = mutableStateOf(UIMode.NORMAL)
 
     /** DB에서 화면에 표시할 링크를 불러온다. */
     fun setLink(id: Long) {
