@@ -1,6 +1,5 @@
 package com.example.linkit.presentation.view
 
-import android.graphics.Bitmap
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,14 +21,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.linkit._constant.ColorConstants
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
-import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link
+import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CustomChip
 import com.example.linkit.presentation.component.TextUrl
+import com.example.linkit.presentation.model.LinkView
 import com.example.linkit.presentation.view.Content.TagAddChip
 import com.example.linkit.presentation.view.Content.TagInputChip
-import com.example.linkit.presentation.viewModelOwner
 import com.example.linkit.presentation.viewmodel.ContentViewModel
 import com.google.accompanist.flowlayout.FlowRow
 
@@ -40,8 +38,7 @@ fun ContentScreen(
     linkId: Long
 ) {
     val viewModel = hiltViewModel<ContentViewModel>()
-    val link by viewModel.link
-    var memo by remember {mutableStateOf("샘플메모")}
+    val linkView by viewModel.link
     var uiMode by remember {mutableStateOf(UIMode.NORMAL)}
 
     LaunchedEffect(linkId) {
@@ -64,20 +61,16 @@ fun ContentScreen(
                         navController.popBackStack()
                     }
                 )
-                ImageArea(image = link.image)
+                ImageArea(linkView = linkView)
                 Spacer(Modifier.height(10.dp))
 
-                URLArea(link = link)
+                URLArea(linkView = linkView)
                 Spacer(Modifier.height(10.dp))
 
-                TagArea(viewModel = viewModel, link = link)
+                TagArea(viewModel = viewModel, linkView = linkView)
                 Spacer(Modifier.height(10.dp))
 
-                MemoArea(
-                    modifier = Modifier.fillMaxSize(),
-                    memo = memo,
-                    onTextChange = {memo = it}
-                )
+                MemoArea(linkView = linkView)
             }
         }
     }
@@ -138,8 +131,9 @@ private fun HeadBarArea(
 
 @Composable
 private fun ImageArea(
-    image: Bitmap
+    linkView: LinkView
 ) {
+    val image by linkView.image
     val maxHeight = UIConstants.HEIGHT_MAX_CONTENT_IMAGE
 
     Box(
@@ -160,21 +154,24 @@ private fun ImageArea(
 
 @Composable
 private fun URLArea(
-    link: ILink
+    linkView: LinkView
 ) {
+    val url by linkView.url
+    "url 테스트: ${url.getString()}".log()
+
     TextUrl(
         modifier = Modifier,
-        url = link.url
+        url = url
     )
 }
 
 @Composable
 private fun TagArea(
     viewModel: ContentViewModel,
-    link: ILink
+    linkView: LinkView
 ) {
     var uiMode by viewModel.uiMode
-    val tags = remember { link.tags.toMutableStateList() }
+    val tags = linkView.tags
 
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
@@ -203,16 +200,16 @@ private fun TagArea(
 
 @Composable
 private fun MemoArea(
-    modifier : Modifier = Modifier,
-    memo: String,
-    onTextChange: (String) -> Unit,
+    linkView: LinkView
 ) {
-    Box(modifier = modifier) {
+    var memo by linkView.memo
+
+    Box(modifier = Modifier.fillMaxSize()) {
         BasicTextField(
             modifier = Modifier
                 .fillMaxSize(),
             value = memo,
-            onValueChange = onTextChange
+            onValueChange = {memo = it}
         )
     }
 }
