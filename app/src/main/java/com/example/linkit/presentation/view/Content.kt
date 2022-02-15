@@ -28,6 +28,8 @@ import com.example.linkit.domain.model.Link
 import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CustomChip
 import com.example.linkit.presentation.component.TextUrl
+import com.example.linkit.presentation.view.Content.TagAddChip
+import com.example.linkit.presentation.view.Content.TagInputChip
 import com.example.linkit.presentation.viewModelOwner
 import com.example.linkit.presentation.viewmodel.ContentViewModel
 import com.google.accompanist.flowlayout.FlowRow
@@ -171,6 +173,7 @@ private fun TagArea(
     viewModel: ContentViewModel,
     link: ILink
 ) {
+    var uiMode by viewModel.uiMode
     val tags = remember { link.tags.toMutableStateList() }
 
     FlowRow(
@@ -180,13 +183,21 @@ private fun TagArea(
         for (tag in tags) {
             CustomChip(text = "# $tag")
         }
-        CustomChip(
-            text = "+ 태그",
-            borderWidth = 1.dp,
-            onClick = {
-                tags.add("dd")
-            }
-        )
+
+        if (uiMode != UIMode.ADD_TAG)
+            TagAddChip(
+                onClick = {
+                    uiMode = UIMode.ADD_TAG
+                }
+            )
+        if (uiMode == UIMode.ADD_TAG)
+            TagInputChip(
+                onDone = { text ->
+                    tags.add(text)
+                    uiMode = UIMode.NORMAL
+                }
+            )
+
     }
 }
 
