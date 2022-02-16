@@ -2,6 +2,8 @@ package com.example.linkit.data.room.dao
 
 import androidx.room.*
 import com.example.linkit.data.room.entity.*
+import com.example.linkit.domain.interfaces.ILink
+import com.example.linkit.domain.model.Link
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -15,27 +17,41 @@ interface LinkDao {
 
     @Transaction
     @Query("SELECT * FROM linkTable")
-    fun getLinks() : Flow<List<LinkWithTags>>
+    fun getLinks(): Flow<List<LinkWithTags>>
 
     @Transaction
     @Query("SELECT * FROM tagTable")
-    fun getTags() : Flow<List<TagWithLinks>>
+    fun getTags(): Flow<List<TagWithLinks>>
 
     @Transaction
     @Query("SELECT * from linkTable where parentFolderId = :folderId")
-    fun getLinksInFolder(folderId: Long) : Flow<List<LinkWithTags>>
+    fun getLinksInFolder(folderId: Long): Flow<List<LinkWithTags>>
+
+    /**
+     * 링크 검색 Dao
+     * searchLinkUrl(searchUrl: String, folderId: Long) 쿼리
+     * WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%' ORDER BY `linkId` DESC 에서
+     * AND 대신 &&나 & 사용시 에러? 발생
+     */
+
+    @Query("SELECT * FROM linkTable WHERE url LIKE '%' || :searchUrl || '%' ORDER BY `linkId` DESC ")
+    fun searchLinkUrl(searchUrl: String): Flow<List<LinkWithTags>>
+
+    @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%' ORDER BY `linkId` DESC ")
+    fun searchLinkUrl(searchUrl: String, folderId: Long): Flow<List<LinkWithTags>>
+
 
     @Query("SELECT * from linkTable where linkId = :id")
     suspend fun getLinkById(id: Long): LinkWithTags
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(linkEntity: LinkEntity) : Long
+    suspend fun insert(linkEntity: LinkEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(tagEntity: TagEntity) : Long
+    suspend fun insert(tagEntity: TagEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(linkTagRef : LinkTagRef)
+    suspend fun insert(linkTagRef: LinkTagRef)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(linkEntity: LinkEntity)

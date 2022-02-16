@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,14 +34,15 @@ class LinkRepository @Inject constructor(
     private val bitmapMapper: BitmapMapper,
 ) {
     private val appContext = LinkItApp.cxt()
+
     /** Flow를 IO 쓰레드에서 동작시키고, emit과 collector를 다른 코루틴에서 실행시킨다 (conflate) */
-    fun getAllLinks() : Flow<List<LinkWithTags>> {
+    fun getAllLinks(): Flow<List<LinkWithTags>> {
         return linkDao.getLinks()
             .flowOn(Dispatchers.IO)
             .conflate()
     }
 
-    fun getLinksInFolder(folderId: Long) : Flow<List<ILink>> {
+    fun getLinksInFolder(folderId: Long): Flow<List<ILink>> {
         return linkDao.getLinksInFolder(folderId)
             .flowOn(Dispatchers.IO)
             .conflate()
@@ -53,7 +53,6 @@ class LinkRepository @Inject constructor(
     suspend fun addLink(link: ILink) {
         link.favicon = getFavicon(link.url)
         link.metaImg = getMetaImg(link)
-        Log.d("##12","metaimgBuyt ${link.metaImg}")
 
         val linkWithTags = linkDto.map(link)
         // 링크 insert
@@ -64,23 +63,39 @@ class LinkRepository @Inject constructor(
             linkDao.insert(LinkTagRef(linkId = linkId, tagId = tagId))
         }
     }
+
     suspend fun updateLink(linkEntity: LinkEntity) = linkDao.update(linkEntity)
     suspend fun deleteLink(linkEntity: LinkEntity) = linkDao.deleteLink(linkEntity)
     suspend fun deleteAllLinks() = linkDao.delete()
-    suspend fun searchLinkByUrl(text: String) : List<ILink> {
-//        val roomResult : List<LinkWithTags>
-//        return linkDto.map(roomResult)
+
+    /**
+     * 링크검색 함수
+     * folderId를 받아서 0(디폴트값)이면 전체링크에서 링크 검색
+     * folderId가 0이 아니면 해당 folderId에 소속된 링크 검색
+     */
+    fun searchLinkByUrl(searchUrl: String, folderId: Long): Flow<List<ILink>> {
+        val searchUrlFlow: Flow<List<LinkWithTags>> by lazy {
+            if (folderId == 0L) linkDao.searchLinkUrl(searchUrl)
+            else linkDao.searchLinkUrl(
+                searchUrl,
+                folderId)
+        }
+
+        return searchUrlFlow
+            .flowOn(Dispatchers.IO)
+            .conflate()
+            .map { linkDto.map(it) }
     }
-    private suspend fun getFavicon(url: Url) : Bitmap {
+
+    private suspend fun getFavicon(url: Url): Bitmap {
         val faviconUrl = url.getFaviconUrl()
         val rawResponse = linkApi.fetchUrl(faviconUrl).body()
         return bitmapMapper.map(rawResponse)
     }
 
     /** 크롤링 함수 */
-    private suspend fun getMetaImg(link : ILink) : Bitmap {
+    private fun getMetaImg(link: ILink): Bitmap {
         val metaImg = link.url.getMetaImg()?.get("image")
-        Log.d("##12","metaimg $metaImg")
         return stringToBitmap(metaImg)
     }
 
