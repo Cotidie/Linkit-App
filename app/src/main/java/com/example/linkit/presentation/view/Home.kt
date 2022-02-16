@@ -27,6 +27,7 @@ import com.example.linkit.MainActivity
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.presentation.component.*
+import com.example.linkit.presentation.model.FolderView
 import com.example.linkit.presentation.model.IconText
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.view.Home.HomeBottomButton
@@ -37,7 +38,8 @@ import com.example.linkit.ui.theme.LinkItTheme
 @Composable
 fun Home(navController: NavController) {
     val viewModel = hiltViewModel<HomeViewModel>()
-    var selected by remember { mutableStateOf<IFolder>(IFolder.DEFAULT) }
+    val folders = viewModel.folders
+    var selected by remember { mutableStateOf(FolderView()) }
     var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
     val folderNameFocus = remember { FocusRequester() }
 
@@ -79,7 +81,7 @@ fun Home(navController: NavController) {
                     .weight(1f)
                     .padding(horizontal = 25.dp),
                 uiMode = uiMode,
-                folders = viewModel.allFolders.value,
+                folders = folders,
                 selected = selected,
                 cells = 3,
                 folderNameFocus = folderNameFocus,
@@ -116,7 +118,7 @@ fun Home(navController: NavController) {
         uiMode = uiMode,
         onRenameClick = { uiMode = UIMode.RENAME_FOLDER },
         onReimageClick = { bitmap ->
-            selected.image = bitmap
+            selected.image.value = bitmap
             viewModel.updateFolder(selected)
         }
     )

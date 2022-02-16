@@ -19,7 +19,7 @@ class ContentViewModel @Inject constructor(
     private val linkRepo: LinkRepository,
     private val linkMapper: LinkMapper
 ): ViewModel() {
-    private var _link = mutableStateOf(LinkView())
+    private val _link = mutableStateOf(LinkView())
     val link: State<LinkView> = _link
     var uiMode = mutableStateOf(UIMode.NORMAL)
 

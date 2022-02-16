@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.log
+import com.example.linkit.presentation.model.FolderView
 import com.example.linkit.presentation.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -20,13 +21,13 @@ import com.example.linkit.presentation.viewmodel.HomeViewModel
 fun FolderGrid(
     modifier: Modifier = Modifier,
     uiMode: UIMode,
-    folders: List<IFolder>,
-    selected: IFolder,
+    folders: List<FolderView>,
+    selected: FolderView,
     cells: Int,
     folderNameFocus: FocusRequester,
-    onClick: (item: IFolder) -> Unit,
-    onLongPress: (item: IFolder) -> Unit,
-    onDismissRequest: (item: IFolder) -> Unit
+    onClick: (item: FolderView) -> Unit,
+    onLongPress: (item: FolderView) -> Unit,
+    onDismissRequest: (item: FolderView) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -38,7 +39,7 @@ fun FolderGrid(
             CardFolder(
                 folder = folder,
                 uiMode = uiMode,
-                selected = (selected == folder) && uiMode.isEditMode(),
+                selected = (selected.id == folder.id) && uiMode.isEditMode(),
                 focusRequester = folderNameFocus,
                 onClick = { onClick(folder) },
                 onLongPress = { onLongPress(folder) },

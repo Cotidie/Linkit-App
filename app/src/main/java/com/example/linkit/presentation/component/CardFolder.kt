@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.component
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,12 +33,13 @@ import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
 import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.getBitmap
+import com.example.linkit.presentation.model.FolderView
 import com.example.linkit.ui.theme.LinkItTheme
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CardFolder(
-    folder: IFolder,
+    folder: FolderView,
     uiMode: UIMode,
     selected: Boolean,
     focusRequester: FocusRequester = FocusRequester(),
@@ -77,7 +79,7 @@ fun CardFolder(
         ImageWithCheckbox(
             modifier = Modifier
                 .size(UIConstants.SIZE_IMAGE_FOLDER),
-            image = folder.image.asImageBitmap(),
+            image = folder.image.value,
             selected = selected && uiMode == EDIT_FOLDER,
             onCheckedChange = { checked ->
                 if (!checked) {
@@ -133,7 +135,7 @@ private fun ImageWithCheckbox(
     modifier: Modifier = Modifier,
     selected: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    image: ImageBitmap
+    image: Bitmap
 ) {
     Box(modifier = modifier) {
         Image(
@@ -141,7 +143,7 @@ private fun ImageWithCheckbox(
                 .fillMaxSize()
                 .clip(RoundedCornerShape(10.dp))
                 .background(Color.White),
-            bitmap = image,
+            bitmap = image.asImageBitmap(),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
@@ -160,11 +162,11 @@ private fun ImageWithCheckbox(
 @Composable
 private fun RowScope.NameTextField(
     enabled: Boolean = false,
-    folder: IFolder,
+    folder: FolderView,
     keyboardActions: KeyboardActions,
     focusRequester: FocusRequester,
 ) {
-    var text by remember { mutableStateOf(folder.name) }
+    var text by folder.name
 
     BasicTextField(
         modifier = Modifier
@@ -180,7 +182,7 @@ private fun RowScope.NameTextField(
         keyboardActions = keyboardActions,
         onValueChange = {
             text = it
-            folder.name = it
+            folder.name.value = it
         }
     )
 }
@@ -188,11 +190,10 @@ private fun RowScope.NameTextField(
 @Preview
 @Composable
 private fun PreviewFolderCard() {
-    val folder = FolderPrivate(
+    val folder = remember { FolderView(
         id = 5,
-        name = "개인폴더",
-        image = getBitmap(id = R.drawable.ic_sample_image_001)
-    )
+        name = mutableStateOf("개인폴더"),
+    ) }
     val uiMode = UIMode.EDIT_FOLDER
 
     LinkItTheme {

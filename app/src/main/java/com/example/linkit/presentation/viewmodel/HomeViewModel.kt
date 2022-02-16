@@ -1,7 +1,9 @@
 package com.example.linkit.presentation.viewmodel
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.linkit.domain.repository.FolderRepository
@@ -9,17 +11,20 @@ import com.example.linkit.domain.interfaces.IFolder
 import com.example.linkit.domain.model.FolderPrivate
 import com.example.linkit.domain.model.FolderShared
 import com.example.linkit.domain.model.log
+import com.example.linkit.presentation.mapper.FolderMapper
+import com.example.linkit.presentation.model.FolderView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: FolderRepository
+    private val repository: FolderRepository,
+    private val folderMapper: FolderMapper
 ): ViewModel() {
-    private val _allFolders = mutableStateOf(emptyList<IFolder>())
-    val allFolders : State<List<IFolder>> = _allFolders
+    val folders = mutableStateListOf<FolderView>()
 
     // 관찰할 Flow를 등록한다.
     init { collectAllFolders() ; "HomeViewModel 생성!".log()}
@@ -32,15 +37,23 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch { repository.insert(folder) }
     }
 
-    fun updateFolder(folder: IFolder) = viewModelScope.launch { repository.update(folder) }
-    fun removeFolder(folder: IFolder) = viewModelScope.launch { repository.delete(folder) }
+    fun updateFolder(folder: FolderView) {
+        val domain = folderMapper.map(folder)
+        viewModelScope.launch { repository.update(domain) }
+    }
+    fun removeFolder(folder: FolderView) {
+        val domain = folderMapper.map(folder)
+        viewModelScope.launch { repository.delete(domain) }
+    }
 
     private fun collectAllFolders() {
         viewModelScope.launch {
             repository.getAllFolders()
                 .distinctUntilChanged()
+                .map { folderMapper.map(it) }
                 .collect { folderList ->
-                    _allFolders.value = folderList
+                    folders.clear()
+                    folders.addAll(folderList)
                 }
         }
     }
