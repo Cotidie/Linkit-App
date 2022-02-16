@@ -9,14 +9,14 @@ import com.example.linkit.domain.model.Url
 import java.util.*
 
 /** Compose에서 활용할 Link 객체 */
-class LinkView(
+data class LinkView(
     val id: Long = 0,
     var parentFolder: Long = EMPTY_LONG,
-    var name: MutableState<String> = mutableStateOf(""),
-    var memo: MutableState<String> = mutableStateOf(""),
-    var url: MutableState<Url> = mutableStateOf(Url()),
-    var favicon: MutableState<Bitmap> = mutableStateOf(EMPTY_BITMAP),
-    var image: MutableState<Bitmap> = mutableStateOf(EMPTY_BITMAP),
+    val name: MutableState<String> = mutableStateOf(""),
+    val memo: MutableState<String> = mutableStateOf(""),
+    val url: MutableState<Url> = mutableStateOf(Url()),
+    val favicon: MutableState<Bitmap> = mutableStateOf(EMPTY_BITMAP),
+    val image: MutableState<Bitmap> = mutableStateOf(EMPTY_BITMAP),
     val tags: MutableList<String> = mutableListOf(""),
-    var created: MutableState<Date> = mutableStateOf(Date())
+    val created: MutableState<Date> = mutableStateOf(Date())
 )
