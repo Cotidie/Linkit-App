@@ -35,6 +35,7 @@ fun AppBarHome(navController: NavController, viewModel: HomeViewModel) {
             )
         }
         OPENED -> {
+
             AppBarSearch(
                 text = text,
                 onClearClicked = {
@@ -45,7 +46,11 @@ fun AppBarHome(navController: NavController, viewModel: HomeViewModel) {
                     }
                 },
                 onTextChange = { text = it },
-                onSearchClicked = { viewModel.searchLink(text) }
+                onSearchClicked = {
+                    // AppBarHome에서는 클릭시 text 인자만 전달
+                    navController.navigate(Screen.SearchResult.route.plus("?searchUrl=${text}")
+                    )
+                }
             )
         }
     }
