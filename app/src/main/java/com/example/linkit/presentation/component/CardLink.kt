@@ -2,6 +2,8 @@ package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -24,6 +26,7 @@ import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
+import com.google.accompanist.flowlayout.FlowRow
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -103,16 +106,13 @@ fun LinkAndTags(
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1
         )
-        // 넘치는 경우 처리
-        Row(
+        LazyRow(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            for (tag in link.tags) {
-                CustomChip(prefix = "# ", text = tag)
-                Spacer(Modifier.width(4.dp))
+            items(items = link.tags) { tag ->
+                CustomChip(prefix = "#", text = tag)
             }
         }
     }
