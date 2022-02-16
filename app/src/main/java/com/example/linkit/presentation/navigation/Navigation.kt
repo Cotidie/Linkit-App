@@ -64,7 +64,7 @@ fun NavGraph(navController: NavHostController) {
          */
 
         composable(
-            route = Screen.SearchResult.route.plus("?text={text}&folderId={folderId}"),
+            route = Screen.SearchResult.route.plus("?searchUrl={searchUrl}&folderId={folderId}"),
             arguments = listOf(
                 navArgument("folderId") {
                     type = NavType.LongType
