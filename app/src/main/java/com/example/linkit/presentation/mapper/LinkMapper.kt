@@ -18,7 +18,7 @@ class LinkMapper @Inject constructor() {
     fun map(view: LinkView) : ILink = viewToLink.map(view)
 }
 
-class LinkToView: Mapper<ILink, LinkView> {
+private class LinkToView: Mapper<ILink, LinkView> {
     override fun map(input: ILink): LinkView {
         return LinkView(
             id = input.id,
@@ -34,7 +34,7 @@ class LinkToView: Mapper<ILink, LinkView> {
     }
 }
 
-class ViewToLink: Mapper<LinkView, ILink> {
+private class ViewToLink: Mapper<LinkView, ILink> {
     override fun map(input: LinkView): ILink {
         return Link(
             id = input.id,
