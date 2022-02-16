@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.component
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,10 @@ import com.example.linkit.ui.theme.LinkItTheme
 fun AppBarHome(navController: NavController) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
     var text by remember { mutableStateOf("") }
+
+    BackHandler(enabled = (searchBarState == OPENED)) {
+        searchBarState = CLOSED
+    }
 
     when (searchBarState) {
         CLOSED -> {

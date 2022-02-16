@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.component
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -24,6 +25,10 @@ fun AppBarExplorer(
 ) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
     var text by remember { mutableStateOf("") }
+
+    BackHandler(enabled = (searchBarState == OPENED)) {
+        searchBarState = CLOSED
+    }
 
     when (searchBarState) {
         CLOSED -> {
@@ -120,7 +125,9 @@ fun SortingButton() {
         },
         item = { index, item ->
             Text(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 5.dp),
                 text = item,
                 textAlign = TextAlign.Center
             )
