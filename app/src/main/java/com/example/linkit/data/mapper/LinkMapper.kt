@@ -27,6 +27,7 @@ class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
             id = input.id,
             folderId = input.parentFolder,
             url = input.url.getString(true),
+            memo = input.memo,
             favicon = favicon,
             image = image,
         )
@@ -48,6 +49,7 @@ class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
             id = input.link.id,
             parentFolder = input.link.folderId,
             url = Url(input.link.url),
+            memo = input.link.memo,
             favicon = favicon,
             image = image,
             tags = ArrayList(input.tags.map { it.name })
