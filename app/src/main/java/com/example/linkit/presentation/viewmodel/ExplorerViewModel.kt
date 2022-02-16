@@ -3,7 +3,6 @@ package com.example.linkit.presentation.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.linkit._enums.SearchKey
 import com.example.linkit.data.repository.FolderRepository
 import com.example.linkit.data.repository.LinkRepository
 import com.example.linkit.domain.interfaces.IFolder
@@ -68,9 +67,7 @@ class ExplorerViewModel @Inject constructor(
         }
     }
 
-    fun searchLinks(text: String, key: SearchKey) {
 
-    }
 
     /** 현재 폴더가 변경되면 자동으로 폴더 내의 링크들을 불러온다. */
     private fun collectLinks() {
@@ -81,7 +78,7 @@ class ExplorerViewModel @Inject constructor(
                 }
                 .distinctUntilChanged()
                 .collect {
-                    allLinks = it
+                    links.value = it
                 }
         }
     }
