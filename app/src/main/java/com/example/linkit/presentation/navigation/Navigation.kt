@@ -56,14 +56,27 @@ fun NavGraph(navController: NavHostController) {
             val linkId = backStackEntry.arguments?.getLong("linkId")
             ContentScreen(navController, linkId!!)
         }
+
+        /**
+         *  링크 검색 navigation
+         *  인자를 folderId와 searchUrl을 받는다
+         *  folderId는 선택 인수로 사용하지 않으면 0L(디폴트값)
+         */
+
         composable(
-            route = Screen.SearchResult.route.plus("/{text}"),
+            route = Screen.SearchResult.route.plus("?text={text}&folderId={folderId}"),
             arguments = listOf(
-                navArgument("text") { type = NavType.StringType }
+                navArgument("folderId") {
+                    type = NavType.LongType
+                    defaultValue = 0L
+                },
+                navArgument("searchUrl") { type = NavType.StringType }
             )
         ) { backStackEntry ->
-            val text = backStackEntry.arguments?.getString("text")
-            SearchResultScreen(navController, text = text!!)
+            val folderId = backStackEntry.arguments?.getLong("folderId")
+            val searchUrl = backStackEntry.arguments?.getString("searchUrl")
+
+            SearchResultScreen(navController,folderId=folderId!!, searchUrl = searchUrl!!)
         }
     }
 
