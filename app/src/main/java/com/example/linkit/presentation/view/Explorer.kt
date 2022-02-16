@@ -59,6 +59,7 @@ fun Explorer(
         topBar = {
             AppBarExplorer(
                 folderName = currentFolder.name,
+                folderId = folderId,
                 navController = navController
             )
         },

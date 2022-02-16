@@ -135,7 +135,7 @@ class Url constructor() {
                 }
             } else {
                 orgTags = doc.select("meta[name^=twitter:]")
-                Log.d("!@12", "$orgTags")
+
                 for (i in 0 until orgTags.size) {
                     val tag: Element = orgTags[i]
                     when (tag.attr("name")) {

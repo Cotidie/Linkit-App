@@ -38,9 +38,6 @@ class HomeViewModel @Inject constructor(
 
     fun updateFolder(folder: IFolder) = viewModelScope.launch { repository.update(folder) }
     fun removeFolder(folder: IFolder) = viewModelScope.launch { repository.delete(folder) }
-    fun searchLink(text: String) {
-        Log.d("##12", "$text")
-    }
 
     private fun collectAllFolders() {
         viewModelScope.launch {

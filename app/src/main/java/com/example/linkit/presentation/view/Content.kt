@@ -167,7 +167,7 @@ fun ImageArea(
     image: ImageBitmap
 ) {
     val maxHeight = UIConstants.HEIGHT_MAX_CONTENT_IMAGE
-    Log.d("##12","3 $image")
+
 
     Box(
         modifier = Modifier,
