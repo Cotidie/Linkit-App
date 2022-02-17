@@ -10,9 +10,21 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LinkDao {
+    @Transaction
+    /** 링크를 삭제하고, 태그를 참조하는 링크가 0개면 태그도 삭제한다. */
+    suspend fun delete(linkWithTags: LinkWithTags) {
+        val link = linkWithTags.link
+        val tags = linkWithTags.tags
+
+        delete(link)
+        for (tag in tags) {
+            if (countLinksByTag(tag.name) == 0)
+                delete(tag)
+        }
+    }
+
     // Flow는 객체만 생성되고, SELECT 작업은 .collect에서 이루어진다.
     // 객체 생성은 변수 선언과 같으므로 코루틴으로 작업하지 않아도 된다.
-
     @Transaction
     @Query("SELECT * FROM linkTable")
     fun getLinks() : Flow<List<LinkWithTags>>
@@ -60,5 +72,5 @@ interface LinkDao {
     @Delete
     suspend fun delete(ref: LinkTagRef)
     @Query("DELETE FROM linkTable WHERE linkId IN (:ids)")
-    suspend fun deleteLinks(ids: List<Long>)
+    suspend fun delete(ids: List<Long>)
 }
