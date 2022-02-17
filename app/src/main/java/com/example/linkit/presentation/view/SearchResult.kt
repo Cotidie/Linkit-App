@@ -9,6 +9,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +38,9 @@ fun SearchResultScreen(
     val viewModel = hiltViewModel<SearchViewModel>()
     val scrollState = rememberLazyListState()
 
-    viewModel.collectLinks(searchUrl, folderId)
+    LaunchedEffect(Unit) {
+        viewModel.collectLinks(searchUrl, folderId)
+    }
 
     Scaffold(
         topBar = {

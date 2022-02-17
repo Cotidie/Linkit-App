@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.view.ContentScreen
 import com.example.linkit.presentation.view.ProfileScreen
+import com.example.linkit.presentation.view.SearchResultScreen
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 
 @Composable
@@ -65,7 +66,7 @@ fun NavGraph(navController: NavHostController) {
          */
 
         composable(
-            route = Screen.SearchResult.route.plus("?text={text}&folderId={folderId}"),
+            route = Screen.SearchResult.route.plus("?searchUrl={searchUrl}&folderId={folderId}"),
             arguments = listOf(
                 navArgument("folderId") {
                     type = NavType.LongType

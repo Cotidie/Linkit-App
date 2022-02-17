@@ -85,7 +85,7 @@ class LinkRepository @Inject constructor(
         return searchUrlFlow
             .flowOn(Dispatchers.IO)
             .conflate()
-            .map { linkDto.map(it) }
+            .map { linkMapper.map(it) }
     }
 
     suspend fun deleteLinks(links: List<ILink>) {
