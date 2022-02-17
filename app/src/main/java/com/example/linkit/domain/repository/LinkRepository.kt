@@ -70,6 +70,24 @@ class LinkRepository @Inject constructor(
         for (tag in deletedTags) removeTag(tag = tag, linkId = link.id)
     }
 
+    /**
+     * 링크검색 함수
+     * folderId를 받아서 0(디폴트값)이면 전체링크에서 링크 검색
+     * folderId가 0이 아니면 해당 folderId에 소속된 링크 검색
+     */
+    fun searchLinkByUrl(searchUrl: String, folderId: Long): Flow<List<ILink>> {
+        val searchUrlFlow: Flow<List<LinkWithTags>> =
+            if (folderId == 0L) linkDao.searchLinkUrl(searchUrl)
+            else linkDao.searchLinkUrl(
+                searchUrl,
+                folderId)
+
+        return searchUrlFlow
+            .flowOn(Dispatchers.IO)
+            .conflate()
+            .map { linkDto.map(it) }
+    }
+
     suspend fun deleteLinks(links: List<ILink>) {
         val entities = linkMapper.map(links)
         val ids = entities.map { it.link.id }; "삭제할 링크: $ids".log()
