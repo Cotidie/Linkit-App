@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.view.ContentScreen
 import com.example.linkit.presentation.view.ProfileScreen
+import com.example.linkit.presentation.view.SearchResultScreen
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 
 @Composable
@@ -56,6 +57,28 @@ fun NavGraph(navController: NavHostController) {
         ) { backStackEntry ->
             val linkId = backStackEntry.arguments?.getLong("linkId")
             ContentScreen(navController, linkId!!)
+        }
+
+        /**
+         *  링크 검색 navigation
+         *  인자를 folderId와 searchUrl을 받는다
+         *  folderId는 선택 인수로 사용하지 않으면 0L(디폴트값)
+         */
+
+        composable(
+            route = Screen.SearchResult.route.plus("?searchUrl={searchUrl}&folderId={folderId}"),
+            arguments = listOf(
+                navArgument("folderId") {
+                    type = NavType.LongType
+                    defaultValue = 0L
+                },
+                navArgument("searchUrl") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val folderId = backStackEntry.arguments?.getLong("folderId")
+            val searchUrl = backStackEntry.arguments?.getString("searchUrl")
+
+            SearchResultScreen(navController,folderId=folderId!!, searchUrl = searchUrl!!)
         }
     }
 

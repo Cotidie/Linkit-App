@@ -209,7 +209,7 @@ private fun MemoArea(
             modifier = Modifier
                 .fillMaxSize(),
             value = memo,
-            onValueChange = {memo = it}
+            onValueChange = {memo = it},
         )
     }
 }

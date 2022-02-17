@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.component
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,11 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.SearchBarState.*
+import com.example.linkit.presentation.navigation.Screen
 
 @Composable
 fun AppBarExplorer(
     modifier : Modifier = Modifier,
     folderName: String,
+    folderId: Long, // 폴더 내에서 검색 구현을 위한 folderId 매개변수 추가
     navController: NavController
 ) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
@@ -50,7 +53,12 @@ fun AppBarExplorer(
                         searchBarState = CLOSED
                     }
                 },
-                onTextChange = { text = it }
+                onTextChange = { text = it },
+                onSearchClicked = {
+                    // onSearchClicked시 text와 folderId 인자 전달
+                    navController.navigate(Screen.SearchResult.route.plus("?searchUrl=${text}&folderId=${folderId}")
+                    )
+                }
             )
         }
     }
