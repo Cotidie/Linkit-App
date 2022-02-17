@@ -120,6 +120,9 @@ fun Home(navController: NavController) {
         onReimageClick = { bitmap ->
             selected.image.value = bitmap
             viewModel.updateFolder(selected)
+        },
+        onDeleteClick = {
+            viewModel.deleteFolder(folder = selected)
         }
     )
 }
