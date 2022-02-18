@@ -18,21 +18,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.linkit.R
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
-import com.example.linkit.domain.interfaces.IFolder
-import com.example.linkit.domain.model.FolderPrivate
-import com.example.linkit.domain.model.log
-import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.model.FolderView
 import com.example.linkit.ui.theme.LinkItTheme
 
@@ -167,6 +163,10 @@ private fun RowScope.NameTextField(
     focusRequester: FocusRequester,
 ) {
     var text by folder.name
+    val textField = TextFieldValue(
+        text = text,
+        selection = TextRange(text.length)
+    )
 
     BasicTextField(
         modifier = Modifier
@@ -175,15 +175,15 @@ private fun RowScope.NameTextField(
             .padding(start = 6.dp)
             .focusRequester(focusRequester),
         enabled = enabled,
-        value = text,
+        value = textField,
         textStyle = TextStyle(color=Color.White),
         singleLine = true,
         cursorBrush = SolidColor(Color.White),
         keyboardActions = keyboardActions,
         onValueChange = {
-            text = it
-            folder.name.value = it
-        }
+            text = it.text
+            folder.name.value = it.text
+        },
     )
 }
 
