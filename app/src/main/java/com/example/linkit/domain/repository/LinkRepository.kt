@@ -91,7 +91,7 @@ class LinkRepository @Inject constructor(
     suspend fun deleteLinks(links: List<ILink>) {
         val entities = linkMapper.map(links)
         val ids = entities.map { it.link.id }; "삭제할 링크: $ids".log()
-        linkDao.deleteLinks(ids)
+        linkDao.delete(ids)
     }
 
     private suspend fun addTag(tag: TagEntity, linkId: Long) {

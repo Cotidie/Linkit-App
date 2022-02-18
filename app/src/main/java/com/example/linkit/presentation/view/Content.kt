@@ -157,7 +157,6 @@ private fun URLArea(
     linkView: LinkView
 ) {
     val url by linkView.url
-    "url 테스트: ${url.getString()}".log()
 
     TextUrl(
         modifier = Modifier,

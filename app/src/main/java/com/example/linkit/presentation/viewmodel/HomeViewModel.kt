@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
         val domain = folderMapper.map(folder)
         viewModelScope.launch { repository.update(domain) }
     }
-    fun removeFolder(folder: FolderView) {
+    fun deleteFolder(folder: FolderView) {
         val domain = folderMapper.map(folder)
         viewModelScope.launch { repository.delete(domain) }
     }
