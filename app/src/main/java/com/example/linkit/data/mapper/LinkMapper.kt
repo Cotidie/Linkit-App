@@ -30,6 +30,7 @@ class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
             memo = input.memo,
             favicon = favicon,
             image = image,
+            created = input.created
         )
 
         return LinkWithTags(
@@ -52,6 +53,7 @@ class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
             memo = input.link.memo,
             favicon = favicon,
             image = image,
+            created = input.link.created,
             tags = ArrayList(input.tags.map { it.name })
         )
     }

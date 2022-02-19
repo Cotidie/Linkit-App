@@ -12,7 +12,7 @@ import com.example.linkit.data.room.entity.TagEntity
 
 @Database(
     entities = [LinkEntity::class, FolderEntity::class, LinkTagRef::class, TagEntity::class],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
