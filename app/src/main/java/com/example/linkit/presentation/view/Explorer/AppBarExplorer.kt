@@ -1,14 +1,19 @@
 package com.example.linkit.presentation.component
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,11 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.linkit._constant.UIConstants
-import com.example.linkit._enums.SearchBarState.*
+import com.example.linkit._enums.SearchBarState.CLOSED
+import com.example.linkit._enums.SearchBarState.OPENED
+import com.example.linkit._enums.SortingOption
 import com.example.linkit.presentation.navigation.Screen
+import com.example.linkit.presentation.viewmodel.ExplorerViewModel
 
 @Composable
 fun AppBarExplorer(
+    viewModel: ExplorerViewModel,
     modifier : Modifier = Modifier,
     folderName: String,
     folderId: Long, // 폴더 내에서 검색 구현을 위한 folderId 매개변수 추가
@@ -36,6 +45,7 @@ fun AppBarExplorer(
     when (searchBarState) {
         CLOSED -> {
             AppBarExplorerDefault(
+                viewModel = viewModel,
                 modifier = modifier,
                 folderName = folderName,
                 onSearchClick = { searchBarState = OPENED },
@@ -65,7 +75,8 @@ fun AppBarExplorer(
 }
 
 @Composable
-fun AppBarExplorerDefault(
+private fun AppBarExplorerDefault(
+    viewModel: ExplorerViewModel,
     modifier: Modifier = Modifier,
     folderName: String,
     onSearchClick: () -> Unit,
@@ -94,7 +105,9 @@ fun AppBarExplorerDefault(
                 contentDescription = null,
                 tint = Color.Black
             )
-            SortingButton()
+            SortingButton(
+                viewModel = viewModel
+            )
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
@@ -110,16 +123,16 @@ fun AppBarExplorerDefault(
 }
 
 @Composable
-fun SortingButton() {
-    val options = listOf(
-        "최근 저장 순", "오래된 순", "내 설정 순"
-    )
-    var selected by remember { mutableStateOf(options[0]) }
+private fun SortingButton(
+    viewModel: ExplorerViewModel
+) {
+    val options = SortingOption.values()
+    var sortBy by viewModel.sortBy
     var expanded by remember { mutableStateOf(false) }
 
     DropDownButton(
         expanded = expanded,
-        items = options,
+        items = options.toList(),
         button = {
             Icon(
                 modifier = Modifier
@@ -136,12 +149,12 @@ fun SortingButton() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 5.dp),
-                text = item,
+                text = item.text,
                 textAlign = TextAlign.Center
             )
         },
         onItemClick = { item ->
-            selected = item
+            sortBy = item
             expanded = false
         },
         onDismissRequest = { expanded = false }
