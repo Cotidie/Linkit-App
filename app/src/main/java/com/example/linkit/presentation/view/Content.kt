@@ -44,7 +44,7 @@ fun ContentScreen(
     val linkView by viewModel.link
     var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
 
-    var linkFocus by remember { mutableStateOf("") }
+    var focusState by remember { mutableStateOf(FocusState.NORMAL) }
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(linkId) {
@@ -73,26 +73,20 @@ fun ContentScreen(
                 URLArea(linkView = linkView)
                 Spacer(Modifier.height(10.dp))
 
-                TagArea(viewModel = viewModel, linkView = linkView) { linkFocus = it }
+                TagArea(viewModel = viewModel,
+                    linkView = linkView,
+                    focusState = focusState,
+                    focusManager = focusManager) { focusState = it }
                 Spacer(Modifier.height(10.dp))
 
-                MemoArea(linkView = linkView) { linkFocus = it }
-
-                BackHandler {
-                    when (linkFocus) {
-                        "" -> navController.navigateUp()
-                        else -> {
-                            focusManager.clearFocus()
-                            linkFocus = ""
-                        }
-
-                    }
-
-                }
+                MemoArea(linkView = linkView,
+                    focusState = focusState,
+                    focusManager = focusManager) { focusState = it }
             }
         }
     }
 }
+
 
 @Composable
 private fun ScreenBackground(
@@ -187,17 +181,24 @@ private fun URLArea(
 private fun TagArea(
     viewModel: ContentViewModel,
     linkView: LinkView,
-    onFocusChange: (String) -> Unit,
+    focusState: FocusState,
+    focusManager: FocusManager,
+    onFocusChange: (FocusState) -> Unit,
 ) {
     var uiMode by viewModel.uiMode
     val tags = linkView.tags
+
+    BackHandler(focusState == FocusState.TAG) {
+        onFocusChange(FocusState.NORMAL)
+        focusManager.clearFocus()
+    }
 
     FlowRow(
         modifier = Modifier
             .fillMaxWidth()
             .onFocusEvent {
                 if (it.isFocused) {
-                    onFocusChange("Tag")
+                    onFocusChange(FocusState.TAG)
                 }
             },
         mainAxisSpacing = 5.dp,
@@ -225,23 +226,34 @@ private fun TagArea(
 @Composable
 private fun MemoArea(
     linkView: LinkView,
-    onFocusChange: (String) -> Unit,
+    focusState: FocusState,
+    focusManager: FocusManager,
+    onFocusChange: (FocusState) -> Unit,
 ) {
     var memo by linkView.memo
+
+    BackHandler(focusState == FocusState.MEMO) {
+        onFocusChange(FocusState.NORMAL)
+        focusManager.clearFocus()
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         BasicTextField(
             modifier = Modifier
                 .onFocusEvent {
                     if (it.isFocused) {
-                        onFocusChange("Memo")
+                        onFocusChange(FocusState.MEMO)
                     }
                 }
                 .fillMaxSize(),
             value = memo,
             onValueChange = { memo = it },
-            )
+        )
     }
+}
+
+private enum class FocusState {
+    MEMO, TAG, NORMAL
 }
 
 @Preview
