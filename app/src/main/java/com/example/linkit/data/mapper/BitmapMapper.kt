@@ -12,9 +12,21 @@ import java.net.URL
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/** 이미지 URL을 비트맵으로 변환한다. */
 @Singleton
-class ResponseToBitmap @Inject constructor() : Mapper<ResponseBody?, Bitmap> {
+class BitmapMapper @Inject constructor() {
+    private val responseToBitmap = ResponseToBitmap()
+    private val stringToBitmap = StringToBitmap()
+    private val binaryToBitmap = BinaryToBitmap()
+    private val bitmapToBinary = BitmapToBinary()
+
+    fun map(input: ResponseBody?): Bitmap = responseToBitmap.map(input)
+    fun map(input: String?): Bitmap = stringToBitmap.map(input)
+    fun map(input: ByteArray?): Bitmap? = binaryToBitmap.map(input)
+    fun map(input: Bitmap?): ByteArray? = bitmapToBinary.map(input)
+}
+
+/** 이미지 URL을 비트맵으로 변환한다. */
+private class ResponseToBitmap: Mapper<ResponseBody?, Bitmap> {
     override fun map(input: ResponseBody?): Bitmap {
         if (input == null) return EMPTY_BITMAP
 
@@ -23,10 +35,9 @@ class ResponseToBitmap @Inject constructor() : Mapper<ResponseBody?, Bitmap> {
     }
 }
 
-@Singleton
-class StringToBitmap @Inject constructor(
-    private val binaryToBitmap: BinaryToBitmap
-): Mapper<String?, Bitmap> {
+private class StringToBitmap: Mapper<String?, Bitmap> {
+    private val binaryToBitmap = BinaryToBitmap()
+
     override fun map(input: String?): Bitmap {
         if (input == null) return EMPTY_BITMAP
 
@@ -46,8 +57,7 @@ class StringToBitmap @Inject constructor(
     }
 }
 
-@Singleton
-class BinaryToBitmap @Inject constructor(): Mapper<ByteArray?, Bitmap?> {
+private class BinaryToBitmap: Mapper<ByteArray?, Bitmap?> {
     override fun map(input: ByteArray?): Bitmap? {
         if (input == null) return null
 
@@ -55,8 +65,7 @@ class BinaryToBitmap @Inject constructor(): Mapper<ByteArray?, Bitmap?> {
     }
 }
 
-@Singleton
-class BitmapToBinary @Inject constructor(): Mapper<Bitmap?, ByteArray?> {
+private class BitmapToBinary: Mapper<Bitmap?, ByteArray?> {
     override fun map(input: Bitmap?): ByteArray? {
         if (input == null) return null
 
