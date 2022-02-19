@@ -1,6 +1,7 @@
 package com.example.linkit.domain.repository
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.example.linkit.data.network.api.ILinkApi
 import com.example.linkit.domain.repository.mapper.LinkMappers
 import com.example.linkit.data.room.dao.LinkDao
@@ -16,6 +17,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import java.net.HttpURLConnection
+import java.net.URL
 import javax.inject.Inject
 
 /**
@@ -114,7 +117,7 @@ class LinkRepository @Inject constructor(
         return bitmapMapper.map(rawResponse)
     }
 
-    private suspend fun getImage(url: Url): Bitmap {
+    private fun getImage(url: Url): Bitmap {
         val metaImg: String? = url.getMetaImg()?.get("image")
         return bitmapMapper.map(metaImg)
     }

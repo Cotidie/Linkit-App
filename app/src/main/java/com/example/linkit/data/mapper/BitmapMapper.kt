@@ -7,6 +7,8 @@ import com.example.linkit.domain.interfaces.Mapper
 import com.example.linkit.domain.model.EMPTY_BITMAP
 import okhttp3.ResponseBody
 import java.io.ByteArrayOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,8 +31,14 @@ class StringToBitmap @Inject constructor(
         if (input == null) return EMPTY_BITMAP
 
         return try {
-            val encodeByte: ByteArray = Base64.decode(input, Base64.DEFAULT)
-            binaryToBitmap.map(encodeByte)!!
+//            val encodeByte: ByteArray = Base64.decode(input, Base64.DEFAULT)
+//            binaryToBitmap.map(encodeByte)!!
+            val url2 = URL(input)
+            val connection = url2.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connect()
+            val input = connection.inputStream
+            BitmapFactory.decodeStream(input)
         } catch (e: Exception) {
             e.message
             EMPTY_BITMAP

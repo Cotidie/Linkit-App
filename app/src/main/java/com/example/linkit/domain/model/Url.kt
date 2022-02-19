@@ -64,7 +64,7 @@ class Url constructor() {
         val map = HashMap<String, String>()
 
         try {
-            val con: Connection = Jsoup.connect("https://github.com/")
+            val con: Connection = Jsoup.connect("https://${getDomain()}")
             val doc: Document = con.get()
             var orgTags: Elements = doc.select("meta[property^=og:]")
             if (orgTags.size != 0) {
