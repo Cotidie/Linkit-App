@@ -17,4 +17,8 @@ class Converters @Inject constructor(
     fun fromBitmap(bitmap: Bitmap?): ByteArray? = bitmapMapper.map(bitmap)
     @TypeConverter
     fun toBitmap(byteArray: ByteArray?): Bitmap? = bitmapMapper.map(byteArray)
+    @TypeConverter
+    fun fromDate(date: Date): Long = dateMapper.map(date)
+    @TypeConverter
+    fun toDate(long: Long): Date = dateMapper.map(long)
 }
