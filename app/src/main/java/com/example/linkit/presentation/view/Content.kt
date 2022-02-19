@@ -1,5 +1,6 @@
 package com.example.linkit.presentation.view
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,8 +12,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,11 +38,14 @@ import com.google.accompanist.flowlayout.FlowRow
 @Composable
 fun ContentScreen(
     navController: NavController,
-    linkId: Long
+    linkId: Long,
 ) {
     val viewModel = hiltViewModel<ContentViewModel>()
     val linkView by viewModel.link
-    var uiMode by remember {mutableStateOf(UIMode.NORMAL)}
+    var uiMode by remember { mutableStateOf(UIMode.NORMAL) }
+
+    var focusState by remember { mutableStateOf(FocusState.NORMAL) }
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(linkId) {
         viewModel.setLink(linkId)
@@ -67,19 +73,25 @@ fun ContentScreen(
                 URLArea(linkView = linkView)
                 Spacer(Modifier.height(10.dp))
 
-                TagArea(viewModel = viewModel, linkView = linkView)
+                TagArea(viewModel = viewModel,
+                    linkView = linkView,
+                    focusState = focusState,
+                    focusManager = focusManager) { focusState = it }
                 Spacer(Modifier.height(10.dp))
 
-                MemoArea(linkView = linkView)
+                MemoArea(linkView = linkView,
+                    focusState = focusState,
+                    focusManager = focusManager) { focusState = it }
             }
         }
     }
 }
 
+
 @Composable
 private fun ScreenBackground(
     innerPadding: PaddingValues,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -87,12 +99,12 @@ private fun ScreenBackground(
             .padding(innerPadding)
             .background(ColorConstants.BACKGROUND_LIGHT),
         content = content
-    ) 
+    )
 }
 
 @Composable
 private fun ScreenContent(
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -105,7 +117,7 @@ private fun ScreenContent(
 /** 공유유저들 표시와 '완료'버튼이 들어갈 자리 */
 @Composable
 private fun HeadBarArea(
-    onCompleteClick: () -> Unit = {}
+    onCompleteClick: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -131,9 +143,10 @@ private fun HeadBarArea(
 
 @Composable
 private fun ImageArea(
-    linkView: LinkView
+    linkView: LinkView,
 ) {
     val image by linkView.image
+    "이미지 $image".log()
     val maxHeight = UIConstants.HEIGHT_MAX_CONTENT_IMAGE
 
     Box(
@@ -154,7 +167,7 @@ private fun ImageArea(
 
 @Composable
 private fun URLArea(
-    linkView: LinkView
+    linkView: LinkView,
 ) {
     val url by linkView.url
 
@@ -167,13 +180,27 @@ private fun URLArea(
 @Composable
 private fun TagArea(
     viewModel: ContentViewModel,
-    linkView: LinkView
+    linkView: LinkView,
+    focusState: FocusState,
+    focusManager: FocusManager,
+    onFocusChange: (FocusState) -> Unit,
 ) {
     var uiMode by viewModel.uiMode
     val tags = linkView.tags
 
+    BackHandler(focusState == FocusState.TAG) {
+        onFocusChange(FocusState.NORMAL)
+        focusManager.clearFocus()
+    }
+
     FlowRow(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .onFocusEvent {
+                if (it.isFocused) {
+                    onFocusChange(FocusState.TAG)
+                }
+            },
         mainAxisSpacing = 5.dp,
     ) {
         for (tag in tags) {
@@ -193,24 +220,40 @@ private fun TagArea(
                     uiMode = UIMode.NORMAL
                 }
             )
-
     }
 }
 
 @Composable
 private fun MemoArea(
-    linkView: LinkView
+    linkView: LinkView,
+    focusState: FocusState,
+    focusManager: FocusManager,
+    onFocusChange: (FocusState) -> Unit,
 ) {
     var memo by linkView.memo
+
+    BackHandler(focusState == FocusState.MEMO) {
+        onFocusChange(FocusState.NORMAL)
+        focusManager.clearFocus()
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         BasicTextField(
             modifier = Modifier
+                .onFocusEvent {
+                    if (it.isFocused) {
+                        onFocusChange(FocusState.MEMO)
+                    }
+                }
                 .fillMaxSize(),
             value = memo,
-            onValueChange = {memo = it},
+            onValueChange = { memo = it },
         )
     }
+}
+
+private enum class FocusState {
+    MEMO, TAG, NORMAL
 }
 
 @Preview
