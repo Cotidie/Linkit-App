@@ -2,7 +2,7 @@
 name: 버그 리포트
 about: 발견한 버그에 대한 설명
 title: ''
-labels: ''
+labels: bug
 assignees: ''
 
 ---
