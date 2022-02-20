@@ -61,6 +61,7 @@ fun Explorer(
     Scaffold(
         topBar = {
             AppBarExplorer(
+                viewModel = viewModel,
                 folderName = currentFolder?.name ?: "",
                 folderId = folderId,
                 navController = navController
@@ -117,7 +118,8 @@ fun ExplorerContent(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var uiMode by viewModel.uiMode
-    val links by viewModel.links
+    val links = viewModel.links
+
 
     LazyColumn(
         modifier = Modifier
@@ -144,13 +146,11 @@ fun ExplorerContent(
                 modifier = Modifier.height(80.dp),
                 link = link,
                 onCheckClick = { check ->
-                    "대상 링크 $link".log()
                     if (check)   viewModel.select(link)
                     else         viewModel.unselect(link)
                 },
                 onLongPress = {
                     uiMode = EDIT_LINK
-                    "대상 링크 $link".log()
                     viewModel.select(link)
                 },
                 onIconClick = {

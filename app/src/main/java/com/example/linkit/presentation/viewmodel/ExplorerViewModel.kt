@@ -3,6 +3,7 @@ package com.example.linkit.presentation.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.linkit._enums.SortingOption.*
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.repository.FolderRepository
 import com.example.linkit.domain.repository.LinkRepository
@@ -27,9 +28,16 @@ class ExplorerViewModel @Inject constructor(
     private val folderRepo: FolderRepository
 ): ViewModel() {
     val uiMode = mutableStateOf(UIMode.NORMAL)
-    val links = mutableStateOf(emptyList<ILink>())
+    private val _links = mutableStateOf(emptyList<ILink>())
     val selected = ArrayList<ILink>()
+    val sortBy = mutableStateOf(OLDEST)
     val currentFolder: MutableStateFlow<IFolder?> = MutableStateFlow(IFolder.DEFAULT)
+    val links: List<ILink> get() {
+        return when (sortBy.value) {
+            NEWEST -> _links.value.sortedBy { it.created }
+            OLDEST -> _links.value.sortedByDescending { it.created }
+        }
+    }
 
     init { collectLinks(); "ExplorerViewModel 생성!".log() }
 
@@ -91,7 +99,7 @@ class ExplorerViewModel @Inject constructor(
                 }
                 .distinctUntilChanged()
                 .collect {
-                    links.value = it
+                    _links.value = it
                 }
         }
     }

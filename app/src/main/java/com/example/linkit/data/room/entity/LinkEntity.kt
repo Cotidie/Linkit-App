@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "linkTable")
 data class LinkEntity(
@@ -22,6 +23,8 @@ data class LinkEntity(
     val favicon: Bitmap? = null,
     @ColumnInfo(name="image")
     val image: Bitmap? = null,
+    @ColumnInfo(name="created")
+    val created: Date = Date(),
     @ColumnInfo(name="snode")
     val snode: Long? = null,
     @ColumnInfo(name="gid")
