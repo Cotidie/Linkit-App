@@ -37,8 +37,8 @@ fun SearchResultScreen(
     val scrollState = rememberLazyListState()
     var searchText by remember { mutableStateOf(searchUrl) }
 
-    LaunchedEffect(Unit) {
-        viewModel.collectLinks(searchUrl, folderId)
+    LaunchedEffect(searchText) {
+        viewModel.collectLinks(searchText, folderId)
     }
 
     Scaffold(
