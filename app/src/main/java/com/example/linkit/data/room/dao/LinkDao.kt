@@ -53,6 +53,14 @@ interface LinkDao {
     @Query("SELECT * FROM tagTable WHERE name LIKE '%' || :searchTag || '%' ")
     fun searchLinkTag(searchTag: String): Flow<List<TagWithLinks>>
 
+    @Query(
+        "SELECT * FROM linkTable AS link " +
+            "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
+            "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
+            "WHERE tag.name LIKE :searchTag "
+    )
+    fun searchLinksByTag(searchTag: String): Flow<List<LinkWithTags>>
+
 //    @Query("SELECT * FROM tagTable WHERE parentFolderId = :folderId AND url LIKE '%' || :searchTag || '%' ORDER BY `linkId` DESC ")
 //    fun searchLinkTag(searchTag: String, folderId: Long): Flow<List<LinkWithTags>>
 

@@ -74,35 +74,27 @@ class LinkEntityListMapper @Inject constructor(
 
 //
 @Singleton
-class TagEntityToLink @Inject constructor() : Mapper<TagWithLinks, ILink> {
+class TagEntityToLink @Inject constructor() : Mapper<TagWithLinks, List<ILink>> {
+    override fun map(input: TagWithLinks): List<ILink> {
+        return input.links.map { it ->
+            val favicon = it.favicon ?: EMPTY_BITMAP
+            val image = it.image ?: EMPTY_BITMAP
 
-    private var soso: Int = -1
-
-    override fun map(input: TagWithLinks): ILink {
-        "soso:::: ${soso}".log()
-        soso += 1
-        val temp = input.links[soso]
-
-        val favicon = temp.favicon ?: EMPTY_BITMAP
-        val image = temp.image ?: EMPTY_BITMAP
-
-        "사사사ㅏㅅ ${input.links.size}".log()
-        if(soso == input.links.size -1) soso = -1
-
-        return Link(
-            id = temp.id,
-            parentFolder = temp.folderId,
-            url = Url(temp.url),
-            memo = temp.memo,
-            favicon = favicon,
-            image = image,
-            created = temp.created,
-            tags = arrayListOf(input.tag.name)
-        )
+            Link(
+                id = it.id,
+                parentFolder = it.folderId,
+                url = Url(it.url),
+                memo = it.memo,
+                favicon = favicon,
+                image = image,
+                created = it.created,
+                tags = arrayListOf(input.tag.name)
+            )
+        }
     }
 }
 
 @Singleton
 class TagLinkEntityListMapper @Inject constructor(
     entityMapper : TagEntityToLink
-) : ListMapperImpl<TagWithLinks, ILink>(entityMapper)
+) : ListMapperImpl<TagWithLinks, List<ILink>>(entityMapper)

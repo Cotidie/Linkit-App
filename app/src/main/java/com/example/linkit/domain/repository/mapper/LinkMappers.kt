@@ -22,5 +22,5 @@ class LinkMappers @Inject constructor(
     @JvmName("EntitiesToLinkList")
     fun map(links: List<LinkWithTags>) : List<ILink> = entityListMapper.map(links)
     @JvmName("EntitiesToTagList")
-    fun map(tags: List<TagWithLinks>): List<ILink> = tagEntityMapper.map(tags)
+    fun map(tags: List<TagWithLinks>): List<List<ILink>> = tagEntityMapper.map(tags)
 }

@@ -90,7 +90,7 @@ class LinkRepository @Inject constructor(
 //            .flowOn(Dispatchers.IO)
 //            .conflate()
 //            .map { linkMapper.map(it) }
-        val searchUrlFlow: Flow<List<TagWithLinks>> = linkDao.searchLinkTag(searchUrl)
+        val searchUrlFlow = linkDao.searchLinksByTag(searchUrl)
 
 
         return searchUrlFlow
