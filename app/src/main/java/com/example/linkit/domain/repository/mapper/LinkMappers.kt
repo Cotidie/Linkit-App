@@ -1,10 +1,8 @@
 package com.example.linkit.domain.repository.mapper
 
-import com.example.linkit.data.room.dto.EntityToLink
-import com.example.linkit.data.room.dto.LinkEntityListMapper
-import com.example.linkit.data.room.dto.LinkListMapper
-import com.example.linkit.data.room.dto.LinkToEntity
+import com.example.linkit.data.room.dto.*
 import com.example.linkit.data.room.entity.LinkWithTags
+import com.example.linkit.data.room.entity.TagWithLinks
 import com.example.linkit.domain.interfaces.ILink
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,7 +12,8 @@ class LinkMappers @Inject constructor(
     private val linkMapper : LinkToEntity,
     private val entityMapper : EntityToLink,
     private val linkListMapper : LinkListMapper,
-    private val entityListMapper : LinkEntityListMapper
+    private val entityListMapper : LinkEntityListMapper,
+    private val tagEntityMapper : TagLinkEntityListMapper
 ) {
     fun map(link: ILink) : LinkWithTags = linkMapper.map(link)
     fun map(link: LinkWithTags) : ILink = entityMapper.map(link)
@@ -22,4 +21,6 @@ class LinkMappers @Inject constructor(
     fun map(links: List<ILink>) : List<LinkWithTags> = linkListMapper.map(links)
     @JvmName("EntitiesToLinkList")
     fun map(links: List<LinkWithTags>) : List<ILink> = entityListMapper.map(links)
+    @JvmName("EntitiesToTagList")
+    fun map(tags: List<TagWithLinks>): List<ILink> = tagEntityMapper.map(tags)
 }

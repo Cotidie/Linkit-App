@@ -50,6 +50,12 @@ interface LinkDao {
     @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%' ORDER BY `linkId` DESC ")
     fun searchLinkUrl(searchUrl: String, folderId: Long): Flow<List<LinkWithTags>>
 
+    @Query("SELECT * FROM tagTable WHERE name LIKE '%' || :searchTag || '%' ")
+    fun searchLinkTag(searchTag: String): Flow<List<TagWithLinks>>
+
+//    @Query("SELECT * FROM tagTable WHERE parentFolderId = :folderId AND url LIKE '%' || :searchTag || '%' ORDER BY `linkId` DESC ")
+//    fun searchLinkTag(searchTag: String, folderId: Long): Flow<List<LinkWithTags>>
+
     @Query("SELECT COUNT(name) FROM linkTagTable WHERE name = :name")
     fun countLinksByTag(name: String): Int
 
