@@ -1,5 +1,7 @@
 package com.example.linkit.domain.interfaces
 
+import com.example.linkit.domain.model.log
+
 interface ListMapper<I, O> : Mapper<List<I>, List<O>>
 
 open class ListMapperImpl<I, O>(

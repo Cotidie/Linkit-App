@@ -1,6 +1,5 @@
 package com.example.linkit.presentation.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,11 +20,12 @@ class SearchViewModel @Inject constructor(
     private val searchedLinks = MutableStateFlow(IFolder.DEFAULT)
     val links = mutableStateOf(emptyList<ILink>())
 
-    fun collectLinks(searchUrl: String, folderId:Long) {
+    //searchType을 받아서 URL로 검색할 건지, TAG로 검색할 건지 설정
+    fun collectLinks(searchText: String, folderId: Long, searchType: String? = null) {
         viewModelScope.launch {
             searchedLinks
                 .flatMapLatest {
-                    linkRepo.searchLinkByUrl(searchUrl, folderId)
+                    searchLinks(searchText, folderId, searchType)
                 }
                 .distinctUntilChanged()
                 .collect {
@@ -33,5 +33,9 @@ class SearchViewModel @Inject constructor(
                 }
         }
     }
+
+    private fun searchLinks(searchText: String, folderId: Long, searchType: String?) =
+        if (searchType == "URL") linkRepo.searchLinkByUrl(searchText,folderId)
+        else linkRepo.searchLinkByTag(searchText, folderId)
 
 }

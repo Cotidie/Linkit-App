@@ -8,6 +8,7 @@ import com.example.linkit.data.room.dao.LinkDao
 import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.data.room.entity.TagEntity
+import com.example.linkit.data.room.entity.TagWithLinks
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
@@ -31,21 +32,21 @@ class LinkRepository @Inject constructor(
     private val bitmapMapper: BitmapMappers,
 ) {
     /** Flow를 IO 쓰레드에서 동작시키고, emit과 collector를 다른 코루틴에서 실행시킨다 (conflate) */
-    fun getAllLinks() : Flow<List<LinkWithTags>> {
+    fun getAllLinks(): Flow<List<LinkWithTags>> {
         return linkDao.getLinks()
             .flowOn(Dispatchers.IO)
             .conflate()
     }
 
-    fun getLinksInFolder(folderId: Long) : Flow<List<ILink>> {
+    fun getLinksInFolder(folderId: Long): Flow<List<ILink>> {
         return linkDao.getLinksInFolder(folderId)
             .flowOn(Dispatchers.IO)
             .conflate()
             .map { linkMapper.map(it) }
     }
 
-    suspend fun getLink(linkId: Long) : ILink {
-        val entity =  linkDao.getLinkById(linkId)
+    suspend fun getLink(linkId: Long): ILink {
+        val entity = linkDao.getLinkById(linkId)
         return linkMapper.map(entity)
     }
 
@@ -78,13 +79,21 @@ class LinkRepository @Inject constructor(
      * folderId를 받아서 0(디폴트값)이면 전체링크에서 링크 검색
      * folderId가 0이 아니면 해당 folderId에 소속된 링크 검색
      */
-    fun searchLinkByUrl(searchUrl: String, folderId: Long): Flow<List<ILink>> {
-        val searchUrlFlow: Flow<List<LinkWithTags>> =
-            if (folderId == 0L) linkDao.searchLinkUrl(searchUrl)
-            else linkDao.searchLinkUrl(
+    fun searchLinkByTag(searchUrl: String, folderId: Long): Flow<List<ILink>> {
+        val searchUrlFlow =
+            if (folderId == 0L) linkDao.searchLinksByTag(searchUrl) else linkDao.searchLinksByTag(
                 searchUrl,
                 folderId)
+        return searchUrlFlow
+            .flowOn(Dispatchers.IO)
+            .conflate()
+            .map { linkMapper.map(it) }
+    }
 
+    fun searchLinkByUrl(searchUrl: String, folderId: Long): Flow<List<ILink>> {
+        val searchUrlFlow =
+            if (folderId == 0L) linkDao.searchLinkBy(searchUrl) else linkDao.searchLinkBy(searchUrl,
+                folderId)
         return searchUrlFlow
             .flowOn(Dispatchers.IO)
             .conflate()
@@ -111,7 +120,7 @@ class LinkRepository @Inject constructor(
             linkDao.delete(LinkTagRef(linkId = linkId, tag = tag.name))
     }
 
-    private suspend fun getFavicon(url: Url) : Bitmap {
+    private suspend fun getFavicon(url: Url): Bitmap {
         val faviconUrl = url.getFaviconUrl()
         val rawResponse = linkApi.fetchUrl(faviconUrl).body()
         return bitmapMapper.map(rawResponse)
@@ -126,7 +135,10 @@ class LinkRepository @Inject constructor(
         return modified.filter { !original.contains(it) }
     }
 
-    private fun findDeletedTags(original: List<TagEntity>, modified: List<TagEntity>): List<TagEntity> {
+    private fun findDeletedTags(
+        original: List<TagEntity>,
+        modified: List<TagEntity>,
+    ): List<TagEntity> {
         return original.filter { !modified.contains(it) }
     }
 }

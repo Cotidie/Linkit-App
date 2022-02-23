@@ -44,11 +44,28 @@ interface LinkDao {
      * WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%' ORDER BY `linkId` DESC 에서
      * AND 대신 &&나 & 사용시 에러? 발생
      */
-    @Query("SELECT * FROM linkTable WHERE url LIKE '%' || :searchUrl || '%' ORDER BY `linkId` DESC ")
-    fun searchLinkUrl(searchUrl: String): Flow<List<LinkWithTags>>
+    @Query("SELECT * FROM linkTable WHERE url LIKE '%' || :searchUrl || '%'")
+    fun searchLinkBy(searchUrl: String): Flow<List<LinkWithTags>>
 
-    @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%' ORDER BY `linkId` DESC ")
-    fun searchLinkUrl(searchUrl: String, folderId: Long): Flow<List<LinkWithTags>>
+    @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%'")
+    fun searchLinkBy(searchUrl: String, folderId: Long): Flow<List<LinkWithTags>>
+
+    @Query(
+        "SELECT * FROM linkTable AS link " +
+            "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
+            "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
+            "WHERE tag.name LIKE '&' || :searchTag || '$' "
+    )
+    fun searchLinksByTag(searchTag: String): Flow<List<LinkWithTags>>
+
+    @Query(
+        "SELECT * FROM linkTable AS link " +
+                "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
+                "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
+                "WHERE parentFolderId = :folderId AND tag.name LIKE '&' || :searchTag || '$' "
+    )
+    fun searchLinksByTag(searchTag: String, folderId: Long): Flow<List<LinkWithTags>>
+
 
     @Query("SELECT COUNT(name) FROM linkTagTable WHERE name = :name")
     fun countLinksByTag(name: String): Int

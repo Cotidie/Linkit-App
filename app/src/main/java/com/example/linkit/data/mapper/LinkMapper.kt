@@ -3,12 +3,14 @@ package com.example.linkit.data.room.dto
 import com.example.linkit.data.room.entity.LinkEntity
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.data.room.entity.TagEntity
+import com.example.linkit.data.room.entity.TagWithLinks
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.interfaces.ListMapperImpl
 import com.example.linkit.domain.interfaces.Mapper
 import com.example.linkit.domain.model.EMPTY_BITMAP
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
+import com.example.linkit.domain.model.log
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,7 +25,7 @@ class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
             true -> null
             false -> input.image
         }
-        val link =  LinkEntity(
+        val link = LinkEntity(
             id = input.id,
             folderId = input.parentFolder,
             url = input.url.getString(true),
@@ -46,6 +48,7 @@ class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
         val favicon = input.link.favicon ?: EMPTY_BITMAP
         val image = input.link.image ?: EMPTY_BITMAP
 
+
         return Link(
             id = input.link.id,
             parentFolder = input.link.folderId,
@@ -61,10 +64,10 @@ class EntityToLink @Inject constructor() : Mapper<LinkWithTags, ILink> {
 
 @Singleton
 class LinkListMapper @Inject constructor(
-    linkMapper : LinkToEntity
+    linkMapper: LinkToEntity,
 ) : ListMapperImpl<ILink, LinkWithTags>(linkMapper)
 
 @Singleton
 class LinkEntityListMapper @Inject constructor(
-    entityMapper : EntityToLink
+    entityMapper: EntityToLink,
 ) : ListMapperImpl<LinkWithTags, ILink>(entityMapper)

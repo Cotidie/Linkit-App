@@ -65,7 +65,7 @@ fun AppBarExplorer(
                 },
                 onTextChange = { text = it },
                 onSearchClicked = {
-                    // onSearchClicked시 text와 folderId 인자 전달
+                    // searchType 전달할 예정
                     navController.navigate(Screen.SearchResult.route.plus("?searchUrl=${text}&folderId=${folderId}")
                     )
                 }
