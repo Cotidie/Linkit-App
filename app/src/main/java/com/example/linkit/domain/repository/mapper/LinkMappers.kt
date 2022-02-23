@@ -13,7 +13,6 @@ class LinkMappers @Inject constructor(
     private val entityMapper : EntityToLink,
     private val linkListMapper : LinkListMapper,
     private val entityListMapper : LinkEntityListMapper,
-    private val tagEntityMapper : TagLinkEntityListMapper
 ) {
     fun map(link: ILink) : LinkWithTags = linkMapper.map(link)
     fun map(link: LinkWithTags) : ILink = entityMapper.map(link)
@@ -21,6 +20,4 @@ class LinkMappers @Inject constructor(
     fun map(links: List<ILink>) : List<LinkWithTags> = linkListMapper.map(links)
     @JvmName("EntitiesToLinkList")
     fun map(links: List<LinkWithTags>) : List<ILink> = entityListMapper.map(links)
-    @JvmName("EntitiesToTagList")
-    fun map(tags: List<TagWithLinks>): List<List<ILink>> = tagEntityMapper.map(tags)
 }

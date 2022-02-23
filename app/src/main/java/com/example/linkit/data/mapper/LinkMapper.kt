@@ -71,30 +71,3 @@ class LinkListMapper @Inject constructor(
 class LinkEntityListMapper @Inject constructor(
     entityMapper: EntityToLink,
 ) : ListMapperImpl<LinkWithTags, ILink>(entityMapper)
-
-//
-@Singleton
-class TagEntityToLink @Inject constructor() : Mapper<TagWithLinks, List<ILink>> {
-    override fun map(input: TagWithLinks): List<ILink> {
-        return input.links.map { it ->
-            val favicon = it.favicon ?: EMPTY_BITMAP
-            val image = it.image ?: EMPTY_BITMAP
-
-            Link(
-                id = it.id,
-                parentFolder = it.folderId,
-                url = Url(it.url),
-                memo = it.memo,
-                favicon = favicon,
-                image = image,
-                created = it.created,
-                tags = arrayListOf(input.tag.name)
-            )
-        }
-    }
-}
-
-@Singleton
-class TagLinkEntityListMapper @Inject constructor(
-    entityMapper : TagEntityToLink
-) : ListMapperImpl<TagWithLinks, List<ILink>>(entityMapper)
