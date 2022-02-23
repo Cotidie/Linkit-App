@@ -79,20 +79,21 @@ class LinkRepository @Inject constructor(
      * folderId를 받아서 0(디폴트값)이면 전체링크에서 링크 검색
      * folderId가 0이 아니면 해당 folderId에 소속된 링크 검색
      */
+    fun searchLinkByTag(searchUrl: String, folderId: Long): Flow<List<ILink>> {
+        val searchUrlFlow =
+            if (folderId == 0L) linkDao.searchLinksByTag(searchUrl) else linkDao.searchLinksByTag(
+                searchUrl,
+                folderId)
+        return searchUrlFlow
+            .flowOn(Dispatchers.IO)
+            .conflate()
+            .map { linkMapper.map(it) }
+    }
+
     fun searchLinkByUrl(searchUrl: String, folderId: Long): Flow<List<ILink>> {
-//        val searchUrlFlow: Flow<List<LinkWithTags>> =
-//            if (folderId == 0L) linkDao.searchLinkUrl(searchUrl)
-//            else linkDao.searchLinkUrl(
-//                searchUrl,
-//                folderId)
-//
-//        return searchUrlFlow
-//            .flowOn(Dispatchers.IO)
-//            .conflate()
-//            .map { linkMapper.map(it) }
-        val searchUrlFlow = linkDao.searchLinksByTag(searchUrl)
-
-
+        val searchUrlFlow =
+            if (folderId == 0L) linkDao.searchLinkBy(searchUrl) else linkDao.searchLinkBy(searchUrl,
+                folderId)
         return searchUrlFlow
             .flowOn(Dispatchers.IO)
             .conflate()
