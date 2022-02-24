@@ -9,4 +9,5 @@ sealed class Screen(val route: String) {
     object Profile : Screen("screen_profile")
     object Content : Screen("screen_content")
     object SearchResult: Screen("screen_searchResult")
+    object LinkList : Screen("screen_linkList")
 }
