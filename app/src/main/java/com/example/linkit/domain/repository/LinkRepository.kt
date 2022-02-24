@@ -32,10 +32,11 @@ class LinkRepository @Inject constructor(
     private val bitmapMapper: BitmapMappers,
 ) {
     /** Flow를 IO 쓰레드에서 동작시키고, emit과 collector를 다른 코루틴에서 실행시킨다 (conflate) */
-    fun getAllLinks(): Flow<List<LinkWithTags>> {
+    fun getAllLinks(): Flow<List<ILink>> {
         return linkDao.getLinks()
             .flowOn(Dispatchers.IO)
             .conflate()
+            .map { linkMapper.map(it) }
     }
 
     fun getLinksInFolder(folderId: Long): Flow<List<ILink>> {
