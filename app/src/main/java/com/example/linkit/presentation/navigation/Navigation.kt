@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.view.ContentScreen
+import com.example.linkit.presentation.view.LinkList
 import com.example.linkit.presentation.view.ProfileScreen
 import com.example.linkit.presentation.view.SearchResultScreen
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
@@ -46,6 +47,9 @@ fun NavGraph(navController: NavHostController) {
         }
         composable(route = Screen.Profile.route) {
             ProfileScreen(navController)
+        }
+        composable(route = Screen.LinkList.route){
+            LinkList(navController)
         }
         composable(
             route = Screen.Content.route.plus("/{linkId}"),

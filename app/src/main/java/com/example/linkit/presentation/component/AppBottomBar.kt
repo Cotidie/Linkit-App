@@ -30,7 +30,7 @@ fun AppBottomBar(
     uiMode: UIMode = NORMAL,
     onLinkClick: () -> Unit = {},
     onHomeClick: () -> Unit = {},
-    onAddClick: () -> Unit = {}
+    onAddClick: () -> Unit = {},
 ) {
     BottomNavigation(
         modifier = Modifier.height(height),
@@ -40,7 +40,7 @@ fun AppBottomBar(
         val currentRoute = currentRoute(navController)
 
         BottomNavigationItem(
-            selected = false,
+            selected = (uiMode == ALL_LINK),
             icon = {
                 Icon(
                     modifier = Modifier.size(iconSize),
@@ -48,12 +48,15 @@ fun AppBottomBar(
                     contentDescription = null
                 )
             },
-            label = {Text("링크")},
-            onClick = onLinkClick,
+            label = { Text("링크") },
+            onClick = {
+                if (currentRoute == Screen.Home.route) navController.navigate(Screen.LinkList.route)
+                onLinkClick()
+            },
             unselectedContentColor = Color.LightGray
         )
         BottomNavigationItem(
-            selected = (uiMode != ADD_LINK),
+            selected = (uiMode == NORMAL),
             icon = {
                 Icon(
                     modifier = Modifier.size(iconSize),
@@ -61,7 +64,7 @@ fun AppBottomBar(
                     contentDescription = null
                 )
             },
-            label = {Text("홈")},
+            label = { Text("홈") },
             onClick = {
                 if (currentRoute == Screen.Home.route) return@BottomNavigationItem
 
@@ -79,7 +82,7 @@ fun AppBottomBar(
                     contentDescription = null
                 )
             },
-            label = {Text("추가")},
+            label = { Text("추가") },
             onClick = onAddClick,
             unselectedContentColor = Color.LightGray
         )
