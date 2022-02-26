@@ -51,13 +51,12 @@ class LinkRepository @Inject constructor(
         return linkMapper.map(entity)
     }
 
-    /** 링크가 주어지면 이미지를 웹에서 불러오고, 그후 Room에 저장한다. */
     suspend fun addLink(link: ILink) {
         link.favicon = getFavicon(link.url)
         link.image = getImage(link.url)
         val entity = linkMapper.map(link)
         val linkId = linkDao.insert(entity.link)
-        // 태그 및 다대다 테이블 insert
+
         for (tag in entity.tags) {
             linkDao.insert(tag)
             linkDao.insert(LinkTagRef(linkId = linkId, tag = tag.name))
@@ -75,11 +74,6 @@ class LinkRepository @Inject constructor(
         for (tag in deletedTags) removeTag(tag = tag, linkId = link.id)
     }
 
-    /**
-     * 링크검색 함수
-     * folderId를 받아서 0(디폴트값)이면 전체링크에서 링크 검색
-     * folderId가 0이 아니면 해당 folderId에 소속된 링크 검색
-     */
     fun searchLinkByTag(searchUrl: String, folderId: Long): Flow<List<ILink>> {
         val searchUrlFlow =
             if (folderId == 0L) linkDao.searchLinksByTag(searchUrl) else linkDao.searchLinksByTag(
@@ -93,7 +87,7 @@ class LinkRepository @Inject constructor(
 
     fun searchLinkByUrl(searchUrl: String, folderId: Long): Flow<List<ILink>> {
         val searchUrlFlow =
-            if (folderId == 0L) linkDao.searchLinkBy(searchUrl) else linkDao.searchLinkBy(searchUrl,
+            if (folderId == 0L) linkDao.searchLinkByUrl(searchUrl) else linkDao.searchLinkByUrl(searchUrl,
                 folderId)
         return searchUrlFlow
             .flowOn(Dispatchers.IO)

@@ -38,37 +38,31 @@ interface LinkDao {
     @Query("SELECT * from linkTable where linkId = :id")
     suspend fun getLinkById(id: Long): LinkWithTags
 
-    /**
-     * 링크 검색 Dao
-     * searchLinkUrl(searchUrl: String, folderId: Long) 쿼리
-     * WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%' ORDER BY `linkId` DESC 에서
-     * AND 대신 &&나 & 사용시 에러? 발생
-     */
-    @Query("SELECT * FROM linkTable WHERE url LIKE '%' || :searchUrl || '%'")
-    fun searchLinkBy(searchUrl: String): Flow<List<LinkWithTags>>
+    @Query("SELECT * FROM linkTable WHERE url LIKE '%' || :url || '%'")
+    fun searchLinkByUrl(url: String): Flow<List<LinkWithTags>>
 
-    @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%'")
-    fun searchLinkBy(searchUrl: String, folderId: Long): Flow<List<LinkWithTags>>
+    @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :url || '%'")
+    fun searchLinkByUrl(url: String, folderId: Long): Flow<List<LinkWithTags>>
 
     @Query(
         "SELECT * FROM linkTable AS link " +
             "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
             "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
-            "WHERE tag.name LIKE '&' || :searchTag || '$' "
+            "WHERE tag.name LIKE '&' || :tag || '$' "
     )
-    fun searchLinksByTag(searchTag: String): Flow<List<LinkWithTags>>
+    fun searchLinksByTag(tag: String): Flow<List<LinkWithTags>>
 
     @Query(
         "SELECT * FROM linkTable AS link " +
                 "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
                 "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
-                "WHERE parentFolderId = :folderId AND tag.name LIKE '&' || :searchTag || '$' "
+                "WHERE parentFolderId = :folderId AND tag.name LIKE '&' || :tag || '$' "
     )
-    fun searchLinksByTag(searchTag: String, folderId: Long): Flow<List<LinkWithTags>>
+    fun searchLinksByTag(tag: String, folderId: Long): Flow<List<LinkWithTags>>
 
 
-    @Query("SELECT COUNT(name) FROM linkTagTable WHERE name = :name")
-    fun countLinksByTag(name: String): Int
+    @Query("SELECT COUNT(name) FROM linkTagTable WHERE name = :tag")
+    fun countLinksByTag(tag: String): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(linkEntity: LinkEntity): Long
