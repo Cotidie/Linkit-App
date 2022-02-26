@@ -15,9 +15,12 @@ import java.net.URL
  */
 class Url constructor() {
     private var _url: URL? = null
+    private var _originalString: String = ""
+    val originalString get() = _originalString
 
     constructor(urlString: String) : this() {
         parse(urlString)
+        _originalString = urlString
     }
 
     fun parse(url: String) : Url{
@@ -38,7 +41,7 @@ class Url constructor() {
 
     fun isValid() : Boolean = (_url != null)
 
-    fun getString(showProtocol: Boolean = false) : String {
+    fun getFullUrlString(showProtocol: Boolean = false) : String {
         if (!isValid()) return ""
 
         var urlString = _url.toString()

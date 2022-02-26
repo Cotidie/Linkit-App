@@ -6,12 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.linkit._constant.ColorConstants
 import com.example.linkit.domain.model.Url
-import java.net.URL
 
 @Composable
 /** URL을 담는 텍스트. 클릭하면 브라우저를 열어 해당 링크로 이동한다. */
@@ -21,7 +19,7 @@ fun TextUrl(
     maxLines: Int = 1
 ) {
     val uriHandler = LocalUriHandler.current
-    val urlString = url.getString(showProtocol = true)
+    val urlString = url.getFullUrlString(showProtocol = true)
     val annotated = AnnotatedString(
         text = urlString,
         spanStyle = SpanStyle(

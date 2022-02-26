@@ -20,14 +20,11 @@ import androidx.compose.ui.unit.dp
 import com.example.linkit.R
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
-import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.EMPTY_LONG
-import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
 import com.example.linkit.presentation.model.LinkView
-import com.google.accompanist.flowlayout.FlowRow
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -103,7 +100,7 @@ fun LinkAndTags(
                 .padding(start=5.dp)
                 .weight(1f)
                 .fillMaxWidth(),
-            text = link.url.value.getString(false),
+            text = link.url.value.getFullUrlString(false),
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1
         )

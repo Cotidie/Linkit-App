@@ -9,7 +9,6 @@ import com.example.linkit.domain.interfaces.Mapper
 import com.example.linkit.domain.model.EMPTY_BITMAP
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
-import com.example.linkit.domain.model.log
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,7 +26,7 @@ class LinkToEntity @Inject constructor() : Mapper<ILink, LinkWithTags> {
         val link = LinkEntity(
             id = input.id,
             folderId = input.parentFolder,
-            url = input.url.getString(true),
+            url = input.url.originalString,
             memo = input.memo,
             favicon = favicon,
             image = image,
