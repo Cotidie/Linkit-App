@@ -24,6 +24,7 @@ import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.component.AppBarSearch
 import com.example.linkit.presentation.component.CardLink
+import com.example.linkit.presentation.model.LinkView
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.viewmodel.SearchViewModel
 
@@ -36,9 +37,11 @@ fun SearchResultScreen(
     val viewModel = hiltViewModel<SearchViewModel>()
     val scrollState = rememberLazyListState()
     var searchText by remember { mutableStateOf(searchUrl) }
+    var searchType by viewModel.searchType
+    val links by viewModel.searchedLinks
 
     LaunchedEffect(searchText) {
-        viewModel.collectLinks(searchText, folderId)
+        viewModel.searchLinks(key = searchText, folderId = folderId)
     }
 
     Scaffold(
@@ -60,7 +63,7 @@ fun SearchResultScreen(
             SearchLinkContent(
                 navController = navController,
 
-                links = viewModel.links.value.toList(),
+                links = viewModel.searchedLinks.value,
                 scrollState = scrollState,
             )
         }
@@ -71,7 +74,7 @@ fun SearchResultScreen(
 @Composable
 fun SearchLinkContent(
     navController: NavController,
-    links: List<ILink>,
+    links: List<LinkView>,
     scrollState: LazyListState = rememberLazyListState(),
 ) {
 
