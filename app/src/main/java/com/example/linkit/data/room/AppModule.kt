@@ -35,7 +35,7 @@ class AppModule {
         = object: RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 val folder = ContentValues()
-                folder.put("folderId", Long.MIN_VALUE)
+                folder.put("folderId", -1L)
                 folder.put("name", "무제폴더")
                 db.insert("folderTable", SQLiteDatabase.CONFLICT_IGNORE, folder)
             }
