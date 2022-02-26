@@ -8,8 +8,8 @@ import com.example.linkit.data.room.dao.LinkDao
 import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.data.room.entity.TagEntity
-import com.example.linkit.data.room.entity.TagWithLinks
 import com.example.linkit.domain.interfaces.ILink
+import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
 import com.example.linkit.domain.repository.mapper.BitmapMappers
@@ -51,6 +51,28 @@ class LinkRepository @Inject constructor(
         return linkMapper.map(entity)
     }
 
+    suspend fun getLinksByTag(tag: String, folderId: Long = EMPTY_LONG): List<ILink> {
+        val searchedEntities: List<LinkWithTags>
+
+        if (folderId == EMPTY_LONG)
+            searchedEntities = linkDao.getLinksByTag(tag)
+        else
+            searchedEntities = linkDao.getLinksByTagInFolder(tag, folderId)
+
+        return searchedEntities.map { linkMapper.map(it) }
+    }
+
+    suspend fun getLinksByUrl(url: String, folderId: Long = EMPTY_LONG): List<ILink> {
+        val searchedEntities: List<LinkWithTags>
+
+        if (folderId == EMPTY_LONG)
+            searchedEntities = linkDao.getLinksByUrl(url)
+        else
+            searchedEntities = linkDao.getLinksByUrlInFolder(url, folderId)
+
+        return searchedEntities.map { linkMapper.map(it) }
+    }
+
     suspend fun addLink(link: ILink) {
         link.favicon = getFavicon(link.url)
         link.image = getImage(link.url)
@@ -72,27 +94,6 @@ class LinkRepository @Inject constructor(
         linkDao.update(modified.link)
         for (tag in newTags) addTag(tag = tag, linkId = link.id)
         for (tag in deletedTags) removeTag(tag = tag, linkId = link.id)
-    }
-
-    fun searchLinkByTag(searchUrl: String, folderId: Long): Flow<List<ILink>> {
-        val searchUrlFlow =
-            if (folderId == 0L) linkDao.searchLinksByTag(searchUrl) else linkDao.searchLinksByTag(
-                searchUrl,
-                folderId)
-        return searchUrlFlow
-            .flowOn(Dispatchers.IO)
-            .conflate()
-            .map { linkMapper.map(it) }
-    }
-
-    fun searchLinkByUrl(searchUrl: String, folderId: Long): Flow<List<ILink>> {
-        val searchUrlFlow =
-            if (folderId == 0L) linkDao.searchLinkByUrl(searchUrl) else linkDao.searchLinkByUrl(searchUrl,
-                folderId)
-        return searchUrlFlow
-            .flowOn(Dispatchers.IO)
-            .conflate()
-            .map { linkMapper.map(it) }
     }
 
     suspend fun deleteLinks(links: List<ILink>) {

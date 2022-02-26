@@ -30,35 +30,31 @@ interface LinkDao {
     fun getLinks() : Flow<List<LinkWithTags>>
     @Transaction
     @Query("SELECT * FROM tagTable")
-    fun getTags() : Flow<List<TagWithLinks>>
+    fun getTags() : Flow<List<TagEntity>>
     @Transaction
     @Query("SELECT * from linkTable where parentFolderId = :folderId")
     fun getLinksInFolder(folderId: Long) : Flow<List<LinkWithTags>>
 
     @Query("SELECT * from linkTable where linkId = :id")
     suspend fun getLinkById(id: Long): LinkWithTags
-
     @Query("SELECT * FROM linkTable WHERE url LIKE '%' || :url || '%'")
-    fun searchLinkByUrl(url: String): Flow<List<LinkWithTags>>
-
+    suspend fun getLinksByUrl(url: String): List<LinkWithTags>
     @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :url || '%'")
-    fun searchLinkByUrl(url: String, folderId: Long): Flow<List<LinkWithTags>>
-
+    suspend fun getLinksByUrlInFolder(url: String, folderId: Long): List<LinkWithTags>
     @Query(
         "SELECT * FROM linkTable AS link " +
             "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
             "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
             "WHERE tag.name LIKE '&' || :tag || '$' "
     )
-    fun searchLinksByTag(tag: String): Flow<List<LinkWithTags>>
-
+    suspend fun getLinksByTag(tag: String): List<LinkWithTags>
     @Query(
         "SELECT * FROM linkTable AS link " +
                 "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
                 "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
                 "WHERE parentFolderId = :folderId AND tag.name LIKE '&' || :tag || '$' "
     )
-    fun searchLinksByTag(tag: String, folderId: Long): Flow<List<LinkWithTags>>
+    suspend fun getLinksByTagInFolder(tag: String, folderId: Long): List<LinkWithTags>
 
 
     @Query("SELECT COUNT(name) FROM linkTagTable WHERE name = :tag")
