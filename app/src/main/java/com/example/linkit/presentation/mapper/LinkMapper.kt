@@ -2,6 +2,7 @@ package com.example.linkit.presentation.mapper
 
 import androidx.compose.runtime.mutableStateOf
 import com.example.linkit.domain.interfaces.ILink
+import com.example.linkit.domain.interfaces.ListMapperImpl
 import com.example.linkit.domain.interfaces.Mapper
 import com.example.linkit.domain.model.Link
 import com.example.linkit.presentation.model.LinkView
@@ -13,9 +14,15 @@ import javax.inject.Singleton
 class LinkMapper @Inject constructor() {
     private val linkToView: LinkToView = LinkToView()
     private val viewToLink: ViewToLink = ViewToLink()
+    private val linksToViews: LinksToViews = LinksToViews()
+    private val viewsToLinks: ViewsToLinks = ViewsToLinks()
 
     fun map(link: ILink) : LinkView = linkToView.map(link)
     fun map(view: LinkView) : ILink = viewToLink.map(view)
+    @JvmName("LinksToViews")
+    fun map(links: List<ILink>): List<LinkView> = linksToViews.map(links)
+    @JvmName("ViewsToLinks")
+    fun map(views: List<LinkView>): List<ILink> = viewsToLinks.map(views)
 }
 
 private class LinkToView: Mapper<ILink, LinkView> {
@@ -49,3 +56,6 @@ private class ViewToLink: Mapper<LinkView, ILink> {
         )
     }
 }
+
+private class LinksToViews: ListMapperImpl<ILink, LinkView>(mapper = LinkToView())
+private class ViewsToLinks: ListMapperImpl<LinkView, ILink>(mapper = ViewToLink())
