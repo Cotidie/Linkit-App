@@ -1,5 +1,5 @@
 package com.example.linkit._enums
 
-enum class SearchKey {
+enum class SearchType {
     TAG, URL
 }
