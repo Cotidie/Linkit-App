@@ -19,6 +19,7 @@ import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.presentation.component.AppBottomBar
 import com.example.linkit.presentation.component.CardLink
+import com.example.linkit.presentation.model.LinkView
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.viewmodel.LinkListViewModel
 
@@ -51,7 +52,7 @@ fun LinkList(
         ) {
             LinkListContent(
                 navController = navController,
-                links = viewModel.links.value.toList(),
+                links = viewModel.links.value,
                 scrollState = scrollState,
             )
         }
@@ -63,7 +64,7 @@ fun LinkList(
 @Composable
 fun LinkListContent(
     navController: NavController,
-    links: List<ILink>,
+    links: List<LinkView>,
     scrollState: LazyListState = rememberLazyListState(),
 ) {
 
