@@ -2,7 +2,6 @@ package com.example.linkit.domain.repository.mapper
 
 import com.example.linkit.data.room.dto.*
 import com.example.linkit.data.room.entity.LinkWithTags
-import com.example.linkit.data.room.entity.TagWithLinks
 import com.example.linkit.domain.interfaces.ILink
 import javax.inject.Inject
 import javax.inject.Singleton

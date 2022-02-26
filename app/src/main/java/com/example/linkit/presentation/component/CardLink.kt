@@ -26,15 +26,16 @@ import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
+import com.example.linkit.presentation.model.LinkView
 import com.google.accompanist.flowlayout.FlowRow
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CardLink(
     modifier: Modifier = Modifier,
-    link: ILink,
+    link: LinkView,
     onCheckClick: (Boolean) -> Unit = {},
-    onLongPress: (ILink) -> Unit = {},
+    onLongPress: (LinkView) -> Unit = {},
     onIconClick: () -> Unit = {},
     uiMode: UIMode
 ) {
@@ -63,7 +64,7 @@ fun CardLink(
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color.LightGray)
                 .combinedClickable {  },
-            bitmap = link.favicon.asImageBitmap(),
+            bitmap = link.favicon.value.asImageBitmap(),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
@@ -92,7 +93,7 @@ fun CardLink(
 @Composable
 fun LinkAndTags(
     modifier: Modifier,
-    link: ILink
+    link: LinkView
 ) {
     Column(
         modifier = modifier
@@ -102,7 +103,7 @@ fun LinkAndTags(
                 .padding(start=5.dp)
                 .weight(1f)
                 .fillMaxWidth(),
-            text = link.url.getString(false),
+            text = link.url.value.getString(false),
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1
         )
@@ -149,16 +150,19 @@ fun IconOrCheckbox(
 @Preview
 @Composable
 fun PreviewLinkCard() {
-    val link = Link(
-        0,
-        parentFolder= EMPTY_LONG,
-        "네이버", 
-        "네이버캐스트", 
-        Url("https://www.naver.com"),
-        getBitmap(id = R.drawable.ic_sample_image_001),
-        getBitmap(id = R.drawable.ic_sample_image_001),
-        arrayListOf("유명", "네이버", "검색")
-    )
+    val sampleImage = getBitmap(id = R.drawable.ic_sample_image_001)
+    val link = remember {
+        LinkView(
+            0,
+            parentFolder= EMPTY_LONG,
+            mutableStateOf("네이버"),
+            mutableStateOf("네이버캐스트"),
+            mutableStateOf(Url("https://www.naver.com")),
+            mutableStateOf(sampleImage),
+            mutableStateOf(sampleImage),
+            arrayListOf("유명", "네이버", "검색")
+        )
+    }
     
     CardLink(
         modifier = Modifier.height(80.dp),

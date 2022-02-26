@@ -3,7 +3,6 @@ package com.example.linkit.data.room.dto
 import com.example.linkit.data.room.entity.LinkEntity
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.data.room.entity.TagEntity
-import com.example.linkit.data.room.entity.TagWithLinks
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.interfaces.ListMapperImpl
 import com.example.linkit.domain.interfaces.Mapper

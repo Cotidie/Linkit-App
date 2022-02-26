@@ -8,8 +8,8 @@ import com.example.linkit.data.room.dao.LinkDao
 import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
 import com.example.linkit.data.room.entity.TagEntity
-import com.example.linkit.data.room.entity.TagWithLinks
 import com.example.linkit.domain.interfaces.ILink
+import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
 import com.example.linkit.domain.repository.mapper.BitmapMappers
@@ -51,13 +51,34 @@ class LinkRepository @Inject constructor(
         return linkMapper.map(entity)
     }
 
-    /** 링크가 주어지면 이미지를 웹에서 불러오고, 그후 Room에 저장한다. */
+    suspend fun getLinksByTag(tag: String, folderId: Long = EMPTY_LONG): List<ILink> {
+        val searchedEntities: List<LinkWithTags>
+
+        if (folderId == EMPTY_LONG)
+            searchedEntities = linkDao.getLinksByTag(tag)
+        else
+            searchedEntities = linkDao.getLinksByTagInFolder(tag, folderId)
+
+        return searchedEntities.map { linkMapper.map(it) }
+    }
+
+    suspend fun getLinksByUrl(url: String, folderId: Long = EMPTY_LONG): List<ILink> {
+        val searchedEntities: List<LinkWithTags>
+
+        if (folderId == EMPTY_LONG)
+            searchedEntities = linkDao.getLinksByUrl(url)
+        else
+            searchedEntities = linkDao.getLinksByUrlInFolder(url, folderId)
+
+        return searchedEntities.map { linkMapper.map(it) }
+    }
+
     suspend fun addLink(link: ILink) {
         link.favicon = getFavicon(link.url)
         link.image = getImage(link.url)
         val entity = linkMapper.map(link)
         val linkId = linkDao.insert(entity.link)
-        // 태그 및 다대다 테이블 insert
+
         for (tag in entity.tags) {
             linkDao.insert(tag)
             linkDao.insert(LinkTagRef(linkId = linkId, tag = tag.name))
@@ -73,32 +94,6 @@ class LinkRepository @Inject constructor(
         linkDao.update(modified.link)
         for (tag in newTags) addTag(tag = tag, linkId = link.id)
         for (tag in deletedTags) removeTag(tag = tag, linkId = link.id)
-    }
-
-    /**
-     * 링크검색 함수
-     * folderId를 받아서 0(디폴트값)이면 전체링크에서 링크 검색
-     * folderId가 0이 아니면 해당 folderId에 소속된 링크 검색
-     */
-    fun searchLinkByTag(searchUrl: String, folderId: Long): Flow<List<ILink>> {
-        val searchUrlFlow =
-            if (folderId == 0L) linkDao.searchLinksByTag(searchUrl) else linkDao.searchLinksByTag(
-                searchUrl,
-                folderId)
-        return searchUrlFlow
-            .flowOn(Dispatchers.IO)
-            .conflate()
-            .map { linkMapper.map(it) }
-    }
-
-    fun searchLinkByUrl(searchUrl: String, folderId: Long): Flow<List<ILink>> {
-        val searchUrlFlow =
-            if (folderId == 0L) linkDao.searchLinkBy(searchUrl) else linkDao.searchLinkBy(searchUrl,
-                folderId)
-        return searchUrlFlow
-            .flowOn(Dispatchers.IO)
-            .conflate()
-            .map { linkMapper.map(it) }
     }
 
     suspend fun deleteLinks(links: List<ILink>) {

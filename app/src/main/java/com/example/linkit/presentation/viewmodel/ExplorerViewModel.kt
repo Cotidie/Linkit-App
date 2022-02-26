@@ -12,6 +12,8 @@ import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
+import com.example.linkit.presentation.mapper.LinkMapper
+import com.example.linkit.presentation.model.LinkView
 import com.example.linkit.presentation.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,17 +27,18 @@ import javax.inject.Inject
 @HiltViewModel
 class ExplorerViewModel @Inject constructor(
     private val linkRepo: LinkRepository,
-    private val folderRepo: FolderRepository
+    private val folderRepo: FolderRepository,
+    private val linkMapper: LinkMapper
 ): ViewModel() {
     val uiMode = mutableStateOf(UIMode.NORMAL)
-    private val _links = mutableStateOf(emptyList<ILink>())
-    val selected = ArrayList<ILink>()
+    private val _links = mutableStateOf(emptyList<LinkView>())
+    val selected = ArrayList<LinkView>()
     val sortBy = mutableStateOf(OLDEST)
     val currentFolder: MutableStateFlow<IFolder?> = MutableStateFlow(IFolder.DEFAULT)
-    val links: List<ILink> get() {
+    val links: List<LinkView> get() {
         return when (sortBy.value) {
-            NEWEST -> _links.value.sortedBy { it.created }
-            OLDEST -> _links.value.sortedByDescending { it.created }
+            NEWEST -> _links.value.sortedBy { it.created.value }
+            OLDEST -> _links.value.sortedByDescending { it.created.value }
         }
     }
 
@@ -69,20 +72,19 @@ class ExplorerViewModel @Inject constructor(
     /** 선택된 링크들을 삭제한다. */
     fun deleteLinks() {
         viewModelScope.launch(Dispatchers.IO) {
-            "삭제할 링크: $selected".log()
-            linkRepo.deleteLinks(selected)
+            val linkToDelete = linkMapper.map(selected)
+            linkRepo.deleteLinks(linkToDelete)
             clearSelect()
         }
     }
 
     /** 편집할 링크를 선택한다. */
-    fun select(link: ILink) {
+    fun select(link: LinkView) {
         selected.add(link)
-        "추가한 링크: $link".log()
     }
 
     /** 편집할 링크 목록에서 제외한다. */
-    fun unselect(link: ILink) {
+    fun unselect(link: LinkView) {
         selected.remove(link)
         "선택 취소됨! 취소한 링크: $link".log()
     }
@@ -99,7 +101,7 @@ class ExplorerViewModel @Inject constructor(
                 }
                 .distinctUntilChanged()
                 .collect {
-                    _links.value = it
+                    _links.value = linkMapper.map(it)
                 }
         }
     }

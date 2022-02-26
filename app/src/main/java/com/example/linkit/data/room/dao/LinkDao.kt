@@ -30,45 +30,35 @@ interface LinkDao {
     fun getLinks() : Flow<List<LinkWithTags>>
     @Transaction
     @Query("SELECT * FROM tagTable")
-    fun getTags() : Flow<List<TagWithLinks>>
+    fun getTags() : Flow<List<TagEntity>>
     @Transaction
     @Query("SELECT * from linkTable where parentFolderId = :folderId")
     fun getLinksInFolder(folderId: Long) : Flow<List<LinkWithTags>>
 
     @Query("SELECT * from linkTable where linkId = :id")
     suspend fun getLinkById(id: Long): LinkWithTags
-
-    /**
-     * 링크 검색 Dao
-     * searchLinkUrl(searchUrl: String, folderId: Long) 쿼리
-     * WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%' ORDER BY `linkId` DESC 에서
-     * AND 대신 &&나 & 사용시 에러? 발생
-     */
-    @Query("SELECT * FROM linkTable WHERE url LIKE '%' || :searchUrl || '%'")
-    fun searchLinkBy(searchUrl: String): Flow<List<LinkWithTags>>
-
-    @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :searchUrl || '%'")
-    fun searchLinkBy(searchUrl: String, folderId: Long): Flow<List<LinkWithTags>>
-
+    @Query("SELECT * FROM linkTable WHERE url LIKE '%' || :url || '%'")
+    suspend fun getLinksByUrl(url: String): List<LinkWithTags>
+    @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :url || '%'")
+    suspend fun getLinksByUrlInFolder(url: String, folderId: Long): List<LinkWithTags>
     @Query(
         "SELECT * FROM linkTable AS link " +
             "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
             "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
-            "WHERE tag.name LIKE '&' || :searchTag || '$' "
+            "WHERE tag.name LIKE '&' || :tag || '$' "
     )
-    fun searchLinksByTag(searchTag: String): Flow<List<LinkWithTags>>
-
+    suspend fun getLinksByTag(tag: String): List<LinkWithTags>
     @Query(
         "SELECT * FROM linkTable AS link " +
                 "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
                 "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
-                "WHERE parentFolderId = :folderId AND tag.name LIKE '&' || :searchTag || '$' "
+                "WHERE parentFolderId = :folderId AND tag.name LIKE '&' || :tag || '$' "
     )
-    fun searchLinksByTag(searchTag: String, folderId: Long): Flow<List<LinkWithTags>>
+    suspend fun getLinksByTagInFolder(tag: String, folderId: Long): List<LinkWithTags>
 
 
-    @Query("SELECT COUNT(name) FROM linkTagTable WHERE name = :name")
-    fun countLinksByTag(name: String): Int
+    @Query("SELECT COUNT(name) FROM linkTagTable WHERE name = :tag")
+    fun countLinksByTag(tag: String): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(linkEntity: LinkEntity): Long

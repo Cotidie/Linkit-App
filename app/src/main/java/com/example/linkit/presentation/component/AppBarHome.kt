@@ -39,7 +39,6 @@ fun AppBarHome(navController: NavController) {
             )
         }
         OPENED -> {
-
             AppBarSearch(
                 text = text,
                 onClearClicked = {
@@ -51,8 +50,8 @@ fun AppBarHome(navController: NavController) {
                 },
                 onTextChange = { text = it },
                 onSearchClicked = {
-                    // AppBarHome에서는 클릭시 text 인자만 전달
-                    navController.navigate(Screen.SearchResult.route.plus("?searchUrl=${text}")
+                    navController.navigate(
+                        Screen.SearchResult.route.plus("?searchUrl=${text}")
                     )
                 }
             )

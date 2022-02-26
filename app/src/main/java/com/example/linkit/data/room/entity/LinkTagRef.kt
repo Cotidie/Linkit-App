@@ -30,21 +30,6 @@ data class LinkTagRef(
     val tag : String
 )
 
-
-/** 태그 입장에서 링크 목록 */
-data class TagWithLinks(
-    // 대상이 엔티티인 경우 Embbeded 어노테이션 사용
-    @Embedded val tag: TagEntity,
-    @Relation(
-        // 기준이 되는 테이블 (TagEntity)
-        parentColumn = "name",
-        // Join할 테이블 (LinkEntity)
-        entityColumn = "linkId",
-        // Join 테이블 제공 (다대다 연결 테이블)
-        associateBy = Junction(LinkTagRef::class)
-    ) val links: List<LinkEntity>
-)
-
 /** 링크 입장에서 태그 목록 */
 data class LinkWithTags(
     @Embedded val link: LinkEntity,

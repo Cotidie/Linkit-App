@@ -8,10 +8,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,12 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
 import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.Link
 import com.example.linkit.domain.model.Url
 import com.example.linkit.presentation.component.AppBarSearch
 import com.example.linkit.presentation.component.CardLink
+import com.example.linkit.presentation.model.LinkView
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.viewmodel.SearchViewModel
 
@@ -37,18 +36,21 @@ fun SearchResultScreen(
 ) {
     val viewModel = hiltViewModel<SearchViewModel>()
     val scrollState = rememberLazyListState()
+    var searchText by remember { mutableStateOf(searchUrl) }
+    var searchType by viewModel.searchType
+    val links by viewModel.searchedLinks
 
-    LaunchedEffect(Unit) {
-        viewModel.collectLinks(searchUrl, folderId)
+    LaunchedEffect(searchText) {
+        viewModel.searchLinks(key = searchText, folderId = folderId)
     }
 
     Scaffold(
         topBar = {
             AppBarSearch(
-                modifier = Modifier.height(80.dp),
-                text = "샘플",
-                onClearClicked = {},
-                onTextChange = {}
+                modifier = Modifier.height(UIConstants.HEIGHT_APP_BAR),
+                text = searchText,
+                onClearClicked = { searchText = "" },
+                onTextChange = { searchText = it }
             )
         }
     ){ innerPadding ->
@@ -61,7 +63,7 @@ fun SearchResultScreen(
             SearchLinkContent(
                 navController = navController,
 
-                links = viewModel.links.value.toList(),
+                links = viewModel.searchedLinks.value,
                 scrollState = scrollState,
             )
         }
@@ -72,7 +74,7 @@ fun SearchResultScreen(
 @Composable
 fun SearchLinkContent(
     navController: NavController,
-    links: List<ILink>,
+    links: List<LinkView>,
     scrollState: LazyListState = rememberLazyListState(),
 ) {
 
