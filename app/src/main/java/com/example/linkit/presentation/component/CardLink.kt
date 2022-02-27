@@ -20,8 +20,10 @@ import androidx.compose.ui.unit.dp
 import com.example.linkit.R
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
+import com.example.linkit.domain.model.EMPTY_BITMAP
 import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Url
+import com.example.linkit.domain.model.isEmpty
 import com.example.linkit.presentation.getBitmap
 import com.example.linkit.presentation.longPress
 import com.example.linkit.presentation.model.LinkView
@@ -37,6 +39,9 @@ fun CardLink(
     uiMode: UIMode
 ) {
     val radius = UIConstants.RADIUS_CARD
+    val imageBackground =
+        if (link.favicon.value.isEmpty()) Color.LightGray
+        else                              Color.Transparent
     var selected by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiMode) {
@@ -59,7 +64,7 @@ fun CardLink(
                 .padding(end = 10.dp)
                 .size(55.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(Color.LightGray)
+                .background(imageBackground)
                 .combinedClickable {  },
             bitmap = link.favicon.value.asImageBitmap(),
             contentDescription = null,
