@@ -8,13 +8,16 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.linkit._enums.SearchType
 import com.example.linkit.domain.model.EMPTY_LONG
+import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.view.ContentScreen
 import com.example.linkit.presentation.view.LinkList
 import com.example.linkit.presentation.view.ProfileScreen
 import com.example.linkit.presentation.view.SearchResultScreen
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
+import com.example.linkit.presentation.viewmodel.SearchViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -64,19 +67,31 @@ fun NavGraph(navController: NavHostController) {
             ContentScreen(navController, linkId!!)
         }
         composable(
-            route = Screen.SearchResult.route.plus("?searchUrl={searchUrl}&folderId={folderId}"),
+            route = Screen.SearchResult.route.plus("?searchText={searchText}&folderId={folderId}&searchType={searchType}"),
             arguments = listOf(
                 navArgument("folderId") {
                     type = NavType.LongType
                     defaultValue = EMPTY_LONG
                 },
-                navArgument("searchUrl") { type = NavType.StringType }
+                navArgument("searchText") { type = NavType.StringType },
+                navArgument("searchType") { type = NavType.StringType }
             )
         ) { backStackEntry ->
+            val viewModel = hiltViewModel<SearchViewModel>()
             val folderId = backStackEntry.arguments?.getLong("folderId")
-            val searchUrl = backStackEntry.arguments?.getString("searchUrl")
+            val searchText = backStackEntry.arguments?.getString("searchText")
+            val searchType = backStackEntry.arguments?.getString("searchType")
 
-            SearchResultScreen(navController,folderId=folderId!!, searchUrl = searchUrl!!)
+            with(viewModel) {
+                setParentFolder(folderId)
+                setSearchText(searchText)
+                setSearchType(searchType)
+            }
+
+            SearchResultScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
     }
 
