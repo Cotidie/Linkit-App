@@ -1,19 +1,23 @@
 package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.linkit._constant.UIConstants
+import com.example.linkit._enums.SearchType
+import com.example.linkit.presentation.model.Size
 
 @Composable
 /** 검색 아이콘을 클릭했을 때 표시할 앱바 */
@@ -29,7 +33,7 @@ fun AppBarSearch(
         title = {
             SearchTextField(
                 modifier = Modifier
-                    .padding(start= 10.dp, top= 12.dp, bottom= 12.dp, end= 20.dp),
+                    .padding(start = 10.dp, top = 12.dp, bottom = 12.dp, end = 20.dp),
                 text = text,
                 leadingIcon = {
                     Icon(
@@ -41,6 +45,8 @@ fun AppBarSearch(
                     )
                 },
                 trailingIcon = {
+                    SearchTypeDropDown()
+                    Spacer(Modifier.width(5.dp))
                     Icon(
                         modifier = Modifier
                             .size(UIConstants.SIZE_ICON_MEDIUM)
@@ -51,11 +57,45 @@ fun AppBarSearch(
                     )
                 },
                 onTextChange = { onTextChange(it) },
-                onSearchClicked = { onSearchClicked()}
+                onSearchClicked = { onSearchClicked() }
             )
         },
         backgroundColor = Color.White,
         elevation = UIConstants.ELEVATION_APP_BAR
+    )
+}
+
+@Composable
+private fun SearchTypeDropDown() {
+    val types = SearchType.values().toList()
+    var selected by remember { mutableStateOf(types[0]) }
+
+    DropDownButton(
+        items = types,
+        button = { expand ->
+           CustomChip(
+               text = "  ${selected.text}  ",
+               textColor = Color.Black,
+               textStyle = MaterialTheme.typography.subtitle2,
+               borderWidth = 1.dp,
+               borderColor = Color.DarkGray,
+               height = 30.dp,
+               onClick = expand
+           )
+        },
+        item = { index, item ->
+            val isSelected = (item == selected)
+            Text(
+                text = item.text,
+                fontWeight =
+                    if (isSelected) FontWeight.ExtraBold
+                    else            null
+            )
+        },
+        itemSize = Size(60.dp, 30.dp),
+        onItemClick = { type ->
+            selected = type
+        }
     )
 }
 
