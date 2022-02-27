@@ -1,11 +1,9 @@
 package com.example.linkit.presentation.component
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -15,6 +13,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -148,14 +147,28 @@ private fun SortingButton(
             )
         },
         item = { index, item ->
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 5.dp),
-                text = item.text,
-                textAlign = TextAlign.Center
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 5.dp),
+                    text = item.text,
+                    textAlign = TextAlign.Center
+                )
+
+                if (item == sortBy) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.1f))
+                    )
+                }
+            }
         },
+        itemPadding = PaddingValues(0.dp),
         onItemClick = { item ->
             sortBy = item
         }
