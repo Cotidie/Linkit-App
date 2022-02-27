@@ -55,7 +55,7 @@ fun SearchResultScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.DarkGray)
+                .background(Color.Gray)
                 .padding(innerPadding)
         ) {
             SearchLinkContent(

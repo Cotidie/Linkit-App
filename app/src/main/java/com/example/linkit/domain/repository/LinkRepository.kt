@@ -1,9 +1,8 @@
 package com.example.linkit.domain.repository
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import com.example.linkit.data.network.api.ILinkApi
-import com.example.linkit.domain.repository.mapper.LinkMappers
+import com.example.linkit.domain.mapper.LinkMappers
 import com.example.linkit.data.room.dao.LinkDao
 import com.example.linkit.data.room.entity.LinkTagRef
 import com.example.linkit.data.room.entity.LinkWithTags
@@ -12,14 +11,12 @@ import com.example.linkit.domain.interfaces.ILink
 import com.example.linkit.domain.model.EMPTY_LONG
 import com.example.linkit.domain.model.Url
 import com.example.linkit.domain.model.log
-import com.example.linkit.domain.repository.mapper.BitmapMappers
+import com.example.linkit.domain.mapper.BitmapMappers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import java.net.HttpURLConnection
-import java.net.URL
 import javax.inject.Inject
 
 /**

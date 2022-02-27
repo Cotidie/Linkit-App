@@ -42,17 +42,17 @@ interface LinkDao {
     @Query("SELECT * FROM linkTable WHERE parentFolderId = :folderId AND url LIKE '%' || :url || '%'")
     suspend fun getLinksByUrlInFolder(url: String, folderId: Long): List<LinkWithTags>
     @Query(
-        "SELECT * FROM linkTable AS link " +
-            "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
-            "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
-            "WHERE tag.name LIKE '&' || :tag || '$' "
+        "SELECT link.* FROM linkTable AS link " +
+            "INNER JOIN linkTagTable AS ref ON ref.linkId = link.linkId " +
+            "INNER JOIN tagTable AS tag ON tag.name = ref.name " +
+            "WHERE tag.name LIKE '%' || :tag || '%' "
     )
     suspend fun getLinksByTag(tag: String): List<LinkWithTags>
     @Query(
-        "SELECT * FROM linkTable AS link " +
-                "INNER JOIN linkTagTable AS linkTag ON linkTag.linkId = link.linkId " +
-                "INNER JOIN tagTable AS tag ON tag.name = linkTag.name " +
-                "WHERE parentFolderId = :folderId AND tag.name LIKE '&' || :tag || '$' "
+        "SELECT link.* FROM linkTable AS link " +
+                "INNER JOIN linkTagTable AS ref ON ref.linkId = link.linkId " +
+                "INNER JOIN tagTable AS tag ON tag.name = ref.name " +
+                "WHERE link.parentFolderId = :folderId AND tag.name LIKE '%' || :tag || '%'"
     )
     suspend fun getLinksByTagInFolder(tag: String, folderId: Long): List<LinkWithTags>
 
