@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,12 +21,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.SearchBarState.*
+import com.example.linkit._enums.SearchType
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.LinkItTheme
 
 @Composable
 fun AppBarHome(navController: NavController) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
+    var searchType by remember { mutableStateOf(SearchType.URL) }
     var text by remember { mutableStateOf("") }
 
     BackHandler(enabled = (searchBarState == OPENED)) {
@@ -51,9 +55,10 @@ fun AppBarHome(navController: NavController) {
                 onTextChange = { text = it },
                 onSearchClicked = {
                     navController.navigate(
-                        Screen.SearchResult.route.plus("?searchUrl=${text}")
+                        Screen.SearchResult.route.plus("?searchText=${text}&searchType=${searchType.text}")
                     )
-                }
+                },
+                onSearchTypeChange = { searchType = it }
             )
         }
     }
@@ -90,6 +95,7 @@ fun AppBarHomeDefault(
                 modifier = Modifier
                     .padding(end = 20.dp)
                     .size(UIConstants.SIZE_ICON_MEDIUM)
+                    .clip(CircleShape)
                     .clickable { onProfileClick() },
                 imageVector = Icons.Filled.AccountCircle,
                 contentDescription = null,

@@ -1,8 +1,6 @@
 package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
@@ -15,14 +13,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 /** TODO: modifier는 하나만 두고, 배경색, 패딩 등 해당하는 값을 직접 받기 */
@@ -30,8 +29,11 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CustomChip(
     text: String = "",
+    textColor: Color = Color.Black,
+    textStyle: TextStyle = MaterialTheme.typography.subtitle1,
     prefix: String = "",
-    padding: PaddingValues = PaddingValues(horizontal = 5.dp),
+    padding: PaddingValues = PaddingValues(horizontal = 6.dp),
+    height: Dp = (21.5).dp,
     minWidth: Dp? = null,
     borderWidth: Dp = (-1).dp,
     borderColor: Color = Color.Black,
@@ -45,7 +47,7 @@ fun CustomChip(
 
     Surface(
         modifier = Modifier
-            .height((21.5).dp)
+            .height(height)
             .then(
                 if (minWidth != null) Modifier.defaultMinSize(minWidth = minWidth)
                 else                  Modifier
@@ -63,7 +65,8 @@ fun CustomChip(
         ) {
             Text(
                 text = prefix,
-                style = MaterialTheme.typography.subtitle1
+                color = textColor,
+                style = textStyle
             )
 
             BasicTextField(
@@ -75,7 +78,7 @@ fun CustomChip(
                     if (write)  writeText
                     else        text,
                 onValueChange = { writeText = it },
-                textStyle = MaterialTheme.typography.subtitle1,
+                textStyle = textStyle.copy(color=textColor),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 ),

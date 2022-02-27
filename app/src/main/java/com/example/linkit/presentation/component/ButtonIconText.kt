@@ -79,7 +79,7 @@ fun IconTextButtonSmall(
     IconTextButton(
         modifier = modifier.height(height),
         icon = icon,
-        text = "추가",
+        text = text,
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(backgroundColor),
         contentPadding = innerPadding

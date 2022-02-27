@@ -129,14 +129,13 @@ fun Home(navController: NavController) {
 
 /** Content 영역 중 상단의 드롭다운 버튼 영역*/
 @Composable
-fun DropDownArea() {
+private fun DropDownArea() {
     val dropItems = listOf(
         IconText(Icons.Filled.Person,"개인폴더"),
         IconText(Icons.Filled.Group, "공유폴더"),
         IconText(Icons.Filled.Groups, "모두")
     )
     var selected by remember { mutableStateOf(dropItems[0]) }
-    var expanded by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -145,9 +144,8 @@ fun DropDownArea() {
         contentAlignment = Alignment.CenterEnd
     ) {
         DropDownButton(
-            expanded = expanded,
             items = dropItems,
-            button = {
+            button = { expand ->
                 IconTextButton(
                     modifier = Modifier
                         .size(145.dp, 50.dp)
@@ -156,7 +154,7 @@ fun DropDownArea() {
                     iconColor = Color.White,
                     text = selected.text,
                     textColor = Color.White,
-                    onClick = { expanded = !expanded },
+                    onClick = expand,
                     colors = buttonColors(backgroundColor = Color.Gray)
                 )
             },
@@ -172,9 +170,7 @@ fun DropDownArea() {
             },
             onItemClick = { item ->
                 selected = item
-                expanded = false
             },
-            onDismissRequest = { expanded = false }
         )
     }
 
