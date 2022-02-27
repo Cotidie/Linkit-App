@@ -24,9 +24,11 @@ import com.example.linkit.presentation.model.Size
 fun AppBarSearch(
     modifier : Modifier = Modifier,
     text : String,
+    initialSearchType: SearchType = SearchType.URL,
     onClearClicked: () -> Unit = {},
     onTextChange: (String) -> Unit = {},
-    onSearchClicked: () -> Unit = {}
+    onSearchClicked: () -> Unit = {},
+    onSearchTypeChange: (SearchType) -> Unit = {}
 ) {
     TopAppBar(
         modifier = modifier.height(UIConstants.HEIGHT_APP_BAR),
@@ -45,7 +47,10 @@ fun AppBarSearch(
                     )
                 },
                 trailingIcon = {
-                    SearchTypeDropDown()
+                    SearchTypeDropDown(
+                        initialType = initialSearchType,
+                        onTypeChange = onSearchTypeChange
+                    )
                     Spacer(Modifier.width(5.dp))
                     Icon(
                         modifier = Modifier
@@ -66,9 +71,12 @@ fun AppBarSearch(
 }
 
 @Composable
-private fun SearchTypeDropDown() {
+private fun SearchTypeDropDown(
+    initialType: SearchType = SearchType.URL,
+    onTypeChange: (SearchType) -> Unit = {}
+) {
     val types = SearchType.values().toList()
-    var selected by remember { mutableStateOf(types[0]) }
+    var selected by remember { mutableStateOf(initialType) }
 
     DropDownButton(
         items = types,
@@ -95,6 +103,7 @@ private fun SearchTypeDropDown() {
         itemSize = Size(60.dp, 30.dp),
         onItemClick = { type ->
             selected = type
+            onTypeChange(type)
         }
     )
 }

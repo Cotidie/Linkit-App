@@ -21,12 +21,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.SearchBarState.*
+import com.example.linkit._enums.SearchType
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.ui.theme.LinkItTheme
 
 @Composable
 fun AppBarHome(navController: NavController) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
+    var searchType by remember { mutableStateOf(SearchType.URL) }
     var text by remember { mutableStateOf("") }
 
     BackHandler(enabled = (searchBarState == OPENED)) {
@@ -53,9 +55,10 @@ fun AppBarHome(navController: NavController) {
                 onTextChange = { text = it },
                 onSearchClicked = {
                     navController.navigate(
-                        Screen.SearchResult.route.plus("?searchUrl=${text}")
+                        Screen.SearchResult.route.plus("?searchText=${text}&searchType=${searchType.text}")
                     )
-                }
+                },
+                onSearchTypeChange = { searchType = it }
             )
         }
     }

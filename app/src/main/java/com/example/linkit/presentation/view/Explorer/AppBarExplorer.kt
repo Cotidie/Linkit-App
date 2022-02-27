@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.SearchBarState.CLOSED
 import com.example.linkit._enums.SearchBarState.OPENED
+import com.example.linkit._enums.SearchType
 import com.example.linkit._enums.SortingOption
 import com.example.linkit.presentation.navigation.Screen
 import com.example.linkit.presentation.viewmodel.ExplorerViewModel
@@ -36,6 +37,7 @@ fun AppBarExplorer(
     navController: NavController
 ) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
+    var searchType by remember { mutableStateOf(SearchType.URL) }
     var text by remember { mutableStateOf("") }
 
     BackHandler(enabled = (searchBarState == OPENED)) {
@@ -65,10 +67,13 @@ fun AppBarExplorer(
                 },
                 onTextChange = { text = it },
                 onSearchClicked = {
-                    // searchType 전달할 예정
-                    navController.navigate(Screen.SearchResult.route.plus("?searchUrl=${text}&folderId=${folderId}")
+                    navController.navigate(
+                        Screen.SearchResult.route.plus(
+                            "?searchText=${text}&folderId=${folderId}&searchType=${searchType.text}"
+                        )
                     )
-                }
+                },
+                onSearchTypeChange = { searchType = it }
             )
         }
     }
