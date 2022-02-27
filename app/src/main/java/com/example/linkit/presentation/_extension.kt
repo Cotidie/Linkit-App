@@ -18,6 +18,7 @@ import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ import com.example.linkit._enums.AnimationSpec
 import com.example.linkit._enums.AnimationSpec.*
 import com.example.linkit.domain.model.EMPTY_BITMAP
 import com.example.linkit.domain.model.log
+import com.example.linkit.presentation.model.Size
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
@@ -128,3 +130,7 @@ fun activityLauncher(
             onError()
         }
     }
+
+fun Modifier.size(size: Size) = this.then(
+    Modifier.size(width = size.width, height = size.height)
+)
