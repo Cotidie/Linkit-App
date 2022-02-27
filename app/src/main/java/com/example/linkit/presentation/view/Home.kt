@@ -129,7 +129,7 @@ fun Home(navController: NavController) {
 
 /** Content 영역 중 상단의 드롭다운 버튼 영역*/
 @Composable
-fun DropDownArea() {
+private fun DropDownArea() {
     val dropItems = listOf(
         IconText(Icons.Filled.Person,"개인폴더"),
         IconText(Icons.Filled.Group, "공유폴더"),

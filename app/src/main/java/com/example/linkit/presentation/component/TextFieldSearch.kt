@@ -25,7 +25,7 @@ fun SearchTextField(
     modifier: Modifier = Modifier,
     text: String,
     leadingIcon: @Composable () -> Unit,
-    trailingIcon: @Composable () -> Unit,
+    trailingIcon: @Composable RowScope.() -> Unit,
     onSearchClicked: (String) -> Unit = {},
     onTextChange: (String) -> Unit = {}
 ) {
@@ -39,11 +39,12 @@ fun SearchTextField(
         Row(
             modifier = Modifier.fillMaxSize()
         ) {
-            Box(
+            Row(
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(start = 10.dp),
-                contentAlignment = Alignment.Center
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 leadingIcon()
             }
@@ -67,11 +68,12 @@ fun SearchTextField(
                     )
                 )
             }
-            Box(
+            Row(
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(end = 10.dp),
-                contentAlignment = Alignment.Center
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 trailingIcon()
             }
