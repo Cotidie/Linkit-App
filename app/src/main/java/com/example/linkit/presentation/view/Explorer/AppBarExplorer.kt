@@ -128,17 +128,15 @@ private fun SortingButton(
 ) {
     val options = SortingOption.values()
     var sortBy by viewModel.sortBy
-    var expanded by remember { mutableStateOf(false) }
 
     DropDownButton(
-        expanded = expanded,
         items = options.toList(),
-        button = {
+        button = { expand ->
             Icon(
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
                     .size(UIConstants.SIZE_ICON_MEDIUM)
-                    .clickable { expanded = !expanded },
+                    .clickable { expand() },
                 imageVector = Icons.Filled.Tune,
                 contentDescription = null,
                 tint = Color.Black
@@ -155,8 +153,6 @@ private fun SortingButton(
         },
         onItemClick = { item ->
             sortBy = item
-            expanded = false
-        },
-        onDismissRequest = { expanded = false }
+        }
     )
 }
