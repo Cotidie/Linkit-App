@@ -41,6 +41,8 @@ class Url constructor() {
 
     fun isValid() : Boolean = (_url != null)
 
+    fun contains(subString: String) = originalString.contains(subString)
+
     fun getFullUrlString(showProtocol: Boolean = false) : String {
         if (!isValid()) return ""
 
@@ -63,7 +65,6 @@ class Url constructor() {
     }
 
     fun getMetaImg(): HashMap<String, String>? {
-
         val map = HashMap<String, String>()
 
         try {
