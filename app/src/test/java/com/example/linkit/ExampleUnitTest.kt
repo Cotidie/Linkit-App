@@ -1,4 +1,4 @@
-package com.example.linkit
+package com.apptive.linkit
 
 import org.junit.Test
 
