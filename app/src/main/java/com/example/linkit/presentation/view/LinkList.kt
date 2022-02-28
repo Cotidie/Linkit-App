@@ -26,11 +26,10 @@ fun LinkList(
     val scrollState = rememberLazyListState()
     val uiMode by viewModel.uiMode
 
-    LaunchedEffect(Unit) {
-        viewModel.collectLinks()
-    }
-
     Scaffold(
+        topBar = {
+
+        },
         bottomBar = {
             AppBottomBar(
                 uiMode = uiMode,
