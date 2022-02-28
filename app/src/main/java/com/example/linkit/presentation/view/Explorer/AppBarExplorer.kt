@@ -88,43 +88,30 @@ private fun AppBarExplorerDefault(
 ) {
     var sortBy by viewModel.sortBy
 
-    TopAppBar(
-        modifier = modifier
-            .height(UIConstants.HEIGHT_APP_BAR),
+    AppBarSorting(
         title = {
-            Icon(
-                modifier = Modifier
-                    .padding(start = 10.dp, end = 2.dp)
-                    .clickable { onBackClick() },
-                imageVector = Icons.Filled.ArrowBackIos,
-                contentDescription = null
-            )
-            Text(text = folderName)
-        },
-        actions = {
-            Icon(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .size(UIConstants.SIZE_ICON_MEDIUM)
-                    .clickable { onSearchClick() },
-                imageVector = Icons.Filled.Search,
-                contentDescription = null,
-                tint = Color.Black
-            )
-            SortingButton(
-                currentSorting = sortBy,
-                onItemClick = { sortBy = it }
-            )
-            Icon(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .size(UIConstants.SIZE_ICON_MEDIUM),
-                imageVector = Icons.Filled.MoreVert,
-                contentDescription = null,
-                tint = Color.Black
+            FolderNameAndBackButton(
+                folderName = folderName,
+                onBackClick = onBackClick
             )
         },
-        backgroundColor = Color.Transparent,
-        elevation = 2.dp
+        sortBy = sortBy,
+        onSearchClick = onSearchClick,
+        onSortChange = { sortBy = it }
     )
+}
+
+@Composable
+private fun FolderNameAndBackButton(
+    folderName: String,
+    onBackClick: () -> Unit
+) {
+    Icon(
+        modifier = Modifier
+            .padding(start = 10.dp, end = 2.dp)
+            .clickable { onBackClick() },
+        imageVector = Icons.Filled.ArrowBackIos,
+        contentDescription = null
+    )
+    Text(text = folderName)
 }
