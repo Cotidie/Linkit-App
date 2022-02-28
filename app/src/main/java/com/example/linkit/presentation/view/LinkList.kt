@@ -7,13 +7,14 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.linkit._constant.ColorConstants
 import com.example.linkit.presentation.component.AppBottomBar
+import com.example.linkit.presentation.view.LinkList.AppBarLinkList
 import com.example.linkit.presentation.view.LinkList.LinkCards
 import com.example.linkit.presentation.viewmodel.LinkListViewModel
 
@@ -28,7 +29,7 @@ fun LinkList(
 
     Scaffold(
         topBar = {
-
+            AppBarLinkList(viewModel = viewModel)
         },
         bottomBar = {
             AppBottomBar(
@@ -41,7 +42,7 @@ fun LinkList(
             ScreenContent {
                 LinkCards(
                     navController = navController,
-                    links = viewModel.links.value,
+                    links = viewModel.displayLinks.value,
                     scrollState = scrollState,
                 )
             }
