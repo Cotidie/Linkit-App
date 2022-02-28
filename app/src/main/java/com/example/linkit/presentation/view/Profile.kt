@@ -125,11 +125,11 @@ private fun ButtonsArea(
             onClick = { onClick(Dialogs.NOTICE) }
         )
         Spacer(Modifier.height(15.dp))
-        ButtonBlack(
-            text = "친구관리",
-            minWidth = minWidth,
-            onClick = { onClick(Dialogs.FRIEND) }
-        )
+//        ButtonBlack(
+//            text = "친구관리",
+//            minWidth = minWidth,
+//            onClick = { onClick(Dialogs.FRIEND) }
+//        )
     }
 }
 

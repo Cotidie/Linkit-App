@@ -1,9 +1,7 @@
 package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -32,7 +30,8 @@ fun AppBarSorting(
                 currentSorting = sortBy,
                 onItemClick = onSortChange
             )
-            VertMoreIcon()
+            Spacer(Modifier.width(20.dp))
+//            VertMoreIcon()
         },
         backgroundColor = Color.Transparent,
         elevation = 2.dp
