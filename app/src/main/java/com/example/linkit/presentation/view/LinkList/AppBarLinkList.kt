@@ -22,10 +22,6 @@ fun AppBarLinkList(
         searchBarState = CLOSED
     }
 
-    LaunchedEffect(key1 = searchText) {
-        viewModel.searchLinks()
-    }
-
     when (searchBarState) {
         CLOSED -> {
             AppBarSorting(
@@ -43,7 +39,6 @@ fun AppBarLinkList(
                     else                         searchBarState = CLOSED
                 },
                 onTextChange = { searchText = it },
-                onSearchClicked = { viewModel.searchLinks() },
                 onSearchTypeChange = { searchBy = it }
             )
         }

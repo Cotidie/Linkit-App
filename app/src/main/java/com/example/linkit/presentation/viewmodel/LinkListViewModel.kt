@@ -27,26 +27,17 @@ class LinkListViewModel @Inject constructor(
     private val linkMapper: LinkMapper
 ) : ViewModel() {
     private val allLinks = mutableStateOf(emptyList<LinkView>())
-    val displayLinks = mutableStateOf(emptyList<LinkView>())
     val uiMode = mutableStateOf(UIMode.ALL_LINK)
     val sortBy = mutableStateOf(SortingOption.OLDEST)
     val searchBy = mutableStateOf(SearchType.URL)
     val searchText = mutableStateOf("")
+    val displayLinks:List<LinkView> get() {
+        val filtered = filterBySearchType(allLinks.value)
+
+        return sortBySortingOption(filtered)
+    }
 
     init { collectLinks() }
-
-    fun searchLinks() {
-        val textToSearch = searchText.value
-        if (textToSearch.isBlank()) {
-            displayLinks.value = allLinks.value; "값이 비어있음: ${searchText.value}".log()
-            return
-        }
-
-        val filtered = filterBySearchType(allLinks.value)
-        val sorted = sortBySortingOption(filtered)
-
-        displayLinks.value = sorted
-    }
 
     private fun sortBySortingOption(target: List<LinkView>): List<LinkView> {
         return when (sortBy.value) {
@@ -56,6 +47,8 @@ class LinkListViewModel @Inject constructor(
     }
 
     private fun filterBySearchType(target: List<LinkView>): List<LinkView> {
+        if (searchText.value.isBlank()) return allLinks.value
+
         return target.filter { containsBySearchType(linkView = it) }
     }
 
