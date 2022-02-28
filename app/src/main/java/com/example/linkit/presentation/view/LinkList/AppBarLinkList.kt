@@ -15,6 +15,7 @@ fun AppBarLinkList(
 ) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
     var searchText by viewModel.searchText
+    var searchBy by viewModel.searchBy
     var sortBy by viewModel.sortBy
 
     BackHandler(enabled = (searchBarState == OPENED)) {
@@ -36,14 +37,14 @@ fun AppBarLinkList(
         OPENED -> {
             AppBarSearch(
                 text = searchText,
+                searchType = searchBy,
                 onClearClicked = {
                     if (searchText.isNotEmpty()) searchText = ""
                     else                         searchBarState = CLOSED
                 },
                 onTextChange = { searchText = it },
-                onSearchClicked = {
-                    viewModel.searchLinks()
-                }
+                onSearchClicked = { viewModel.searchLinks() },
+                onSearchTypeChange = { searchBy = it }
             )
         }
     }

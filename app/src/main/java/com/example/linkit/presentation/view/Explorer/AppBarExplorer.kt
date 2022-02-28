@@ -32,7 +32,7 @@ fun AppBarExplorer(
     viewModel: ExplorerViewModel,
     modifier : Modifier = Modifier,
     folderName: String,
-    folderId: Long, // 폴더 내에서 검색 구현을 위한 folderId 매개변수 추가
+    folderId: Long,
     navController: NavController
 ) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
@@ -57,6 +57,7 @@ fun AppBarExplorer(
             AppBarSearch(
                 modifier = modifier,
                 text = text,
+                searchType = searchType,
                 onClearClicked = {
                     if (text.isNotEmpty()) {
                         text = ""

@@ -45,6 +45,7 @@ fun AppBarHome(navController: NavController) {
         OPENED -> {
             AppBarSearch(
                 text = text,
+                searchType = searchType,
                 onClearClicked = {
                     if (text.isNotEmpty()) {
                         text = ""
