@@ -86,6 +86,8 @@ private fun AppBarExplorerDefault(
     onSearchClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
+    var sortBy by viewModel.sortBy
+
     TopAppBar(
         modifier = modifier
             .height(UIConstants.HEIGHT_APP_BAR),
@@ -110,7 +112,8 @@ private fun AppBarExplorerDefault(
                 tint = Color.Black
             )
             SortingButton(
-                viewModel = viewModel
+                currentSorting = sortBy,
+                onItemClick = { sortBy = it }
             )
             Icon(
                 modifier = Modifier
@@ -123,54 +126,5 @@ private fun AppBarExplorerDefault(
         },
         backgroundColor = Color.Transparent,
         elevation = 2.dp
-    )
-}
-
-@Composable
-private fun SortingButton(
-    viewModel: ExplorerViewModel
-) {
-    val options = SortingOption.values()
-    var sortBy by viewModel.sortBy
-
-    DropDownButton(
-        items = options.toList(),
-        button = { expand ->
-            Icon(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .size(UIConstants.SIZE_ICON_MEDIUM)
-                    .clickable { expand() },
-                imageVector = Icons.Filled.Tune,
-                contentDescription = null,
-                tint = Color.Black
-            )
-        },
-        item = { index, item ->
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 5.dp),
-                    text = item.text,
-                    textAlign = TextAlign.Center
-                )
-
-                if (item == sortBy) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Black.copy(alpha = 0.1f))
-                    )
-                }
-            }
-        },
-        itemPadding = PaddingValues(0.dp),
-        onItemClick = { item ->
-            sortBy = item
-        }
     )
 }
