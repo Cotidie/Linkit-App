@@ -36,7 +36,7 @@ class AppModule {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 val folder = ContentValues()
                 folder.put("folderId", -1L)
-                folder.put("name", "무제폴더")
+                folder.put("name", "기본폴더")
                 db.insert("folderTable", SQLiteDatabase.CONFLICT_IGNORE, folder)
             }
         }
