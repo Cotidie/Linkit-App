@@ -45,6 +45,7 @@ fun AppBarHome(navController: NavController) {
         OPENED -> {
             AppBarSearch(
                 text = text,
+                searchType = searchType,
                 onClearClicked = {
                     if (text.isNotEmpty()) {
                         text = ""
@@ -71,7 +72,7 @@ fun AppBarHome(navController: NavController) {
  *   - 탐색화면: 돋보기와 정렬 아이콘
  */
 @Composable
-fun AppBarHomeDefault(
+private fun AppBarHomeDefault(
     modifier: Modifier = Modifier,
     onSearchClicked: () -> Unit,
     onProfileClick: () -> Unit,
@@ -109,7 +110,7 @@ fun AppBarHomeDefault(
 
 @Preview
 @Composable
-fun PreviewAppBar() {
+private fun PreviewAppBar() {
     val navController = rememberNavController()
 
     LinkItTheme {

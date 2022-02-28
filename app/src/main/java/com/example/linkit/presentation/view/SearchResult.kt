@@ -44,7 +44,7 @@ fun SearchResultScreen(
             AppBarSearch(
                 modifier = Modifier.height(UIConstants.HEIGHT_APP_BAR),
                 text = searchText,
-                initialSearchType = searchType,
+                searchType = searchType,
                 onClearClicked = { searchText = "" },
                 onTextChange = { searchText = it },
                 onSearchClicked = { viewModel.searchLinks() },

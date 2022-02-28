@@ -1,11 +1,9 @@
 package com.example.linkit.presentation.component
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -15,6 +13,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +32,7 @@ fun AppBarExplorer(
     viewModel: ExplorerViewModel,
     modifier : Modifier = Modifier,
     folderName: String,
-    folderId: Long, // 폴더 내에서 검색 구현을 위한 folderId 매개변수 추가
+    folderId: Long,
     navController: NavController
 ) {
     var searchBarState by remember { mutableStateOf(CLOSED) }
@@ -58,6 +57,7 @@ fun AppBarExplorer(
             AppBarSearch(
                 modifier = modifier,
                 text = text,
+                searchType = searchType,
                 onClearClicked = {
                     if (text.isNotEmpty()) {
                         text = ""
@@ -87,77 +87,32 @@ private fun AppBarExplorerDefault(
     onSearchClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    TopAppBar(
-        modifier = modifier
-            .height(UIConstants.HEIGHT_APP_BAR),
+    var sortBy by viewModel.sortBy
+
+    AppBarSorting(
         title = {
-            Icon(
-                modifier = Modifier
-                    .padding(start = 10.dp, end = 2.dp)
-                    .clickable { onBackClick() },
-                imageVector = Icons.Filled.ArrowBackIos,
-                contentDescription = null
-            )
-            Text(text = folderName)
-        },
-        actions = {
-            Icon(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .size(UIConstants.SIZE_ICON_MEDIUM)
-                    .clickable { onSearchClick() },
-                imageVector = Icons.Filled.Search,
-                contentDescription = null,
-                tint = Color.Black
-            )
-            SortingButton(
-                viewModel = viewModel
-            )
-            Icon(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .size(UIConstants.SIZE_ICON_MEDIUM),
-                imageVector = Icons.Filled.MoreVert,
-                contentDescription = null,
-                tint = Color.Black
+            FolderNameAndBackButton(
+                folderName = folderName,
+                onBackClick = onBackClick
             )
         },
-        backgroundColor = Color.Transparent,
-        elevation = 2.dp
+        sortBy = sortBy,
+        onSearchClick = onSearchClick,
+        onSortChange = { sortBy = it }
     )
 }
 
 @Composable
-private fun SortingButton(
-    viewModel: ExplorerViewModel
+private fun FolderNameAndBackButton(
+    folderName: String,
+    onBackClick: () -> Unit
 ) {
-    val options = SortingOption.values()
-    var sortBy by viewModel.sortBy
-
-    DropDownButton(
-        items = options.toList(),
-        button = { expand ->
-            Icon(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .size(UIConstants.SIZE_ICON_MEDIUM)
-                    .clickable { expand() },
-                imageVector = Icons.Filled.Tune,
-                contentDescription = null,
-                tint = Color.Black
-            )
-        },
-        item = { index, item ->
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 5.dp),
-                text = item.text,
-                textAlign = TextAlign.Center
-            )
-        },
-        onItemClick = { item ->
-            sortBy = item
-        }
+    Icon(
+        modifier = Modifier
+            .padding(start = 10.dp, end = 2.dp)
+            .clickable { onBackClick() },
+        imageVector = Icons.Filled.ArrowBackIos,
+        contentDescription = null
     )
+    Text(text = folderName)
 }

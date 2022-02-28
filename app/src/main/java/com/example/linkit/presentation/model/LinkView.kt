@@ -19,4 +19,12 @@ data class LinkView(
     val image: MutableState<Bitmap> = mutableStateOf(EMPTY_BITMAP),
     val tags: MutableList<String> = mutableListOf(""),
     val created: MutableState<Date> = mutableStateOf(Date())
-)
+) {
+    fun containsInUrl(subString: String): Boolean {
+        return url.value.contains(subString)
+    }
+
+    fun containsInTags(subString: String): Boolean {
+        return tags.any { it.contains(subString) }
+    }
+}

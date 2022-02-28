@@ -30,8 +30,8 @@ class ExplorerViewModel @Inject constructor(
     private val folderRepo: FolderRepository,
     private val linkMapper: LinkMapper
 ): ViewModel() {
-    val uiMode = mutableStateOf(UIMode.NORMAL)
     private val _links = mutableStateOf(emptyList<LinkView>())
+    val uiMode = mutableStateOf(UIMode.NORMAL)
     val selected = ArrayList<LinkView>()
     val sortBy = mutableStateOf(OLDEST)
     val currentFolder: MutableStateFlow<IFolder?> = MutableStateFlow(IFolder.DEFAULT)

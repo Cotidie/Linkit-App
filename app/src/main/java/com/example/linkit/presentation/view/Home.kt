@@ -115,6 +115,7 @@ fun Home(navController: NavController) {
     }
 
     HomeEditPopup(
+        folderName = selected.name.value,
         uiMode = uiMode,
         onRenameClick = { uiMode = UIMode.RENAME_FOLDER },
         onReimageClick = { bitmap ->
@@ -184,6 +185,7 @@ private fun DropDownArea() {
 
 @Composable
 private fun HomeEditPopup(
+    folderName: String = "",
     uiMode: UIMode,
     onDeleteClick: () -> Unit = {},
     onRenameClick: () -> Unit = {},
@@ -197,7 +199,7 @@ private fun HomeEditPopup(
             visible = (uiMode == UIMode.EDIT_FOLDER)
         ) {
             PopupEditFolder(
-                text = "샘플",
+                text = folderName,
                 onDeleteClick = onDeleteClick,
                 onRenameClick = onRenameClick,
                 onReimageClick = onReimageClick

@@ -29,6 +29,8 @@ fun Uri.toBitmap() : Bitmap {
     }
 }
 
+fun Bitmap.isEmpty() = (this == EMPTY_BITMAP)
+
 /** 빈 비트맵 */
 val EMPTY_BITMAP = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888)
 

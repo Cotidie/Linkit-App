@@ -2,15 +2,12 @@ package com.example.linkit.presentation.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +21,7 @@ import com.example.linkit.presentation.model.Size
 fun AppBarSearch(
     modifier : Modifier = Modifier,
     text : String,
-    initialSearchType: SearchType = SearchType.URL,
+    searchType: SearchType = SearchType.URL,
     onClearClicked: () -> Unit = {},
     onTextChange: (String) -> Unit = {},
     onSearchClicked: () -> Unit = {},
@@ -48,7 +45,7 @@ fun AppBarSearch(
                 },
                 trailingIcon = {
                     SearchTypeDropDown(
-                        initialType = initialSearchType,
+                        searchType = searchType,
                         onTypeChange = onSearchTypeChange
                     )
                     Spacer(Modifier.width(5.dp))
@@ -72,17 +69,16 @@ fun AppBarSearch(
 
 @Composable
 private fun SearchTypeDropDown(
-    initialType: SearchType = SearchType.URL,
+    searchType: SearchType = SearchType.URL,
     onTypeChange: (SearchType) -> Unit = {}
 ) {
     val types = SearchType.values().toList()
-    var selected by remember { mutableStateOf(initialType) }
 
     DropDownButton(
         items = types,
         button = { expand ->
            CustomChip(
-               text = "  ${selected.text}  ",
+               text = "  ${searchType.text}  ",
                textColor = Color.Black,
                textStyle = MaterialTheme.typography.subtitle2,
                borderWidth = 1.dp,
@@ -92,7 +88,7 @@ private fun SearchTypeDropDown(
            )
         },
         item = { index, item ->
-            val isSelected = (item == selected)
+            val isSelected = (item == searchType)
             Text(
                 text = item.text,
                 fontWeight =
@@ -102,7 +98,6 @@ private fun SearchTypeDropDown(
         },
         itemSize = Size(60.dp, 30.dp),
         onItemClick = { type ->
-            selected = type
             onTypeChange(type)
         }
     )

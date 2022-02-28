@@ -17,6 +17,7 @@ fun <T> DropDownButton(
     button: @Composable (expand: () -> Unit) -> Unit,
     item: @Composable (index: Int, item: T) -> Unit,
     itemSize: Size = Size(140.dp, 35.dp),
+    itemPadding: PaddingValues = MenuDefaults.DropdownMenuItemContentPadding,
     onItemClick: (item: T) -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
@@ -38,6 +39,7 @@ fun <T> DropDownButton(
             items.forEachIndexed { index, item ->
                 DropdownMenuItem(
                     modifier = Modifier.size(itemSize),
+                    contentPadding = itemPadding,
                     onClick = {
                         onItemClick(item)
                         expanded = false
