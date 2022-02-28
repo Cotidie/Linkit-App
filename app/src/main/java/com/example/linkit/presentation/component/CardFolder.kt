@@ -1,6 +1,7 @@
 package com.example.linkit.presentation.component
 
 import android.graphics.Bitmap
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.example.linkit._constant.UIConstants
 import com.example.linkit._enums.UIMode
 import com.example.linkit._enums.UIMode.*
+import com.example.linkit.domain.model.log
 import com.example.linkit.presentation.model.FolderView
 import com.example.linkit.ui.theme.LinkItTheme
 
@@ -41,7 +44,7 @@ fun CardFolder(
     focusRequester: FocusRequester = FocusRequester(),
     onClick: () -> Unit = {},
     onLongPress: () -> Unit = {},
-    onDismissRequest: () -> Unit = {}
+    onDismissRequest: () -> Unit = {},
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -49,6 +52,11 @@ fun CardFolder(
     LaunchedEffect(uiMode) {
         if (selected && uiMode == RENAME_FOLDER)
             focusRequester.requestFocus()
+    }
+
+    fun onDismissAdapter() {
+        onDismissRequest()
+        keyboardController?.hide()
     }
 
     Column(
@@ -93,12 +101,7 @@ fun CardFolder(
             NameTextField(
                 enabled = selected && uiMode == RENAME_FOLDER,
                 folder = folder,
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        onDismissRequest()
-                        keyboardController?.hide()
-                    }
-                ),
+                ondismiss = { onDismissAdapter() },
                 focusRequester = focusRequester
             )
             // 공유폴더 표시 아이콘
@@ -131,7 +134,7 @@ private fun ImageWithCheckbox(
     modifier: Modifier = Modifier,
     selected: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    image: Bitmap
+    image: Bitmap,
 ) {
     Box(modifier = modifier) {
         Image(
@@ -159,14 +162,22 @@ private fun ImageWithCheckbox(
 private fun RowScope.NameTextField(
     enabled: Boolean = false,
     folder: FolderView,
-    keyboardActions: KeyboardActions,
+    ondismiss: () -> Unit,
     focusRequester: FocusRequester,
 ) {
-    var text by folder.name
-    val textField = TextFieldValue(
-        text = text,
-        selection = TextRange(text.length)
-    )
+    var name by folder.name
+
+    var textField by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(
+            text = name,
+            selection = TextRange(name.length)
+        ))
+    }
+
+    BackHandler(name != textField.text) {
+        name = textField.text
+        ondismiss()
+    }
 
     BasicTextField(
         modifier = Modifier
@@ -176,13 +187,18 @@ private fun RowScope.NameTextField(
             .focusRequester(focusRequester),
         enabled = enabled,
         value = textField,
-        textStyle = TextStyle(color=Color.White),
+        textStyle = TextStyle(color = Color.White),
         singleLine = true,
         cursorBrush = SolidColor(Color.White),
-        keyboardActions = keyboardActions,
+        keyboardActions = KeyboardActions(
+            onDone = {
+                name = textField.text
+                ondismiss()
+            }
+        ),
         onValueChange = {
-            text = it.text
-            folder.name.value = it.text
+            textField = it
+            "name : ${name}. foldername: ${folder.name.value}".log()
         },
     )
 }
@@ -190,10 +206,12 @@ private fun RowScope.NameTextField(
 @Preview
 @Composable
 private fun PreviewFolderCard() {
-    val folder = remember { FolderView(
-        id = 5,
-        name = mutableStateOf("개인폴더"),
-    ) }
+    val folder = remember {
+        FolderView(
+            id = 5,
+            name = mutableStateOf("개인폴더"),
+        )
+    }
     val uiMode = UIMode.EDIT_FOLDER
 
     LinkItTheme {
