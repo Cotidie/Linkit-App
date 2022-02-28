@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.linkit._constant.UIConstants
 import com.example.linkit.domain.model.toBitmap
+import com.example.linkit.domain.utils.BitmapConverter
 import com.example.linkit.presentation.chooseImageLauncher
 import com.example.linkit.presentation.cxt
 
@@ -64,7 +65,8 @@ fun PopupEditFolder(
             val launcher = chooseImageLauncher { uri ->
                 if (uri == null) return@chooseImageLauncher
 
-                val bitmap = uri.toBitmap()
+                var bitmap = uri.toBitmap()
+                bitmap = BitmapConverter.resizeIcon(bitmap)
                 onReimageClick(bitmap)
             }
 
