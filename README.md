@@ -2,6 +2,7 @@
 <p> 
   <img src="https://img.shields.io/badge/Kotlin-0095D5?style=flat-square&logo=Kotlin&logoColor=white&color=purple"/> 
   <img src="https://img.shields.io/badge/Jetpack-Compose-07405E?style=flat-square&color=4285F4&logo=Jetpack+Compose&logoColor=white"/>
+  <img src="https://img.shields.io/github/license/saltstack/salt"/>
 </p>
 
 ## Introduction
