@@ -38,7 +38,7 @@
 | ------ | ----- | ---- |
 | ![Linkit Screenshot 01](https://user-images.githubusercontent.com/51331195/160654507-6ec17dbb-7357-4a58-be6f-ec497f49ab7f.png) | ![Linkit Screenshot 02](https://user-images.githubusercontent.com/51331195/160654539-5456a3cb-4b97-472f-b3d3-87cc59161283.png) | ![Linkit Screenshot 03](https://user-images.githubusercontent.com/51331195/160654571-0860210c-bf70-42bf-9376-9f03763f328e.png)
 
-| Search | Edit | Setting |
+| Add Link | Edit | Setting |
 | ------ | ----- | ---- |
 | ![Linkit Screenshot 04](https://user-images.githubusercontent.com/51331195/160654769-7babf785-9920-4b8b-ab1c-e28f383918c2.png) | ![Linkit Screenshot 05](https://user-images.githubusercontent.com/51331195/160654797-87a1546f-8664-4c87-a081-3516eec7e4c2.png) | ![Linkit Screenshot 06](https://user-images.githubusercontent.com/51331195/160654808-84e053b0-c4b6-47c1-9bf9-aa5732f2e889.png)
 
