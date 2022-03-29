@@ -56,9 +56,9 @@
    - Google OAuth
 
 ## Team Genie (Apptive, PNU)
-- **Yoon Jung**: Product Manager
+- **Yoon Jeong**: Product Manager
 - **Won Seok**([Cotidie](https://github.com/Cotidie)): Developer
-- **Jung Heon**([Liv66](https://github.com/Liv66)): Developer
+- **Jeong Heon**([Liv66](https://github.com/Liv66)): Developer
 - **Ji Yoon**: Designer
 
 ## Copyright
