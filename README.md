@@ -21,7 +21,16 @@
 </p>
 
 ## Features
-(Updating...)
+ - Google Login
+ - Categorizing by folders
+ - Tagging
+ - Searching by tag name or url string
+ - Making notes on links
+ - Folder sharing (In Development)
+ - Link and folder co-editing (In Development)
+ - Highlighting on link content (In Development)
+ - Friends list (In Development)
+ - Push Notification (In Development)
 
 ## Screenshots
 | Splash | Login | Home |
@@ -33,7 +42,7 @@
 | ![Linkit Screenshot 04](https://user-images.githubusercontent.com/51331195/160654769-7babf785-9920-4b8b-ab1c-e28f383918c2.png) | ![Linkit Screenshot 05](https://user-images.githubusercontent.com/51331195/160654797-87a1546f-8664-4c87-a081-3516eec7e4c2.png) | ![Linkit Screenshot 06](https://user-images.githubusercontent.com/51331195/160654808-84e053b0-c4b6-47c1-9bf9-aa5732f2e889.png)
 
 
-## Tech Stacks
+## Tech Stack
  Keywords and libraries related to this project.
    - Jetpack Compose
    - MVVM (+Repository)
@@ -43,11 +52,12 @@
    - Room
    - Retrofit2
    - Hilt
+   - Google OAuth
 
 ## Team Genie (Apptive, PNU)
 - **Yoon Jung**: Product Manager
-- **Won Seok**(Cotidie): Developer
-- **Jung Heon**(Liv66): Developer
+- **Won Seok**([Cotidie](https://github.com/Cotidie)): Developer
+- **Jung Heon**([Liv66](https://github.com/Liv66)): Developer
 - **Ji Yoon**: Designer
 
 ## Copyright
